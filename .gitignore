@@ -1,0 +1,13 @@
+wiki
+gen
+build
+*~
+*.swp
+*.debug
+*.cache
+*.status
+*.js.map
+*.tmp
+*.xpi
+node_modules
+.env

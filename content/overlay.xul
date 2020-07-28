@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://mdnotes/skin/overlay.css" type="text/css"?>
+<!DOCTYPE overlay SYSTEM "chrome://mdnotes/locale/mdnotes.dtd">
+
+<overlay id="mdnotes-overlay"
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+	
+  <stringbundleset>
+    <stringbundle
+            id="mdnotes-bundle"
+            src="chrome://mdnotes/locale/mdnotes.properties"/>
+  </stringbundleset>
+
+  <popup id="zotero-itemmenu">
+    <menuseparator id="id-mdnotes-separator"/>
+    <menuitem id="id-mdnotes-batch-export-item" label="Batch export to markdown" tooltiptext="Create all markdown files for the selected items" 
+      oncommand="Zotero.Mdnotes.run('batchExport')"/>
+
+    <menuitem id="id-mdnotes-create-notes-file" label="Create Notes file" 
+      tooltiptext="Create a markdown file for your notes" 
+      oncommand="Zotero.Mdnotes.run('createNoteFile')"/>
+
+    <menuitem id="id-mdnotes-export-item" label="Create Zotero item metadata file" tooltiptext="Create a markdown file for the metadata of selected items" 
+      oncommand="Zotero.Mdnotes.run('exportZoteroItem')"/>
+
+    <menuitem id="id-mdnotes-export-zotero-note" 
+      label="Export Zotero note to markdown" 
+      tooltiptext="Create a markdown file for each Zotero note selected" 
+      oncommand="Zotero.Mdnotes.run('exportNoteToMarkdown')"/>
+  </popup>
+
+  <menupopup id="zotero-tb-actions-popup">
+    <menuitem id="mdnotes-options" insertafter="zotero-tb-actions-prefs" label="&mdnotes-options.label;" oncommand="Zotero.Mdnotes.openPreferenceWindow();"/>
+  </menupopup>
+
+  <menupopup id="menu_ToolsPopup">
+    <menuitem id="mdnotes-options" insertafter="menu_preferences" label="&mdnotes-options.label;" oncommand="Zotero.Mdnotes.openPreferenceWindow();"/>
+  </menupopup>
+
+	<!-- Include the main extension logic -->
+  <script src="chrome://zotero/content/include.js"/>
+  <script type="application/x-javascript" src="chrome://mdnotes/content/mdnotes.js"/>
+</overlay>

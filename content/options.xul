@@ -1,0 +1,191 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="chrome://zotero-platform/content/preferences.css"?>
+<!DOCTYPE window SYSTEM "chrome://mdnotes/locale/mdnotes.dtd">
+
+<prefwindow id="mdnotes-pref" title="&mdnotes-preferences;" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+    onload="Zotero.Mdnotes.Options.load();">
+  <prefpane label="&mdnotes-prefpane;" id="mdnotes-prefpane">
+    <preferences>
+      <preference id="pref-mdnotes-directory" name="extensions.mdnotes.directory" type="string"/>
+      <preference id="pref-mdnotes-citekey-title" name="extensions.mdnotes.citekey_title" type="bool"/>
+      <preference id="pref-mdnotes-link-style" name="extensions.mdnotes.link_style" type="string"/>
+      <preference id="pref-mdnotes-title-suffix" name="extensions.mdnotes.title_suffix" type="string"/>
+      <preference id="pref-mdnotes-notes-suffix" name="extensions.mdnotes.notes_suffix" type="string"/>
+      <preference id="pref-mdnotes-file-conf" name="extensions.mdnotes.file_conf" type="string"/>
+
+      <!-- Metadata -->
+      <preference id="pref-mdnotes-export-type" name="extensions.mdnotes.export_type" type="bool"/>
+      <preference id="pref-mdnotes-export-authors" name="extensions.mdnotes.export_authors" type="bool"/>
+      <preference id="pref-mdnotes-export-dates" name="extensions.mdnotes.export_dates" type="bool"/>
+      <preference id="pref-mdnotes-export-pub-title" name="extensions.mdnotes.export_pub_title" type="bool"/>
+      <preference id="pref-mdnotes-export-local-library" name="extensions.mdnotes.export_local_library" type="bool"/>
+      <preference id="pref-mdnotes-export-cloud-library" name="extensions.mdnotes.export_cloud_library" type="bool"/>
+      <preference id="pref-mdnotes-export-citekey" name="extensions.mdnotes.export_citekey" type="bool"/>
+      <preference id="pref-mdnotes-export-urls" name="extensions.mdnotes.export_urls" type="bool"/>
+      <preference id="pref-mdnotes-export-collections" name="extensions.mdnotes.export_collections" type="bool"/>
+      <preference id="pref-mdnotes-export-related" name="extensions.mdnotes.export_related" type="bool"/>
+      <preference id="pref-mdnotes-export-tags" name="extensions.mdnotes.export_tags" type="bool"/>
+      <preference id="pref-mdnotes-export-abstract" name="extensions.mdnotes.export_abstract" type="bool"/>
+
+      <!-- Tags -->
+      <preference id="pref-mdnotes-tag-format" name="extensions.mdnotes.tag_format" type="string"/>
+      <preference id="pref-mdnotes-import-tag" name="extensions.mdnotes.import_tag" type="string"/>
+
+      <!-- Zotero notes -->
+      <preference id="pref-mdnotes-export-notes" name="extensions.mdnotes.export_notes" type="bool"/>
+      <preference id="pref-mdnotes-export-notes-heading" name="extensions.mdnotes.export_notes_heading" type="string"/>
+
+      <!-- Notes file -->
+      <preference id="pref-mdnotes-create-note" name="extensions.mdnotes.create_notes_file" type="bool"/>
+      <preference id="pref-mdnotes-transclude-metadata" name="extensions.mdnotes.obsidian.transclude_metadata" type="bool"/>
+      <preference id="pref-mdnotes-attach-to-zotero" name="extensions.mdnotes.attach_to_zotero" type="bool"/>
+    </preferences>
+
+    
+    <groupbox>
+      <caption label="&mdnotes-export;"/>
+      <checkbox id="id-mdnotes-citekey-title" preference="pref-mdnotes-citekey-title" label="&citekey-title;" />
+
+      <separator/>
+      <radiogroup id="id-mdnotes-file-group" preference="pref-mdnotes-file-conf">
+        <caption label="&mdnotes-file-number-label;"/>
+        <description style="font-size: 10px"> Exporting notes as a single file or in multiple files</description>
+        <hbox>
+        <radio id="single-file" label="Single file" value="single"/>
+        <radio id="split-files" label="Split files" selected="true" value="split"/>
+        </hbox>
+      </radiogroup>
+
+
+      <separator/>
+      <radiogroup id="id-mdnotes-link-group" preference="pref-mdnotes-link-style">
+        <caption label="&mdnotes-links-label;"/>
+        <description style="font-size: 10px">
+          The link format is applied to all the metadata fields, except the cite key.
+        </description>
+        <hbox>
+        <radio id="no-links" label="No links" value="none"/>
+        <radio id="wiki" label="[[Wiki style]]" selected="true" value="wiki"/>
+        <radio id="markdown" label="[Markdown style](markdown-style)" value="markdown"/>
+        </hbox>
+        <description style="font-size: 10px">
+        No links will output metadata as plain text
+        </description>
+
+        <description style="font-size: 10px">
+        Markdown links will change how files are renamed and substitute spaces with dashes.
+        </description>
+      </radiogroup>
+
+    </groupbox>
+
+
+    <separator/>
+
+    <vbox>
+      <groupbox>
+        <caption label="&mdnotes-metadata;"/>
+        <description style="font-size: 10px"> Which item metadata to export. </description>
+        <hbox>
+          <groupbox>
+            <caption label="Metadata"/>
+              <hbox>
+                <vbox>
+                  <checkbox preference="pref-mdnotes-export-type" label="&mdnotes-export-type;" />
+                  <checkbox preference="pref-mdnotes-export-authors" label="&mdnotes-export-authors;" />
+                  <checkbox preference="pref-mdnotes-export-dates" label="&mdnotes-export-dates;" />
+                  <checkbox preference="pref-mdnotes-export-pub-title" label="&mdnotes-export-pub-title;" />
+                </vbox>
+                <vbox>
+                  <checkbox preference="pref-mdnotes-export-urls" label="&mdnotes-export-urls;" />
+                  <checkbox preference="pref-mdnotes-export-citekey" label="&mdnotes-export-citekey;" />
+                  <checkbox preference="pref-mdnotes-export-tags" label="&mdnotes-export-tags;" />
+                  <checkbox preference="pref-mdnotes-export-collections" label="&mdnotes-export-collections;" />
+                </vbox>
+                <vbox>
+                  <checkbox preference="pref-mdnotes-export-related" label="&mdnotes-export-related;" />
+                  <checkbox preference="pref-mdnotes-export-abstract" label="&mdnotes-export-abstract;" />
+                </vbox>
+              </hbox>
+          </groupbox>
+          <groupbox>
+            <caption label="Links"/>
+                <checkbox preference="pref-mdnotes-export-local-library" label="&mdnotes-export-local-library;" />
+                <checkbox preference="pref-mdnotes-export-cloud-library" label="&mdnotes-export-cloud-library;" />
+          </groupbox>
+        </hbox>
+        <!-- Tags -->
+        <groupbox>
+          <caption label="&mdnotes-include-tags;"/>
+          <radiogroup id="id-mdnotes-tag-format-group" preference="pref-mdnotes-tag-format">
+            <hbox align="center">
+              <description value="&mdnotes-tag-format-label;"></description>
+              <radio id="hash-sign" label="Hash sign" value="hash"/>
+              <radio id="internal-links" label="Internal links" selected="true" value="internal"/>
+            </hbox>
+          </radiogroup>
+
+          <hbox align="center">
+            <label id="id-mdnotes-import-tag-label" value="&import-tag;" control="id-mdnotes-import-tag"/>
+            <textbox id="id-mdnotes-import-tag" preference="pref-mdnotes-import-tag" flex="1"/>
+          </hbox>
+        </groupbox>
+
+      </groupbox>
+
+    </vbox>
+
+
+    <!-- Zotero Notes settings -->
+    <separator/>
+    <groupbox>
+      <caption label="&mdnotes-settings;"/>
+
+      <checkbox id="id-mdnotes-export-notes" preference="pref-mdnotes-export-notes" label="&export-notes;" 
+          />
+      <hbox align="center">
+        <label id="id-mdnotes-export-notes-label" value="&export-notes-label;" control="id-mdnotes-export-notes-heading"/>
+        <textbox id="id-mdnotes-export-notes-heading" preference="pref-mdnotes-export-notes-heading" flex="1"/>
+      </hbox>
+    </groupbox>
+
+
+    <!-- Note file settings -->
+    <separator/>
+    <groupbox>
+      <caption label="&note-file-settings;"/>
+      <hbox align="center">
+        <label id="id-mdnotes-vault-path-label" value="&note-directory-label;" control="id-mdnotes-title-suffix"/>
+        <textbox id="id-mdnotes-vault-path" preference="pref-mdnotes-directory" flex="1"/>
+      </hbox>
+      <description style="font-size: 10px">
+        Which path to suggest in the file picker
+      </description>
+      <hbox align="center">
+        <label id="id-mdnotes-title-suffix-label" value="&title-suffix-label;" control="id-mdnotes-title-suffix"/>
+        <textbox id="id-mdnotes-title-suffix" preference="pref-mdnotes-title-suffix" flex="1"/>
+      </hbox>
+      <description style="font-size: 10px">
+        What suffix to add to file name when exporting a Zotero item.
+      </description>
+      <hbox align="center">
+        <label id="id-mdnotes-notes-suffix-label" value="&notes-suffix-label;" control="id-mdnotes-notes-suffix"/>
+        <textbox id="id-mdnotes-notes-suffix" preference="pref-mdnotes-notes-suffix" flex="1"/>
+      </hbox>
+      <description style="font-size: 10px">
+        What suffix to add to Notes file name 
+      </description>
+      
+      <separator/>
+
+      <checkbox preference="pref-mdnotes-create-note" label="&mdnotes-create-note;" />
+      <checkbox preference="pref-mdnotes-transclude-metadata" label="&mdnotes-transclude-metadata;" />
+      <checkbox preference="pref-mdnotes-attach-to-zotero" label="&mdnotes-attach-to-zotero;" />
+
+    </groupbox>
+
+    <script src="chrome://zotero/content/include.js"/>
+    <script type="application/x-javascript" src="chrome://mdnotes/content/options.js"/>
+  </prefpane>
+</prefwindow>
