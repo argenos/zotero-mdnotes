@@ -502,7 +502,7 @@ Zotero.Mdnotes = Zotero.Mdnotes || new class {
     const FilePicker = require("zotero/filePicker").default;
 
     const fp = new FilePicker();
-    var oldPath = getPref("directory");
+    var oldPath = getPref("directory") ? getPref("directory") : OS.Constants.Path.homeDir;
 
     if (oldPath) {
       fp.displayDirectory = oldPath;
@@ -541,7 +541,7 @@ Zotero.Mdnotes = Zotero.Mdnotes || new class {
     const FilePicker = require("zotero/filePicker").default;
 
     const fp = new FilePicker();
-    var oldPath = getPref("directory");
+    var oldPath = getPref("directory") ? getPref("directory") : OS.Constants.Path.homeDir;
 
     if (oldPath) {
       fp.displayDirectory = oldPath;
@@ -576,7 +576,7 @@ Zotero.Mdnotes = Zotero.Mdnotes || new class {
     const FilePicker = require("zotero/filePicker").default;
 
     const fp = new FilePicker();
-    var oldPath = getPref("directory");
+    var oldPath = getPref("directory") ? getPref("directory") : OS.Constants.Path.homeDir;
 
     if (oldPath) {
       fp.displayDirectory = oldPath;
@@ -611,7 +611,7 @@ Zotero.Mdnotes = Zotero.Mdnotes || new class {
     const FilePicker = require("zotero/filePicker").default;
 
     const fp = new FilePicker();
-    var oldPath = getPref("directory");
+    var oldPath = getPref("directory") ? getPref("directory") : OS.Constants.Path.homeDir;
 
     if (oldPath) {
       fp.displayDirectory = oldPath;

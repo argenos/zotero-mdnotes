@@ -1,4 +1,4 @@
-pref("extensions.mdnotes.directory", "/home/argen/roam");
+pref("extensions.mdnotes.directory", "");
 pref("extensions.mdnotes.citekey_title", true);
 pref("extensions.mdnotes.link_style", "wiki");
 
