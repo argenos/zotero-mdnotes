@@ -36,6 +36,8 @@ A Zotero plugin to export item metadata and notes as markdown files.
 
 Install by downloading the [latest version](https://github.com/argenos/zotero-mdnotes/releases/latest).
 
+After installing, go to `Tools > Mdnotes preferences` and change the Notes directory to a valid path.
+
 ## Requirements
 
 It is highly recommended that you have the following plugins installed:
