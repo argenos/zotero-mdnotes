@@ -192,8 +192,8 @@ function getMetadata(item) {
     metadataString += getDates(item);
   }
 
-  if (getPref("export_pub_title")) {
-    var pubTitle = item.getField("publicationTitle", true, true);
+  var pubTitle = item.getField("publicationTitle", true, true);
+  if (getPref("export_pub_title") && pubTitle) {
     metadataString += `* Publication: ${formatInternalLink(pubTitle)}\n`;
   }
 
