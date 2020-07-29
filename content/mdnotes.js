@@ -193,7 +193,7 @@ function getMetadata(item) {
   }
 
   if (getPref("export_pub_title")) {
-    var pubTitle = (item.getField("publicationTitle")) ? item.getField("publicationTitle") : item.getField("proceedingsTitle");
+    var pubTitle = item.getField("publicationTitle", true, true);
     metadataString += `* Publication: ${formatInternalLink(pubTitle)}\n`;
   }
 
