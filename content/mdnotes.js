@@ -220,7 +220,7 @@ function getMetadata(item) {
   if (item.getField("abstractNote") && getPref("export_abstract")) {
     let abstract;
     abstract = item.getField("abstractNote");
-    metadataString += `\n### Abstract\n\n ${abstract}\n\n`;
+    metadataString += `\n### Abstract\n\n ${abstract}\n`;
   }
 
   return metadataString;
@@ -360,7 +360,7 @@ function getZoteroFileContents(itemExport, fileName){
   zoteroNoteContents += itemExport.metadata;
 
   if (itemExport.notes) {
-    zoteroNoteContents += `${getPref("export_notes_heading")}\n\n`;
+    zoteroNoteContents += `\n${getPref("export_notes_heading")}\n\n`;
 
     for (let note of itemExport.notes) {
       let noteFileName = `${fileName} - ${note.title}`;
@@ -384,7 +384,7 @@ function getFiles(itemExport, fileName, titleSuffix) {
   zoteroNoteContents += itemExport.metadata;
 
   if (itemExport.notes) {
-    zoteroNoteContents += `${getPref("export_notes_heading")}\n\n`;
+    zoteroNoteContents += `\n${getPref("export_notes_heading")}\n\n`;
 
     for (let note of itemExport.notes) {
       let noteFileName = `${fileName} - ${note.title}`;
@@ -413,7 +413,7 @@ function getFileContents(itemExport) {
   fileContents += itemExport.metadata;
 
   if (itemExport.notes) {
-    fileContents += `${getPref("export_notes_heading")}\n\n`;
+    fileContents += `\n${getPref("export_notes_heading")}\n\n`;
 
     for (let note of itemExport.notes) {
       fileContents += `### ${note.title}\n\n`;
