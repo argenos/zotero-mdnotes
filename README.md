@@ -4,6 +4,22 @@ A Zotero plugin to export item metadata and notes as markdown files.
 
 ## Features
 
+Right now the menu is not context-aware, so read below to see what has to be selected for the menu to correctly create the files.
+
+| Option                                                       | What to select |
+| ------------------------------------------------------------ | -------------- |
+| [Export Zotero item metadata file](#Export-items-metadata-to-a-markdown-file) | Zotero Item    |
+| [Export Zotero notes to markdown](#Export-zotero-notes-to-markdown) | Zotero Note    |
+| [Create a file for your own notes](#Create-a-file-for-your-own-notes) | Zotero Item    |
+| [Batch export all of the above](#Batch-export-all-of-the-above) | Zotero Item    |
+
+* Based on your configuration, any of the above actions [adds the created files as linked files to Zotero](#Adds-the-created-files-as-linked-files-to-Zotero)
+
+**Note:** After installing, go to `Tools > Mdnotes preferences` and change the Notes directory to a valid path.
+See [Configuration](#Configuration).
+
+To access the menu right-click on an item or note to see the options below:  
+
 ![mdnotes-menu](docs/mdnotes-menu.png)
 
 <img src="docs/mdnotes-batch.gif" alt="mdnotes-batch" style="zoom:80%;" />
@@ -31,8 +47,25 @@ The `Export Zotero note to markdown` menu only works with Zotero notes (the ones
 
 **Only works with Zotero items.**
 
-The `Create Notes file` menu creates a file for your own notes, i.e. it only uses the naming convention (e.g. `citekey.md`) to save a file that includes the item's title as an H1 header, a few links, and a H2 Notes header so you can write below. 
-![notes file](docs/notes-file.png)
+The `Create Notes file` menu creates a file for your own notes, i.e. it only uses the naming convention (e.g. `citekey.md`) to save a file that includes the item's title as an H1 header, a few links, and a H2 Notes header so you can write below.
+
+#### Format 
+
+```
+# <Item's full title>
+
+* Zotero links: <links>
+
+<Metadata link>
+
+## Notes
+
+<Your notes go here>
+```
+
+#### Example
+
+<img src="docs/notes-file.png" alt="notes file" style="zoom:80%;" />
 
 ### Batch export/create of all of the above
 
@@ -46,7 +79,6 @@ The `Create Notes file` menu creates a file for your own notes, i.e. it only use
 
 Install by downloading the [latest version](https://github.com/argenos/zotero-mdnotes/releases/latest).
 
-After installing, go to `Tools > Mdnotes preferences` and change the Notes directory to a valid path.
 
 ## Requirements
 
