@@ -6,29 +6,39 @@ A Zotero plugin to export item metadata and notes as markdown files.
 
 ![mdnotes-menu](docs/mdnotes-menu.png)
 
-![mdnotes-batch](docs/mdnotes-batch.gif)
+<img src="docs/mdnotes-batch.gif" alt="mdnotes-batch" style="zoom:80%;" />
 
-* Export items' metadata to a markdown file
+### Export items' metadata to a markdown file
 
-  ![Zotero item export](docs/zotero-item-export.png)
+  **Only works with Zotero items.**
 
-* Export Zotero notes to markdown
+  The `Export Zotero item metadata file` creates a file using the naming convention and (a configurable) suffix, e.g. `citekey - suffix.md`. The file contains the item's title as H1, and the item's metadata and Zotfile-extracted annotations under H2 headers.
 
-  * "Manually" written child notes
+  <img src="docs/zotero-item-export.png" alt="Zotero item export" style="zoom:80%;" />
 
-  ![dont panic note](docs/dont-panic-zotero-note.png) ![dont panic note](docs/dont-panic-md-note.png)
+### Export Zotero notes to markdown
 
-  * Annotations extracted with Zotfile
+**Only works with Zotero notes**.
 
-  ![yellow note](docs/yellow-zotero-note.png) ![yellow note](docs/yellow-md-note.png)
+The `Export Zotero note to markdown` menu only works with Zotero notes (the ones with the little yellow icon), and that one will export the note contents and save them on a file using the naming convention, e.g. `citekey - <note title>.md`
 
-* Create a file for your own notes
+|                                    | Selected note                                                | Exported note                                                |
+| ---------------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| "Manually" written child notes     | <img src="docs/dont-panic-zotero-note.png" alt="dont panic note" style="zoom: 80%;" /> | <img src="docs/dont-panic-md-note.png" alt="dont panic note" style="zoom:80%;" /> |
+| Annotations extracted with Zotfile | <img src="docs/yellow-zotero-note.png" alt="yellow note" style="zoom:80%;" /> | <img src="docs/yellow-md-note.png" alt="yellow note" style="zoom:80%;" /> |
 
-  ![notes file](docs/notes-file.png)
+### Create a file for your own notes
 
-* Batch export/create of all of the above
+**Only works with Zotero items.**
 
-* Add the created files as linked files to Zotero
+The `Create Notes file` menu creates a file for your own notes, i.e. it only uses the naming convention (e.g. `citekey.md`) to save a file that includes the item's title as an H1 header, a few links, and a H2 Notes header so you can write below. 
+![notes file](docs/notes-file.png)
+
+### Batch export/create of all of the above
+
+  **Only works with Zotero items.**
+
+### Add the created files as linked files to Zotero
 
   ![attach](docs/attach-link-to-zotero.png)
 
