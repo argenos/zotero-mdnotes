@@ -9,11 +9,11 @@ Right now the menu is not context-aware, so read below to see what has to be sel
 | Option                                                       | What to select |
 | ------------------------------------------------------------ | -------------- |
 | [Export Zotero item metadata file](#Export-items-metadata-to-a-markdown-file) | Zotero Item    |
-| [Export Zotero notes to markdown](#Export-zotero-notes-to-markdown) | Zotero Note    |
+| [Export Zotero notes to markdown](#Export-Zotero-notes-to-markdown) | Zotero Note    |
 | [Create a file for your own notes](#Create-a-file-for-your-own-notes) | Zotero Item    |
-| [Batch export all of the above](#Batch-export-all-of-the-above) | Zotero Item    |
+| [Batch export all of the above](#Batch-exportcreate-all-of-the-above) | Zotero Item    |
 
-* Based on your configuration, any of the above actions [adds the created files as linked files to Zotero](#Adds-the-created-files-as-linked-files-to-Zotero)
+* Based on your configuration, any of the above actions [adds the created files as linked files to Zotero](#Add-the-created-files-as-linked-files-to-Zotero)
 
 **Note:** After installing, go to `Tools > Mdnotes preferences` and change the Notes directory to a valid path.
 See [Configuration](#Configuration).
@@ -67,7 +67,7 @@ The `Create Notes file` menu creates a file for your own notes, i.e. it only use
 
 <img src="docs/notes-file.png" alt="notes file" style="zoom:80%;" />
 
-### Batch export/create of all of the above
+### Batch export/create all of the above
 
   **Only works with Zotero items.**
 
