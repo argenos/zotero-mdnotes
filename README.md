@@ -4,6 +4,8 @@ A Zotero plugin to export item metadata and notes as markdown files.
 
 ## Features
 
+Tested with Zotero v5.0.89 in Ubuntu 18.04.
+
 Right now the menu is not context-aware, so read below to see what has to be selected for the menu to correctly create the files.
 
 | Option                                                       | What to select |
@@ -13,7 +15,9 @@ Right now the menu is not context-aware, so read below to see what has to be sel
 | [Create a file for your own notes](#Create-a-file-for-your-own-notes) | Zotero Item    |
 | [Batch export all of the above](#Batch-exportcreate-all-of-the-above) | Zotero Item    |
 
-* Based on your configuration, any of the above actions [adds the created files as linked files to Zotero](#Add-the-created-files-as-linked-files-to-Zotero)
+* Based on your configuration, any of the above actions [adds the created files as linked files to Zotero](#Add-the-created-files-as-linked-files-to-Zotero).
+
+With the exception of `Create file for your own notes`, you will be asked to choose a path. The file name(s) are automatically chosen based on the naming convention described in the section for each menu (so keep reading!).
 
 **Note:** After installing, go to `Tools > Mdnotes preferences` and change the Notes directory to a valid path.
 See [Configuration](#Configuration).
@@ -43,6 +47,8 @@ The `Export Zotero note to markdown` menu only works with Zotero notes (the ones
 | "Manually" written child notes     | <img src="docs/dont-panic-zotero-note.png" alt="dont panic note" style="zoom: 80%;" /> | <img src="docs/dont-panic-md-note.png" alt="dont panic note" style="zoom:80%;" /> |
 | Annotations extracted with Zotfile | <img src="docs/yellow-zotero-note.png" alt="yellow note" style="zoom:80%;" /> | <img src="docs/yellow-md-note.png" alt="yellow note" style="zoom:80%;" /> |
 
+**v0.0.3:** Zotfile-extracted annotations include characters that are invalid for Windows file names. For that reason, the date is changed to follow an ISO format and stripping time, i.e. `yyyy-mm-dd`. This might not always work correctly depending on your timezone and it might be better to fix it directly in Zotfile (see [this issue](https://github.com/jlegewie/zotfile/issues/480)). For more details about Mdnotes, see [Notes and Known Limitations](#Notes-and-known-limitations).
+
 ### Create a file for your own notes
 
 **Only works with Zotero items.**
@@ -71,6 +77,10 @@ The `Create Notes file` menu creates a file for your own notes, i.e. it only use
 
   **Only works with Zotero items.**
 
+  If you are having issues with this menu, try creating the files individually first.
+
+  See if your Zotero notes have invalid characters as described in [Export Zotero notes to markdown](#Export-Zotero-notes-to-markdown)
+
 ### Add the created files as linked files to Zotero
 
   ![attach](docs/attach-link-to-zotero.png)
@@ -78,7 +88,6 @@ The `Create Notes file` menu creates a file for your own notes, i.e. it only use
 ## Install
 
 Install by downloading the [latest version](https://github.com/argenos/zotero-mdnotes/releases/latest).
-
 
 ## Requirements
 
@@ -106,6 +115,14 @@ Go to `Tools > Mdnotes preferences`
   * The only file not overwritten during batch export is the Notes file which I assume **you** modify and don't want them overwritten! You can use the `Create Notes file` menu to do so.
 
 * The format used to export Zotero notes is somewhat hardcoded and relies on Zotfile's default format. [Let me know](https://github.com/argenos/zotero-mdnotes/issues/new) if this doesn't work for you.
+
+  **v0.0.3** - Since forbidden characters for Windows file names can get quite complex and I can't test in Windows nor invest much time in this, I've made a few assumptions about the title of your notes. If those assumptions are not met, the file with the extracted notes won't be created and batch export won't work. Check if your note
+
+  * uses anything other than the default Zotfile format, or if the note title contains more than one parenthesis this might fail.
+
+  * has any other special character in the first line (which is used as part of the file name), it will also fail. The only cases I'm checking are forward slashes `/` and colons `:`.
+
+  Pull requests are welcome to handle this in a smarter way.
 
 * If you move or rename your markdown files, the links in Zotero will be outdated. The only solution is to manually locate them.
 
