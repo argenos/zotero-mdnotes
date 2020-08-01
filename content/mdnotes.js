@@ -268,6 +268,40 @@ function getZoteroNotes(item) {
   return noteArray;
 }
 
+// Hacky solution from https://stackoverflow.com/a/25047903
+var isDate = function(date) {
+    return (new Date(date).toString() !== "Invalid Date") && !isNaN(new Date(date));
+}
+
+// From https://stackoverflow.com/a/29774197
+// Return the date in yyyy-mm-dd format
+function simpleISODate(date){
+  const offset = date.getTimezoneOffset()
+  date = new Date(date.getTime() + (offset*60*1000))
+  return date.toISOString().split('T')[0]
+}
+
+
+function formatNoteTitle(titleString){
+  var strInParenthesis = titleString.match(/\(([^\)]+)\)/g)
+  
+  if (!strInParenthesis){
+    // Just replace all slashes and colons with dashes
+    return titleString.replace(/\/|:/g, "-");
+  }
+  else{
+    var dateInParenthesis = strInParenthesis[0].replace(/\(|\)/g, "")
+
+    if (isDate(dateInParenthesis)){
+      var date = new Date(dateInParenthesis);
+      return titleString.replace(dateInParenthesis, simpleISODate(date));
+    }
+    else{
+      return titleString;
+    }
+  }
+}
+
 function noteToMarkdown(noteContent) {
   const domParser = Components.classes["@mozilla.org/xmlextras/domparser;1"].createInstance(Components.interfaces.nsIDOMParser),
         mapObj = {
@@ -295,7 +329,7 @@ function noteToMarkdown(noteContent) {
     const para = fullDomNote[i];
 
     if (i === 0) {
-      noteMD.title = para.textContent.replace(/\//g, "-");
+      noteMD.title = formatNoteTitle(para.textContent);
       continue;
     }
 
