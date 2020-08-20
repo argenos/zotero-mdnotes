@@ -13,6 +13,7 @@ pref("extensions.mdnotes.export_urls", true);
 pref("extensions.mdnotes.export_collections", true);
 pref("extensions.mdnotes.export_related", true);
 pref("extensions.mdnotes.export_tags", true);
+pref("extensions.mdnotes.export_pdfs", true);
 pref("extensions.mdnotes.export_abstract", true);
 
 pref("extensions.mdnotes.tag_format", "internal");

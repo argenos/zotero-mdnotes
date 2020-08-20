@@ -26,6 +26,7 @@
       <preference id="pref-mdnotes-export-collections" name="extensions.mdnotes.export_collections" type="bool"/>
       <preference id="pref-mdnotes-export-related" name="extensions.mdnotes.export_related" type="bool"/>
       <preference id="pref-mdnotes-export-tags" name="extensions.mdnotes.export_tags" type="bool"/>
+      <preference id="pref-mdnotes-export-tags" name="extensions.mdnotes.export_pdfs" type="bool"/>
       <preference id="pref-mdnotes-export-abstract" name="extensions.mdnotes.export_abstract" type="bool"/>
 
       <!-- Tags -->
@@ -104,6 +105,7 @@
                   <checkbox preference="pref-mdnotes-export-collections" label="&mdnotes-export-collections;" />
                 </vbox>
                 <vbox>
+                  <checkbox preference="pref-mdnotes-export-pdfs" label="&mdnotes-export-pdfs;" />
                   <checkbox preference="pref-mdnotes-export-related" label="&mdnotes-export-related;" />
                   <checkbox preference="pref-mdnotes-export-abstract" label="&mdnotes-export-abstract;" />
                 </vbox>

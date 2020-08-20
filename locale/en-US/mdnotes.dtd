@@ -24,6 +24,7 @@
 <!ENTITY mdnotes-export-collections "Collection names">
 <!ENTITY mdnotes-export-related "Related items">
 <!ENTITY mdnotes-export-tags "Tags">
+<!ENTITY mdnotes-export-pdfs "Links to PDFs">
 <!ENTITY mdnotes-export-abstract "Abstract">
 
 <!ENTITY mdnotes-include-tags "Tags">

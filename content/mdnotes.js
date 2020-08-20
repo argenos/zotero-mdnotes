@@ -1,3 +1,4 @@
+/*globals Zotero, OS, require,  */
 "use strict";
 
 function getPref(pref_name) {
@@ -217,6 +218,18 @@ function getMetadata(item) {
     metadataString += getTags(item) + "\n";
   }
 
+  if (getPref("export_pdfs")){
+    var pdfArray;
+    pdfArray = getZoteroAttachments(item);
+    if (pdfArray.length == 1){
+      metadataString += `* PDF Attachments: ${pdfArray[0]}\n`;
+    }
+    else if (pdfArray.length > 1){
+      metadataString += `* PDF Attachments:\n\t- ${pdfArray.join('\n\t- ')}\n`;
+    }
+
+  }
+
   if (item.getField("abstractNote") && getPref("export_abstract")) {
     let abstract;
     abstract = item.getField("abstractNote");
@@ -266,6 +279,19 @@ function getZoteroNotes(item) {
   }
 
   return noteArray;
+}
+
+function getZoteroAttachments(item){
+  let attachmentIDs = item.getAttachments();
+  var linksArray = [];
+  for (let id of attachmentIDs) {
+    let attachment = Zotero.Items.get(id);
+    if (attachment.attachmentContentType == 'application/pdf'){
+      var link = `[${attachment.getField("title")}](zotero://open-pdf/library/items/${attachment.key})`;
+      linksArray.push(link);
+    }
+  }
+  return linksArray;
 }
 
 // Hacky solution from https://stackoverflow.com/a/25047903
@@ -592,7 +618,7 @@ Zotero.Mdnotes = Zotero.Mdnotes || new class {
         const path = OS.Path.normalize(fp.file);
         var fileName = `${getFileName(parentItem)} - ${note.title}`;
         var outputFile = OS.Path.join(path, `${fileName}.md`);
-        var fileContents = `# ${note.title}\n\n${note.content}`
+        var fileContents = `# ${note.title}\n\n${note.content}`;
         Zotero.File.putContentsAsync(outputFile, fileContents); 
         
         // Attach note
