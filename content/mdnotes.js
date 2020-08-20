@@ -625,7 +625,7 @@ Zotero.Mdnotes = Zotero.Mdnotes || new class {
         const path = OS.Path.normalize(fp.file);
         const fileName = getFileName(item);
         var outputFile = OS.Path.join(path, `${fileName}${getPref('title_suffix')}.md`);
-        const fileContents = getZoteroFileContents(itemExport);
+        const fileContents = getZoteroFileContents(itemExport, fileName);
         Zotero.File.putContentsAsync(outputFile, fileContents); 
         
         // Attach note
