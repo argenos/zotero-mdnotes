@@ -11,3 +11,5 @@ build
 *.xpi
 node_modules
 .env
+
+Makefile.in
