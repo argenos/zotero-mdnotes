@@ -1,4 +1,4 @@
-/*globals Zotero, OS, require,  */
+/*globals Zotero, OS, require, Components, window */
 "use strict";
 
 function getPref(pref_name) {
@@ -158,12 +158,12 @@ function getCollectionNames(item) {
 
 function getRelatedItems(item) {
   var relatedItemUris = item.getRelations()["dc:relation"],
-      relatedItemsArray = [];
+    relatedItemsArray = [];
 
   if (relatedItemUris) {
     for (let uri of relatedItemUris) {
       var itemID = Zotero.URI.getURIItemID(uri),
-          relatedItem = Zotero.Items.get(itemID);
+        relatedItem = Zotero.Items.get(itemID);
 
       if (getPref("citekey_title")) {
         relatedItemsArray.push(`${formatInternalLink(getCiteKey(relatedItem))}`);
@@ -218,13 +218,12 @@ function getMetadata(item) {
     metadataString += getTags(item) + "\n";
   }
 
-  if (getPref("export_pdfs")){
+  if (getPref("export_pdfs")) {
     var pdfArray;
     pdfArray = getZoteroAttachments(item);
-    if (pdfArray.length == 1){
+    if (pdfArray.length == 1) {
       metadataString += `* PDF Attachments: ${pdfArray[0]}\n`;
-    }
-    else if (pdfArray.length > 1){
+    } else if (pdfArray.length > 1) {
       metadataString += `* PDF Attachments:\n\t- ${pdfArray.join('\n\t- ')}\n`;
     }
 
@@ -281,12 +280,12 @@ function getZoteroNotes(item) {
   return noteArray;
 }
 
-function getZoteroAttachments(item){
+function getZoteroAttachments(item) {
   let attachmentIDs = item.getAttachments();
   var linksArray = [];
   for (let id of attachmentIDs) {
     let attachment = Zotero.Items.get(id);
-    if (attachment.attachmentContentType == 'application/pdf'){
+    if (attachment.attachmentContentType == 'application/pdf') {
       var link = `[${attachment.getField("title")}](zotero://open-pdf/library/items/${attachment.key})`;
       linksArray.push(link);
     }
@@ -295,34 +294,32 @@ function getZoteroAttachments(item){
 }
 
 // Hacky solution from https://stackoverflow.com/a/25047903
-var isDate = function(date) {
-    return (new Date(date).toString() !== "Invalid Date") && !isNaN(new Date(date));
-}
+var isDate = function (date) {
+  return (new Date(date).toString() !== "Invalid Date") && !isNaN(new Date(date));
+};
 
 // From https://stackoverflow.com/a/29774197
 // Return the date in yyyy-mm-dd format
-function simpleISODate(date){
-  const offset = date.getTimezoneOffset()
-  date = new Date(date.getTime() + (offset*60*1000))
-  return date.toISOString().split('T')[0]
+function simpleISODate(date) {
+  const offset = date.getTimezoneOffset();
+  date = new Date(date.getTime() + (offset * 60 * 1000));
+  return date.toISOString().split('T')[0];
 }
 
 
-function formatNoteTitle(titleString){
-  var strInParenthesis = titleString.match(/\(([^\)]+)\)/g)
-  
-  if (!strInParenthesis){
+function formatNoteTitle(titleString) {
+  var strInParenthesis = titleString.match(/\(([^\)]+)\)/g);
+
+  if (!strInParenthesis) {
     // Just replace all slashes and colons with dashes
     return titleString.replace(/\/|:/g, "-");
-  }
-  else{
-    var dateInParenthesis = strInParenthesis[0].replace(/\(|\)/g, "")
+  } else {
+    var dateInParenthesis = strInParenthesis[0].replace(/\(|\)/g, "");
 
-    if (isDate(dateInParenthesis)){
+    if (isDate(dateInParenthesis)) {
       var date = new Date(dateInParenthesis);
       return titleString.replace(dateInParenthesis, simpleISODate(date));
-    }
-    else{
+    } else {
       return titleString;
     }
   }
@@ -330,22 +327,22 @@ function formatNoteTitle(titleString){
 
 function noteToMarkdown(noteContent) {
   const domParser = Components.classes["@mozilla.org/xmlextras/domparser;1"].createInstance(Components.interfaces.nsIDOMParser),
-        mapObj = {
-    "<p>": "",
-    "</p>": "",
-    "<strong>": "**",
-    "</strong>": "**",
-    "<b>": "**",
-    "</b>": "**",
-    "<u>": "#### ",
-    "</u>": "",
-    "<em>": "*",
-    "</em>": "*",
-    "<blockquote>": "> ",
-    "</blockquote>": "",
-    "<br><br>": "\n\n"
-  },
-        re = new RegExp(Object.keys(mapObj).join("|"), "gi");
+    mapObj = {
+      "<p>": "",
+      "</p>": "",
+      "<strong>": "**",
+      "</strong>": "**",
+      "<b>": "**",
+      "</b>": "**",
+      "<u>": "#### ",
+      "</u>": "",
+      "<em>": "*",
+      "</em>": "*",
+      "<blockquote>": "> ",
+      "</blockquote>": "",
+      "<br><br>": "\n\n"
+    },
+    re = new RegExp(Object.keys(mapObj).join("|"), "gi");
   var noteMD = {};
   let noteString = "";
   const fullDomNoteBody = domParser.parseFromString(noteContent, "text/html").body;
@@ -415,7 +412,7 @@ function getFileName(item) {
   }
 }
 
-function getZoteroFileContents(itemExport, fileName){
+function getZoteroFileContents(itemExport, fileName) {
   var zoteroNoteContents = itemExport.title;
   zoteroNoteContents += itemExport.metadata;
 
@@ -520,14 +517,14 @@ Zotero.Mdnotes = Zotero.Mdnotes || new class {
       action
     };
     window.openDialog(
-      "chrome://mdnotes/content/options.xul", 
-      "mdnotes-options", 
-      "chrome,titlebar,toolbar,centerscreen" + 
-        Zotero.Prefs.get("browser.preferences.instantApply", true) 
-        ? "dialog=no" 
-        : "modal", 
-        io
-      );
+      "chrome://mdnotes/content/options.xul",
+      "mdnotes-options",
+      "chrome,titlebar,toolbar,centerscreen" +
+      Zotero.Prefs.get("browser.preferences.instantApply", true) ?
+      "dialog=no" :
+      "modal",
+      io
+    );
   }
 
   async addLinkToMDNote(outputFile, itemID, existingAttachments) {
@@ -553,9 +550,9 @@ Zotero.Mdnotes = Zotero.Mdnotes || new class {
 
   async createNoteFile() {
     var items = Zotero.getActiveZoteroPane().getSelectedItems()
-    .filter(item => 
-      Zotero.ItemTypes.getName(item.itemTypeID) !== "attachment" && 
-      Zotero.ItemTypes.getName(item.itemTypeID) !== "note"
+      .filter(item =>
+        Zotero.ItemTypes.getName(item.itemTypeID) !== "attachment" &&
+        Zotero.ItemTypes.getName(item.itemTypeID) !== "note"
       );
     await Zotero.Schema.schemaUpdatePromise;
 
@@ -584,8 +581,8 @@ Zotero.Mdnotes = Zotero.Mdnotes || new class {
         let attachmentIDs = item.getAttachments();
         let titleSuffix = getPref("title_suffix");
         const fileContents = getMDNoteFileContents(itemExport, fileName, titleSuffix);
-        Zotero.File.putContentsAsync(outputFile, fileContents); 
-        
+        Zotero.File.putContentsAsync(outputFile, fileContents);
+
         // Attach note
         this.addLinkToMDNote(outputFile, item.id, attachmentIDs);
       }
@@ -593,9 +590,9 @@ Zotero.Mdnotes = Zotero.Mdnotes || new class {
   }
 
   async exportNoteToMarkdown() {
-    var items = Zotero.getActiveZoteroPane().getSelectedItems().filter(item => 
-    // Zotero.ItemTypes.getName(item.itemTypeID) !== "attachment" &&
-    Zotero.ItemTypes.getName(item.itemTypeID) === "note");
+    var items = Zotero.getActiveZoteroPane().getSelectedItems().filter(item =>
+      // Zotero.ItemTypes.getName(item.itemTypeID) !== "attachment" &&
+      Zotero.ItemTypes.getName(item.itemTypeID) === "note");
     await Zotero.Schema.schemaUpdatePromise;
 
     const FilePicker = require("zotero/filePicker").default;
@@ -619,18 +616,18 @@ Zotero.Mdnotes = Zotero.Mdnotes || new class {
         var fileName = `${getFileName(parentItem)} - ${note.title}`;
         var outputFile = OS.Path.join(path, `${fileName}.md`);
         var fileContents = `# ${note.title}\n\n${note.content}`;
-        Zotero.File.putContentsAsync(outputFile, fileContents); 
-        
+        Zotero.File.putContentsAsync(outputFile, fileContents);
+
         // Attach note
         this.addLinkToMDNote(outputFile, parentItem.id, parentItem.getAttachments());
       }
     }
   }
 
-    async exportZoteroItem() {
-    var items = Zotero.getActiveZoteroPane().getSelectedItems().filter(item => 
-    Zotero.ItemTypes.getName(item.itemTypeID) !== "attachment" &&
-    Zotero.ItemTypes.getName(item.itemTypeID) !== "note");
+  async exportZoteroItem() {
+    var items = Zotero.getActiveZoteroPane().getSelectedItems().filter(item =>
+      Zotero.ItemTypes.getName(item.itemTypeID) !== "attachment" &&
+      Zotero.ItemTypes.getName(item.itemTypeID) !== "note");
     await Zotero.Schema.schemaUpdatePromise;
 
     const FilePicker = require("zotero/filePicker").default;
@@ -652,8 +649,8 @@ Zotero.Mdnotes = Zotero.Mdnotes || new class {
         const fileName = getFileName(item);
         var outputFile = OS.Path.join(path, `${fileName}${getPref('title_suffix')}.md`);
         const fileContents = getZoteroFileContents(itemExport, fileName);
-        Zotero.File.putContentsAsync(outputFile, fileContents); 
-        
+        Zotero.File.putContentsAsync(outputFile, fileContents);
+
         // Attach note
         this.addLinkToMDNote(outputFile, item.id, item.getAttachments());
       }
@@ -662,10 +659,10 @@ Zotero.Mdnotes = Zotero.Mdnotes || new class {
 
   async batchExport() {
     var items = Zotero.getActiveZoteroPane().getSelectedItems()
-                .filter(item => 
-                  Zotero.ItemTypes.getName(item.itemTypeID) !== "attachment" && 
-                  Zotero.ItemTypes.getName(item.itemTypeID) !== "note"
-                  );
+      .filter(item =>
+        Zotero.ItemTypes.getName(item.itemTypeID) !== "attachment" &&
+        Zotero.ItemTypes.getName(item.itemTypeID) !== "note"
+      );
     await Zotero.Schema.schemaUpdatePromise;
 
     const FilePicker = require("zotero/filePicker").default;
@@ -695,11 +692,11 @@ Zotero.Mdnotes = Zotero.Mdnotes || new class {
 
           for (let exportFile of files) {
             var outputFile = OS.Path.join(path, `${exportFile.name}.md`);
-            var fileExists = await OS.File.exists(outputFile)
-            if (exportFile.name === `${noteFileName}` && fileExists && getPref("create_notes_file")){
+            var fileExists = await OS.File.exists(outputFile);
+            if (exportFile.name === `${noteFileName}` && fileExists && getPref("create_notes_file")) {
               continue;
             }
-            Zotero.File.putContentsAsync(outputFile, exportFile.contents); 
+            Zotero.File.putContentsAsync(outputFile, exportFile.contents);
 
             // Attach new notes
             this.addLinkToMDNote(outputFile, item.id, attachmentIDs);
@@ -707,7 +704,7 @@ Zotero.Mdnotes = Zotero.Mdnotes || new class {
         } else {
           const fileContents = getFileContents(itemExport);
           var outputFile = OS.Path.join(path, `${fileName}${titleSuffix}.md`);
-          Zotero.File.putContentsAsync(outputFile, fileContents); 
+          Zotero.File.putContentsAsync(outputFile, fileContents);
 
           // Attach new notes
           this.addLinkToMDNote(outputFile, item.id, attachmentIDs);
