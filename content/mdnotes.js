@@ -67,10 +67,19 @@ function get_month_mm_format(d) {
 
 function getDates(item) {
   let dateString = "* Date: ";
-  dateString += `${formatInternalLink(item.getField("date"))}\n`;
+  if (getPref("link_dates")){
+    dateString += `${formatInternalLink(item.getField("date"))}\n`;
+  } else {
+    dateString += `${formatInternalLink(item.getField("date"), "no-links")}\n`;
+  }
   const date = new Date(item.getField("dateAdded"));
   var dateAddedStr = `${date.getFullYear()}-${get_month_mm_format(date)}-${day_of_the_month(date)}`;
-  dateString += `* Date added: ${formatInternalLink(dateAddedStr)}\n`;
+  if (getPref("link_dates")){
+    dateString += `* Date added: ${formatInternalLink(dateAddedStr)}\n`;
+  } else {
+    dateString += `* Date added: ${formatInternalLink(dateAddedStr, "no-links")}\n`;
+  }
+
   return dateString;
 }
 
@@ -182,7 +191,12 @@ function getMetadata(item) {
   if (getPref("export_type")) {
     var zoteroType = Zotero.ItemTypes.getName(item.getField("itemTypeID"));
     const itemType = typemap[zoteroType];
-    metadataString += `* Type: ${formatInternalLink(itemType)}\n`;
+    if (getPref("link_type")){
+      metadataString += `* Type: ${formatInternalLink(itemType)}\n`;
+    } else {
+      metadataString += `* Type: ${formatInternalLink(itemType, "no-links")}\n`;
+    }
+
   }
 
   if (getPref("export_authors")) {
@@ -249,8 +263,8 @@ function formatLists(list, bullet) {
   }
 }
 
-function formatInternalLink(content) {
-  let linkStyle = getPref("link_style");
+function formatInternalLink(content, linkStyle) {
+  linkStyle = typeof linkStyle !== 'undefined' ? linkStyle : getPref("link_style");
 
   if (linkStyle === "wiki") {
     return `[[${content}]]`;

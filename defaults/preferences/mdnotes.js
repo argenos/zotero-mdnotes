@@ -1,6 +1,8 @@
 pref("extensions.mdnotes.directory", "");
 pref("extensions.mdnotes.citekey_title", true);
 pref("extensions.mdnotes.link_style", "wiki");
+pref("extensions.mdnotes.link_dates", true);
+pref("extensions.mdnotes.link_type", true);
 
 pref("extensions.mdnotes.export_type", true);
 pref("extensions.mdnotes.export_authors", true);
