@@ -22,8 +22,8 @@ release: mdnotes.xpi
 	sed -i 's/${PREVRELEASE}/${RELEASE}/g' install.rdf
 	sed -i 's/${PREVRELEASE}/${RELEASE}/g' update.rdf
 	# Show commits between the last two tags
-	@echo "\nChangelog\n------------"
-	@git log --pretty=format:"%s" $(PREVRELEASE)..$(RELEASE)
+	# @echo "\nChangelog\n------------"
+	@git log --pretty=format:"%s" $(PREVRELEASE)..$(RELEASE) > changelog.md
 
 clean: 
 	rm -rf *.xpi
