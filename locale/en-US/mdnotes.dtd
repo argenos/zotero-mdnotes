@@ -12,7 +12,7 @@
 <!ENTITY mdnotes-file-number-label "File organization:">
 <!ENTITY mdnotes-links-label "Internal Links">
 
-<!ENTITY mdnotes-metadata "Note metadata">
+<!ENTITY mdnotes-metadata "Item metadata">
 <!ENTITY mdnotes-export-type "Item type">
 <!ENTITY mdnotes-export-authors "Authors">
 <!ENTITY mdnotes-export-dates "Dates">
@@ -35,10 +35,10 @@
 <!ENTITY export-notes "Export Zotero notes">
 <!ENTITY export-notes-label "Heading">
 
-<!ENTITY mdnotes-settings "Zotero annotation and highlight settings">
+<!ENTITY mdnotes-settings "Annotations and highlights">
 
 <!ENTITY note-file-settings "Note file settings">
-<!ENTITY note-directory-label "Notes directory">
+<!ENTITY note-directory-label "Export directory">
 <!ENTITY mdnotes-create-note "Create Notes file">
 <!ENTITY title-suffix-label "Zotero file name suffix:">
 <!ENTITY notes-suffix-label "Notes file name suffix:">
