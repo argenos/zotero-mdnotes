@@ -21,6 +21,7 @@ jobs:
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VERSION: ${{ github.ref }}
         with:
           tag_name: ${{ github.ref }}
           release_name: v${{ github.ref }}
@@ -33,6 +34,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-          asset_path: ./mdnotes-${{ github.ref }}.xpi
-          asset_name: mdnotes-${{ github.ref }}.xpi
+          asset_path: ./mdnotes-${{ steps.create_release.outputs.tag_name }}.xpi
+          asset_name: mdnotes-${{ steps.create_release.outputs.tag_name }}.xpi
           asset_content_type: application/zip
