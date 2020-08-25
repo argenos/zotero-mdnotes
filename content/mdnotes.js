@@ -707,7 +707,8 @@ Zotero.Mdnotes = Zotero.Mdnotes || new class {
           for (let exportFile of files) {
             var outputFile = OS.Path.join(path, `${exportFile.name}.md`);
             var fileExists = await OS.File.exists(outputFile);
-            if (exportFile.name === `${noteFileName}` && fileExists && getPref("create_notes_file")) {
+
+            if (exportFile.name === `${noteFileName}` && (fileExists || !getPref("create_notes_file"))) {
               continue;
             }
             Zotero.File.putContentsAsync(outputFile, exportFile.contents);
