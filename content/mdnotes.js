@@ -232,6 +232,10 @@ function getMetadata(item) {
     metadataString += getTags(item) + "\n";
   }
 
+  if (getPref("file_conf") !== "split") {
+    metadataString += getLinks(item) + "\n";
+  }
+
   if (getPref("export_pdfs")) {
     var pdfArray;
     pdfArray = getZoteroAttachments(item);
@@ -480,7 +484,6 @@ function getFiles(itemExport, fileName, titleSuffix) {
 function getFileContents(itemExport) {
   var fileContents = "";
   fileContents += itemExport.title;
-  fileContents += `${itemExport.zoteroLinks}\n`;
   fileContents += itemExport.metadata;
 
   if (itemExport.notes) {
