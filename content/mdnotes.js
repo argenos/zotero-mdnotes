@@ -345,21 +345,7 @@ function formatNoteTitle(titleString) {
 
 function noteToMarkdown(noteContent) {
   const domParser = Components.classes["@mozilla.org/xmlextras/domparser;1"].createInstance(Components.interfaces.nsIDOMParser),
-    mapObj = {
-      "<p>": "",
-      "</p>": "",
-      "<strong>": "**",
-      "</strong>": "**",
-      "<b>": "**",
-      "</b>": "**",
-      "<u>": "#### ",
-      "</u>": "",
-      "<em>": "*",
-      "</em>": "*",
-      "<blockquote>": "> ",
-      "</blockquote>": "",
-      "<br><br>": "\n\n"
-    },
+    mapObj = JSON.parse(getPref("html_to_md")),
     re = new RegExp(Object.keys(mapObj).join("|"), "gi");
   var noteMD = {};
   let noteString = "";
