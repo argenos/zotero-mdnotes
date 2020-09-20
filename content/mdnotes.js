@@ -530,6 +530,10 @@ Zotero.Mdnotes = Zotero.Mdnotes || new class {
     );
   }
 
+  setPref(pref_name, value) {
+    Zotero.Prefs.set(`extensions.mdnotes.${pref_name}`, value, true);
+  }
+
   async addLinkToMDNote(outputFile, itemID, existingAttachments) {
     let linkExists = false;
 

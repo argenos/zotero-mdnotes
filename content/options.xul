@@ -88,6 +88,7 @@
               <label id="id-mdnotes-vault-path-label" value="&note-directory-label;"
                 control="id-mdnotes-title-suffix" />
               <textbox id="id-mdnotes-vault-path" preference="pref-mdnotes-directory" flex="1" />
+              <button id="id-mdnotes-vault-path-button" label="&choose;" oncommand="Zotero.ZotFile.chooseDirectory().then((folder) => { if(folder != '') {Zotero.Mdnotes.setPref('directory', folder);} });"/>
             </hbox>
             <description style="font-size: 10px">
               Which path to suggest in the file picker

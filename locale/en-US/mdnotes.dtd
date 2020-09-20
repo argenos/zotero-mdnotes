@@ -44,3 +44,4 @@
 <!ENTITY notes-suffix-label "Notes file name suffix:">
 <!ENTITY mdnotes-transclude-metadata "Transclude metadata">
 <!ENTITY mdnotes-attach-to-zotero "Attach file links to Zotero">
+<!ENTITY choose "Choose...">
