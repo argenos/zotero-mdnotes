@@ -174,8 +174,17 @@ function getRelatedItems(item) {
       var itemID = Zotero.URI.getURIItemID(uri),
         relatedItem = Zotero.Items.get(itemID);
 
-      if (getPref("citekey_title")) {
+      if (getPref("citekey_title") && !relatedItem.isNote()) {
         relatedItemsArray.push(`${formatInternalLink(getCiteKey(relatedItem))}`);
+      } else if (getPref("citekey_title") && relatedItem.isNote()) {
+        let parentItem = Zotero.Items.get(relatedItem.parentID);
+        let linkContent;
+        if (parentItem) {
+          linkContent = `${getCiteKey(parentItem)} - ${relatedItem.getField("title")}`;
+        } else {
+          linkContent = `${relatedItem.getField("title")}`;
+        }
+        relatedItemsArray.push(`${formatInternalLink(linkContent)}`);
       } else {
         relatedItemsArray.push(`${formatInternalLink(relatedItem.getField("title"))}`);
       }
