@@ -49,12 +49,11 @@ function getAuthors(item) {
     for (let creator of creators) {
       if (creator.creatorTypeID === creatorTypeID) {
         let creatorName = `${creator.firstName} ${creator.lastName}`;
-        creatorArray.push(formatInternalLink(creatorName));
+        creatorArray.push(creatorName);
       }
     }
   }
-
-  return `* Authors: ${creatorArray.join(", ")}\n`;
+  return format_array(creatorArray, "authors");
 }
 
 function day_of_the_month(d) {
@@ -66,19 +65,14 @@ function get_month_mm_format(d) {
 }
 
 function getDates(item) {
-  let dateString = "* Date: ";
-  if (getPref("link_dates")){
-    dateString += `${formatInternalLink(item.getField("date"))}\n`;
-  } else {
-    dateString += `${formatInternalLink(item.getField("date"), "no-links")}\n`;
-  }
+  // Get Item date
+  let dateString = format_array([item.getField("date")], "date");
+
+
+  // Get date added
   const date = new Date(item.getField("dateAdded"));
   var dateAddedStr = `${date.getFullYear()}-${get_month_mm_format(date)}-${day_of_the_month(date)}`;
-  if (getPref("link_dates")){
-    dateString += `* Date added: ${formatInternalLink(dateAddedStr)}\n`;
-  } else {
-    dateString += `* Date added: ${formatInternalLink(dateAddedStr, "no-links")}\n`;
-  }
+  dateString += format_array([dateAddedStr], "dateAdded");
 
   return dateString;
 }
@@ -110,15 +104,17 @@ function getLinks(item) {
 
 function getURLs(item) {
   let linksString = "";
+  const bullet = getPref("bullet");
 
   if (item.getField("DOI")) {
     let doi = item.getField("DOI");
-    linksString += `* DOI: [${doi}](${doi})\n`;
+
+    linksString += format_array([`[${doi}](https://doi.org/${doi})`], "doi");
   }
 
   if (item.getField("URL")) {
     let url = item.getField("URL");
-    linksString += `* URL: [${url}](${url})\n`;
+    linksString += format_array([`[${url}](${url})`], "url");
   }
 
   return linksString;
@@ -128,28 +124,16 @@ function getTags(item) {
   const tagsArray = [];
   let mdnotesTag = getPref("import_tag");
 
-  if (mdnotesTag) {
-    tagsArray.push(mdnotesTag);
-  }
-
-  const tagsString = "* Tags: ";
   var itemTags = item.getTags();
 
   if (itemTags) {
     for (const tag of itemTags) {
       let tagContent = Zotero.Utilities.capitalizeTitle(tag.tag, true);
-
-      if (getPref("tag_format") === "internal") {
-        tagContent = formatInternalLink(tagContent);
-      } else {
-        tagContent = `#${tagContent}`;
-      }
-
       tagsArray.push(tagContent);
     }
   }
 
-  return tagsString + tagsArray.join(", ");
+  return format_array(tagsArray, "tags") + `, ${mdnotesTag}`;
 }
 
 function getCollectionNames(item) {
@@ -159,11 +143,12 @@ function getCollectionNames(item) {
   for (let collectionID of collections) {
     var collection = Zotero.Collections.get(collectionID);
     const collectionName = Zotero.Utilities.capitalizeTitle(collection.name, true);
-    collectionArray.push(`${formatInternalLink(collectionName)}`);
+    collectionArray.push(collectionName);
   }
 
-  return `* Topics: ${collectionArray.join(", ")}\n`;
+  return format_array(collectionArray, "collections");
 }
+
 
 function getRelatedItems(item) {
   var relatedItemUris = item.getRelations()["dc:relation"],
@@ -174,24 +159,27 @@ function getRelatedItems(item) {
       var itemID = Zotero.URI.getURIItemID(uri),
         relatedItem = Zotero.Items.get(itemID);
 
+      // Get the link content based on settings and item type
+      let linkContent;
       if (getPref("citekey_title") && !relatedItem.isNote()) {
-        relatedItemsArray.push(`${formatInternalLink(getCiteKey(relatedItem))}`);
+        linkContent = getCiteKey(relatedItem);
       } else if (getPref("citekey_title") && relatedItem.isNote()) {
         let parentItem = Zotero.Items.get(relatedItem.parentID);
-        let linkContent;
         if (parentItem) {
           linkContent = `${getCiteKey(parentItem)} - ${relatedItem.getField("title")}`;
         } else {
           linkContent = `${relatedItem.getField("title")}`;
         }
-        relatedItemsArray.push(`${formatInternalLink(linkContent)}`);
       } else {
-        relatedItemsArray.push(`${formatInternalLink(relatedItem.getField("title"))}`);
+        linkContent = relatedItem.getField("title");
       }
+      
+      relatedItemsArray.push(linkContent);
+    
     }
   }
 
-  return `* Related: ${relatedItemsArray.join(", ")}\n`;
+  return format_array(relatedItemsArray, "related");
 }
 
 function getMetadata(item) {
@@ -200,11 +188,7 @@ function getMetadata(item) {
   if (getPref("export_type")) {
     var zoteroType = Zotero.ItemTypes.getName(item.getField("itemTypeID"));
     const itemType = typemap[zoteroType];
-    if (getPref("link_type")){
-      metadataString += `* Type: ${formatInternalLink(itemType)}\n`;
-    } else {
-      metadataString += `* Type: ${formatInternalLink(itemType, "no-links")}\n`;
-    }
+    metadataString += format_array([itemType], "type")
 
   }
 
@@ -218,7 +202,7 @@ function getMetadata(item) {
 
   var pubTitle = item.getField("publicationTitle", true, true);
   if (getPref("export_pub_title") && pubTitle) {
-    metadataString += `* Publication: ${formatInternalLink(pubTitle)}\n`;
+    metadataString += `${format_array([pubTitle], "publication")}\n`;
   }
 
   if (getPref("export_urls")) {
@@ -226,7 +210,7 @@ function getMetadata(item) {
   }
 
   if (getPref("export_citekey")) {
-    metadataString += `* Cite key: ${getCiteKey(item)}\n`;
+    metadataString += `${format_array([getCiteKey(item)], "citekey")}\n`;
   }
 
   if (getPref("export_collections")) {
@@ -248,18 +232,13 @@ function getMetadata(item) {
   if (getPref("export_pdfs")) {
     var pdfArray;
     pdfArray = getZoteroAttachments(item);
-    if (pdfArray.length == 1) {
-      metadataString += `* PDF Attachments: ${pdfArray[0]}\n`;
-    } else if (pdfArray.length > 1) {
-      metadataString += `* PDF Attachments:\n\t- ${pdfArray.join('\n\t- ')}\n`;
-    }
+    metadataString += format_array(pdfArray, "pdfs");
 
   }
 
   if (item.getField("abstractNote") && getPref("export_abstract")) {
-    let abstract;
-    abstract = item.getField("abstractNote");
-    metadataString += `\n### Abstract\n\n ${abstract}\n`;
+    let abstract = item.getField("abstractNote");
+    metadataString += `${format_array([abstract], "abstract")}\n`;
   }
 
   return metadataString;
@@ -375,7 +354,6 @@ function noteToMarkdown(noteContent) {
       }
 
       const parsedInner = para.innerHTML.replace(re, function (matched) {
-        // tslint:disable-line:only-arrow-functions
         return mapObj[matched];
       });
       para.innerHTML = parsedInner;
@@ -392,7 +370,7 @@ function noteToMarkdown(noteContent) {
 
 
       if (para.outerHTML.startsWith("<ul>")) {
-        formatLists(para, "-");
+        formatLists(para, getPref("bullet"));
       }
 
       if (para.outerHTML.startsWith("<ol>")) {
@@ -430,12 +408,15 @@ function getZoteroFileContents(itemExport, fileName) {
   zoteroNoteContents += itemExport.metadata;
 
   if (itemExport.notes) {
-    zoteroNoteContents += `\n${getPref("export_notes_heading")}\n\n`;
+    let noteTitleArray = [];
 
     for (let note of itemExport.notes) {
       let noteFileName = `${fileName} - ${note.title}`;
-      zoteroNoteContents += `* ${formatInternalLink(noteFileName)}\n`;
+      noteTitleArray.push(noteFileName);
     }
+
+    zoteroNoteContents += format_array(noteTitleArray, "notes");
+
   }
 
   return zoteroNoteContents;
@@ -522,7 +503,64 @@ function getMDNoteFileContents(item, fileName, titleSuffix) {
   return noteText;
 }
 
+// From https://github.com/jlegewie/zotfile/blob/master/chrome/content/zotfile/utils.js#L104
+function format_wildcards(str, args) {
+  return str.replace(/%\((\w+)\)/g, (match, name) => args[name]);
+}
+
+function format_placeholders(str, args) {
+  return str.replace(/{{(\w+)}}/g, (match, name) => args[name]);
+}
+
+function format_string(str, settings){
+  let formattedString;
+  // First format links
+  formattedString = `${formatInternalLink(str, settings.link_style)}`;
+
+  let format = settings.format ? settings.format : "{{content}}";
+
+  if (settings.remove_spaces) {
+    formattedString = lowerCaseDashTitle(formattedString);
+  }
+
+  // Format the field
+  formattedString = format_placeholders(format, {content: `${formattedString}`});
+
+  return formattedString;
+}
+
+function camelToTitleCase(str) {
+  let new_str = str.replace(/_/g, " ");
+  return Zotero.Utilities.capitalizeTitle(new_str.replace(/([A-Z])/g,' $1'), true);
+}
+
+
+function format_array(array, fieldName){
+  let settings = getFormattingSettings(fieldName);
+
+  // Exceptions that already come formatted as external links
+  if (["pdfs", "url", "doi"].includes(fieldName)) {
+    settings.link_style = "no-links";
+  }
+
+  let formattedArray = [];
+  for (let item of array) {
+    formattedArray.push(format_string(item, settings));
+  }
+
+  let line = settings.line ? settings.line : `{{bullet}} ${camelToTitleCase(fieldName)}: {{field}}`;
+  let list_separator = settings.list_separator ? settings.list_separator : ", ";
+  
+  return format_placeholders(line, {field: `${formattedArray.join(list_separator)}`, bullet: `${getPref("bullet")}`});
+}
+
+function getFormattingSettings(field){
+  let fieldPrefs = getPref("wildcards." + field);
+  let fieldSettings = fieldPrefs ? JSON.parse(fieldPrefs) : {};
+  return fieldSettings;
+}
 Zotero.Mdnotes = Zotero.Mdnotes || new class {
+
   async openPreferenceWindow(paneID, action) {
     const io = {
       pane: paneID,
