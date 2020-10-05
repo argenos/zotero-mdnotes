@@ -5,16 +5,17 @@ pref("extensions.mdnotes.link_dates", true);
 pref("extensions.mdnotes.link_type", true);
 pref("extensions.mdnotes.bullet", "*");
 
-pref("extensions.mdnotes.wildcards.abstract", '{"line":"## Abstract\\n\\n{{field}}", "format": "{{content}}", "link_style": "no-links", "list_separator": ", "}');
-pref("extensions.mdnotes.wildcards.authors", '{"line":"- Authors: {{field}}", "link_style": "wiki", "list_separator": ", "}');
-pref("extensions.mdnotes.wildcards.collections", '{"line":"- Topics: {{field}}", "format": "{{content}}", "link_style": "wiki", "list_separator": ", "}');
-pref("extensions.mdnotes.wildcards.related", '{"line":"- Related: {{field}}", "link_style": "wiki", "list_separator": ", "}');
+pref("extensions.mdnotes.wildcards.title", '{"line":"# {{field}}", "format": "{{content}}", "link_style": "no-links"}');
+pref("extensions.mdnotes.wildcards.abstract", '{"line":"## Abstract\\n\\n{{field}}\\n", "format": "{{content}}", "link_style": "no-links", "list_separator": ", "}');
+pref("extensions.mdnotes.wildcards.authors", '{"line":"{{bullet}} Authors: {{field}}", "link_style": "wiki", "list_separator": ", "}');
+pref("extensions.mdnotes.wildcards.collections", '{"line":"{{bullet}} Topics: {{field}}", "format": "{{content}}", "link_style": "wiki", "list_separator": ", "}');
+pref("extensions.mdnotes.wildcards.related", '{"line":"{{bullet}} Related: {{field}}", "link_style": "wiki", "list_separator": ", "}');
 pref("extensions.mdnotes.wildcards.notes", '{"line":"## Highlights and Annotations\\n\\n- {{field}}", "format": "{{content}}", "link_style": "wiki", "list_separator": "\\n- "}');
-pref("extensions.mdnotes.wildcards.tags", '{"line":"- Tags: {{field}}", "format": "#{{content}}", "link_style": "no-links", "list_separator": ", ", "remove_spaces": "true"}');
-pref("extensions.mdnotes.wildcards.citekey", '{"line":"- Cite key: {{field}}", "format": "{{content}}", "link_style": "no-links"}');
-pref("extensions.mdnotes.wildcards.pdfs", '{"line":"- PDF Attachments\\n\\t- {{field}}", "format": "{{content}}", "list_separator": "\\n\\t- "}');
-pref("extensions.mdnotes.wildcards.url", '{"line":"- URL: {{field}}", "format": "{{content}}"}');
-pref("extensions.mdnotes.wildcards.doi", '{"line":"- DOI: {{field}}", "format": "{{content}}"}');
+pref("extensions.mdnotes.wildcards.tags", '{"line":"{{bullet}} Tags: {{field}}", "format": "#{{content}}", "link_style": "no-links", "list_separator": ", ", "remove_spaces": "true"}');
+pref("extensions.mdnotes.wildcards.citekey", '{"line":"{{bullet}} Cite key: {{field}}", "format": "{{content}}", "link_style": "no-links"}');
+pref("extensions.mdnotes.wildcards.pdfs", '{"line":"{{bullet}} PDF Attachments\\n\\t- {{field}}", "format": "{{content}}", "list_separator": "\\n\\t- "}');
+pref("extensions.mdnotes.wildcards.url", '{"line":"{{bullet}} URL: {{field}}", "format": "{{content}}"}');
+pref("extensions.mdnotes.wildcards.doi", '{"line":"{{bullet}} DOI: {{field}}", "format": "{{content}}"}');
 
 
 pref("extensions.mdnotes.export_type", true);
