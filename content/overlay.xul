@@ -14,19 +14,15 @@
   <popup id="zotero-itemmenu">
     <menuseparator id="id-mdnotes-separator"/>
     <menuitem id="id-mdnotes-batch-export-item" label="Batch export to markdown" tooltiptext="Create all markdown files for the selected items" 
-      oncommand="Zotero.Mdnotes.run('batchExport')"/>
+      oncommand="Zotero.Mdnotes.run('batchExportMenu')"/>
 
     <menuitem id="id-mdnotes-create-notes-file" label="Create Notes file" 
       tooltiptext="Create a markdown file for your notes" 
-      oncommand="Zotero.Mdnotes.run('createNoteFile')"/>
+      oncommand="Zotero.Mdnotes.run('createNoteFileMenu')"/>
 
-    <menuitem id="id-mdnotes-export-item" label="Create Zotero item metadata file" tooltiptext="Create a markdown file for the metadata of selected items" 
-      oncommand="Zotero.Mdnotes.run('exportZoteroItem')"/>
+    <menuitem id="id-mdnotes-export-item" label="Export to markdown" tooltiptext="Export the selected items into a markdown file" 
+      oncommand="Zotero.Mdnotes.run('exportToMarkdownMenu')"/>
 
-    <menuitem id="id-mdnotes-export-zotero-note" 
-      label="Export Zotero note to markdown" 
-      tooltiptext="Create a markdown file for each Zotero note selected" 
-      oncommand="Zotero.Mdnotes.run('exportNoteToMarkdown')"/>
   </popup>
 
   <menupopup id="zotero-tb-actions-popup">
