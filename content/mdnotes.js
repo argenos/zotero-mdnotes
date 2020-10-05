@@ -40,21 +40,6 @@ const typemap = {
   webpage: "Webpage"
 };
 
-function getAuthors(item) {
-  var creators = item.getCreators();
-  var creatorTypeID = Zotero.CreatorTypes.getID("author");
-  var creatorArray = [];
-
-  if (creators) {
-    for (let creator of creators) {
-      if (creator.creatorTypeID === creatorTypeID) {
-        let creatorName = `${creator.firstName} ${creator.lastName}`;
-        creatorArray.push(creatorName);
-      }
-    }
-  }
-  return format_array(creatorArray, "authors");
-}
 
 function day_of_the_month(d) {
   return (d.getDate() < 10 ? "0" : "") + d.getDate();
@@ -64,17 +49,11 @@ function get_month_mm_format(d) {
   return (d.getMonth() < 10 ? "0" : "") + d.getMonth();
 }
 
-function getDates(item) {
-  // Get Item date
-  let dateString = format_array([item.getField("date")], "date");
-
-
-  // Get date added
+function getDateAdded(item) {
   const date = new Date(item.getField("dateAdded"));
   var dateAddedStr = `${date.getFullYear()}-${get_month_mm_format(date)}-${day_of_the_month(date)}`;
-  dateString += format_array([dateAddedStr], "dateAdded");
+  return dateAddedStr;
 
-  return dateString;
 }
 
 function getCiteKey(item) {
@@ -86,54 +65,47 @@ function getCiteKey(item) {
   return "undefined";
 }
 
-function getLinks(item) {
-  let linksString = "* Zotero links: ";
-
-  if (getPref("export_local_library")) {
-    linksString += "[Local library](zotero://select/items/";
+function getLocalZoteroLink(item) {
+    let linksString = "[Local library](zotero://select/items/";
     const library_id = item.libraryID ? item.libraryID : 0;
     linksString += `${library_id}_${item.key})`;
-  }
 
-  if (getPref("export_cloud_link")) {
-    linksString += `[Cloud library](${Zotero.URI.getItemURI(item)})\n`;
-  }
-
-  return linksString;
+    return linksString;
 }
 
-function getURLs(item) {
-  let linksString = "";
-  const bullet = getPref("bullet");
+function getCloudZoteroLink(item) {
+    return `[Cloud library](${Zotero.URI.getItemURI(item)})`;
+}
 
-  if (item.getField("DOI")) {
+function getDOI(item) {
     let doi = item.getField("DOI");
+    if (doi) {
+      return `[${doi}](https://doi.org/${doi})`;
+    } else {
+      return doi;
+    }
+}
 
-    linksString += format_array([`[${doi}](https://doi.org/${doi})`], "doi");
-  }
-
-  if (item.getField("URL")) {
+function getURL(item) {
     let url = item.getField("URL");
-    linksString += format_array([`[${url}](${url})`], "url");
-  }
-
-  return linksString;
+    if (url) {
+      return `[${url}](${url})`;
+    } else {
+      return url;
+    }
 }
 
 function getTags(item) {
   const tagsArray = [];
-  let mdnotesTag = getPref("import_tag");
-
   var itemTags = item.getTags();
 
   if (itemTags) {
     for (const tag of itemTags) {
-      let tagContent = Zotero.Utilities.capitalizeTitle(tag.tag, true);
-      tagsArray.push(tagContent);
+      tagsArray.push(tag.tag);
     }
   }
 
-  return format_array(tagsArray, "tags") + `, ${mdnotesTag}`;
+  return tagsArray;
 }
 
 function getCollectionNames(item) {
@@ -142,11 +114,10 @@ function getCollectionNames(item) {
 
   for (let collectionID of collections) {
     var collection = Zotero.Collections.get(collectionID);
-    const collectionName = Zotero.Utilities.capitalizeTitle(collection.name, true);
-    collectionArray.push(collectionName);
+    collectionArray.push(collection.name);
   }
 
-  return format_array(collectionArray, "collections");
+  return collectionArray;
 }
 
 
@@ -179,69 +150,66 @@ function getRelatedItems(item) {
     }
   }
 
-  return format_array(relatedItemsArray, "related");
+  return relatedItemsArray;
 }
 
-function getMetadata(item) {
-  let metadataString = "## Metadata\n\n";
+function getCreatorArray(item, creatorType) {
+  var creators = item.getCreators();
+  var creatorTypeID = Zotero.CreatorTypes.getID(creatorType);
+  var creatorArray = [];
 
-  if (getPref("export_type")) {
-    var zoteroType = Zotero.ItemTypes.getName(item.getField("itemTypeID"));
-    const itemType = typemap[zoteroType];
-    metadataString += format_array([itemType], "type")
-
+  if (creators) {
+    for (let creator of creators) {
+      if (creator.creatorTypeID === creatorTypeID) {
+        let creatorName = `${creator.firstName} ${creator.lastName}`;
+        creatorArray.push(creatorName);
+      }
+    }
   }
+  return creatorArray;
+}
 
-  if (getPref("export_authors")) {
-    metadataString += `${getAuthors(item)}`;
-  }
+function getItemMetadata(item) {
+  let metadata = {};
+    let fields = Zotero.ItemFields.getItemTypeFields(item.getField("itemTypeID"));
+      var zoteroType = Zotero.ItemTypes.getName(item.getField("itemTypeID"));
+      let creatorTypes = Zotero.Utilities.getCreatorsForType(zoteroType);
+    Zotero.debug(creatorTypes);
+      for (let creatorType of creatorTypes) {
+        let creatorArray = getCreatorArray(item, creatorType);
+          metadata[creatorType] = creatorArray;
+      }
 
-  if (getPref("export_dates")) {
-    metadataString += getDates(item);
-  }
+    for (let x of fields) {
+      let field = Zotero.ItemFields.getName(x);
+      let content = item.getField(field, false, true);
+      // Only add field if it's not empty
+      if (field === "DOI") {
+        content = getDOI(item);
+      }
+      else if (field === "url") {
+        content = getURL(item);
+      }
+        metadata[field] = content;
+    }
+    metadata.itemType = typemap[zoteroType];
+    metadata.citekey = getCiteKey(item);
+    metadata.collections = getCollectionNames(item);
+    metadata.related = getRelatedItems(item);
+    metadata.tags = getTags(item);
+    metadata.pdfAttachments = getZoteroAttachments(item);
+    metadata.localLibrary = getLocalZoteroLink(item);
+    metadata.cloudLibrary = getCloudZoteroLink(item);
+    metadata.dateAdded = getDateAdded(item);
+    let notes = getZoteroNotes(item);
+    let fileName = getFileName(item);
+    metadata.notes = getZoteroNoteTitles({notes: notes}, fileName);
+    metadata.mdnotesFileName = getMDNoteFileName(item);
+    metadata.metadataFileName = getZMetadataFileName(item);
+    // metadata.standalone_file = `${getPref("files.mdnotes.standalone_prefix")}${fileName}${getPref("files.mdnotes.standalone_suffix")}`;
 
-  var pubTitle = item.getField("publicationTitle", true, true);
-  if (getPref("export_pub_title") && pubTitle) {
-    metadataString += `${format_array([pubTitle], "publication")}\n`;
-  }
-
-  if (getPref("export_urls")) {
-    metadataString += getURLs(item);
-  }
-
-  if (getPref("export_citekey")) {
-    metadataString += `${format_array([getCiteKey(item)], "citekey")}\n`;
-  }
-
-  if (getPref("export_collections")) {
-    metadataString += getCollectionNames(item);
-  }
-
-  if (getPref("export_related")) {
-    metadataString += getRelatedItems(item);
-  }
-
-  if (getPref("export_tags")) {
-    metadataString += getTags(item) + "\n";
-  }
-
-  if (getPref("file_conf") !== "split") {
-    metadataString += getLinks(item) + "\n";
-  }
-
-  if (getPref("export_pdfs")) {
-    var pdfArray;
-    pdfArray = getZoteroAttachments(item);
-    metadataString += format_array(pdfArray, "pdfs");
-
-  }
-
-  if (item.getField("abstractNote") && getPref("export_abstract")) {
-    let abstract = item.getField("abstractNote");
-    metadataString += `${format_array([abstract], "abstract")}\n`;
-  }
-
-  return metadataString;
+    Zotero.debug(metadata);
+    return metadata;
 }
 
 function htmlLinkToMarkdown(link) {
@@ -278,8 +246,7 @@ function getZoteroNotes(item) {
   if (noteIDs) {
     for (let noteID of noteIDs) {
       let note = Zotero.Items.get(noteID);
-      let noteContent = note.getNote();
-      noteArray.push(noteToMarkdown(noteContent));
+      noteArray.push(noteToMarkdown(note));
     }
   }
 
@@ -331,7 +298,8 @@ function formatNoteTitle(titleString) {
   }
 }
 
-function noteToMarkdown(noteContent) {
+function noteToMarkdown(item) {
+  let noteContent = item.getNote();
   const domParser = Components.classes["@mozilla.org/xmlextras/domparser;1"].createInstance(Components.interfaces.nsIDOMParser),
     mapObj = JSON.parse(getPref("html_to_md")),
     re = new RegExp(Object.keys(mapObj).join("|"), "gi");
@@ -366,9 +334,9 @@ function noteToMarkdown(noteContent) {
       if (para.innerHTML.startsWith("\"")) {
         noteString += `> ${para.textContent}\n\n`;
         continue;
-      } // Handle lists
+      } 
 
-
+      // Handle lists
       if (para.outerHTML.startsWith("<ul>")) {
         formatLists(para, getPref("bullet"));
       }
@@ -381,20 +349,31 @@ function noteToMarkdown(noteContent) {
     }
   }
 
-  noteMD.content = noteString;
+  noteMD.noteContent = noteString;
+  noteMD.tags = getTags(item);
+  noteMD.related = getRelatedItems(item); 
+
+  let parentItem = Zotero.Items.get(item.parentItemID);
+    noteMD.mdnotesFileName = getMDNoteFileName(parentItem);
+    noteMD.metadataFileName = getZMetadataFileName(parentItem);
+
   return noteMD;
 }
 
 function getItemTitle(item) {
-  return `# ${item.getField("title")}\n\n`;
+  return format_array([item.getField("title")], "title");
 }
 
+/*
+* Get an item's base file name from setting's preferences
+*/
 function getFileName(item) {
   let citekeyTitle = getPref("citekey_title");
 
   if (citekeyTitle) {
     return getCiteKey(item);
   } else {
+    // TODO add checks for Windows special characters
     if (getPref("link_style") === "wiki") {
       return item.getField("title");
     } else {
@@ -403,128 +382,164 @@ function getFileName(item) {
   }
 }
 
-function getZoteroFileContents(itemExport, fileName) {
-  var zoteroNoteContents = itemExport.title;
-  zoteroNoteContents += itemExport.metadata;
-
-  if (itemExport.notes) {
+/**
+ * Return file names for Zotero notes based on the naming convention
+ * 
+ * @param {object} itemExport 
+ * @param {string} fileName 
+ */
+function getZoteroNoteTitles(itemExport, fileName) {
     let noteTitleArray = [];
 
     for (let note of itemExport.notes) {
-      let noteFileName = `${fileName} - ${note.title}`;
+      let noteFileName = `${getPref("files.zotero.note_prefix")}${fileName} - ${note.title}${getPref("files.zotero.note_suffix")}`;
       noteTitleArray.push(noteFileName);
     }
 
-    zoteroNoteContents += format_array(noteTitleArray, "notes");
+    return noteTitleArray;
 
-  }
-
-  return zoteroNoteContents;
 }
 
-
-function getFiles(itemExport, fileName, titleSuffix) {
-  var fileArray = [];
-  var noteFile = {
-    name: `${fileName}${getPref("notes_suffix")}`,
-    contents: getMDNoteFileContents(itemExport, fileName, titleSuffix)
-  };
-  fileArray.push(noteFile);
-
-  var zoteroNoteContents = itemExport.title;
-  zoteroNoteContents += itemExport.metadata;
-
-  if (itemExport.notes) {
-    zoteroNoteContents += `\n${getPref("export_notes_heading")}\n\n`;
-
-    for (let note of itemExport.notes) {
-      let noteFileName = `${fileName} - ${note.title}`;
-      zoteroNoteContents += `* ${formatInternalLink(noteFileName)}\n`;
-      let fileContents = `# ${note.title}\n\n`;
-      fileContents += note.content;
-      fileArray.push({
-        name: noteFileName,
-        contents: fileContents
-      });
-    }
-
-    fileArray.push({
-      name: `${fileName}${titleSuffix}`,
-      contents: zoteroNoteContents
-    });
-  }
-
-  return fileArray;
+function getMDNoteFileName(item) {
+  return `${getPref('files.mdnotes.hub_prefix')}${getFileName(item)}${getPref('files.mdnotes.hub_suffix')}`;
 }
 
-function getFileContents(itemExport) {
-  var fileContents = "";
-  fileContents += itemExport.title;
-  fileContents += itemExport.metadata;
-
-  if (itemExport.notes) {
-    fileContents += `\n${getPref("export_notes_heading")}\n\n`;
-
-    for (let note of itemExport.notes) {
-      fileContents += `### ${note.title}\n\n`;
-      fileContents += note.content;
-    }
-  }
-
-  if (getPref("create_notes_file")) {
-    fileContents += "## Notes\n\n";
-  }
-
-  return fileContents;
+function getStandaloneFileName(item) {
+  return `${getPref('files.mdnotes.standalone_prefix')}${getFileName(item)}${getPref('files.mdnotes.standalone_suffix')}`;
 }
 
-function getItemExport(item) {
-  var itemExport = {};
-  itemExport.metadata = getMetadata(item);
-  itemExport.title = getItemTitle(item);
-  itemExport.zoteroLinks = getLinks(item);
-  itemExport.notes = getZoteroNotes(item);
-  itemExport.citekey = getCiteKey(item);
-  return itemExport;
+function getZNoteFileName(item, noteTitle) {
+  return `${getPref('files.zotero.note_prefix')}${getFileName(item)} - ${noteTitle}${getPref('files.zotero.note_suffix')}`;
 }
 
-function getMDNoteFileContents(item, fileName, titleSuffix) {
-  var noteText = item.title;
-  noteText += `${item.zoteroLinks}\n\n`;
+function getZMetadataFileName(item) {
+  return `${getPref('files.zotero.metadata_prefix')}${getFileName(item)}${getPref('files.zotero.metadata_suffix')}`;
+}
 
-  if (getPref("obsidian.transclude_metadata")) {
-    noteText += "!";
-  } else {
-    noteText += "Metadata: ";
-  }
+/**
+ * Return the contents of an Mdnotes file based on an item's placeholders and wildcards
+ * @param {item} item A Zotero item
+ */
 
-  noteText += `${formatInternalLink(fileName + titleSuffix + "#Metadata")}\n\n`;
-  noteText += "## Notes\n";
-  return noteText;
+async function getMDNoteFileContents(item) {
+  let metadata = getItemMetadata(item);
+  let template = await readTemplate("Mdnotes default template");
+  let formattedPlaceholders = format_placeholders(metadata);
+  let content = remove_invalid_placeholders(replace_placeholders(template, formattedPlaceholders));
+  content = replace_wildcards(content, metadata);
+  const fileName = metadata.mdnotesFileName;
+  return {content: content, name: fileName};
+}
+
+async function readTemplate(fileName) {
+  let template = await Zotero.File.getContentsAsync(
+    getFilePath(getPref("templates.directory"), fileName));
+  return template;
 }
 
 // From https://github.com/jlegewie/zotfile/blob/master/chrome/content/zotfile/utils.js#L104
-function format_wildcards(str, args) {
+function replace_wildcards(str, args) {
   return str.replace(/%\((\w+)\)/g, (match, name) => args[name]);
 }
 
-function format_placeholders(str, args) {
-  return str.replace(/{{(\w+)}}/g, (match, name) => args[name]);
+function replace_placeholders(str, args) {
+  return str.replace(/{{(\w+)}}/g, (match, name) => args[name]? args[name]: "{{invalid}}");
+}
+
+function remove_invalid_placeholders(str) {
+  return str.replace(/{{invalid}}\n?\r?/g, (match, name) => "");
+}
+
+/**
+ * @param {Object} placeholders An object that contains the item's fields as keys, and its contents as values
+ * @return {string} The formatted string 
+*/
+function format_placeholders(placeholders) {
+  let formattedPlaceholders = {};
+  for (const [key, value] of Object.entries(placeholders)) {
+
+    // If we have an empty field and we DON'T want to include empty values, continue
+    if (value === undefined && !getPref("templates.include_empty_placeholders")) {
+      continue;
+    }
+    // If the value is an empty string, we also skip it
+    if (value === "" && !getPref("templates.include_empty_placeholders")) {
+      continue;
+    }
+
+    // If it's an array and is empty
+    if (typeof value === "object" && value.length === 0 && !getPref("templates.include_empty_placeholders")){
+      continue;
+    }
+
+    // Replace a potential undefined with an empty string instead of undefined
+    let newValue = value ? value:"";
+    let formatted_label = capitalize_field_label(key);
+    let settings = getFormattingSettings(key);
+
+    // Exceptions that already come formatted as external links
+    if (["pdfAttachments", "url", "DOI", "cloudLibrary", "localLibrary", "noteContent"].includes(key)) {
+      Zotero.debug("This key shouldn't have wiki links: " + key);
+      settings.link_style = "no-links";
+    }
+
+    let formatted_content = format_field_content(newValue, settings);
+    let placeholder = settings.content ? settings.content : `{{bullet}} {{field_name}}: {{field_contents}}`;
+    let args = {field_contents: formatted_content, bullet: `${getPref("bullet")}`, field_name: formatted_label};
+    formattedPlaceholders[key] = replace_placeholders(placeholder, args);
+  }
+
+  return formattedPlaceholders;
+}
+
+function capitalize_field_label(text) {
+  if (text === "url") return "URL";
+  if (text === "DOI") return text;
+  return Zotero.Utilities.capitalize(text.replace(/([A-Z])/g,' $1'), true)
+  .replace("Pdf", "PDF");
+}
+
+function format_field_content(fieldContent, settings) {
+  if (typeof fieldContent === "object") {
+    return format_array(fieldContent, settings);
+  }
+  return format_string(fieldContent, settings);
+}
+
+function change_case(text, textCase) {
+  switch(textCase) {
+    case "title":
+      return Zotero.Utilities.capitalizeTitle(text);
+    case "sentence":
+      return Zotero.Utilities.capitalize(text);
+    case "lower":
+      return text.toLowerCase();
+    case "upper":
+      return text.toUpperCase();
+    default:
+      return text;
+  }
+
 }
 
 function format_string(str, settings){
+  Zotero.debug("Formatting " + str);
   let formattedString;
   // First format links
   formattedString = `${formatInternalLink(str, settings.link_style)}`;
 
-  let format = settings.format ? settings.format : "{{content}}";
+  let format = settings.field_contents ? settings.field_contents : "{{content}}";
 
   if (settings.remove_spaces) {
-    formattedString = lowerCaseDashTitle(formattedString);
+    formattedString = formattedString.replace(/\s+/g, "-");
+  }
+
+  if (settings.text_case){
+    formattedString = change_case(formattedString, settings.text_case);
   }
 
   // Format the field
-  formattedString = format_placeholders(format, {content: `${formattedString}`});
+  formattedString = replace_placeholders(format, {content: `${formattedString}`});
 
   return formattedString;
 }
@@ -535,30 +550,40 @@ function camelToTitleCase(str) {
 }
 
 
-function format_array(array, fieldName){
-  let settings = getFormattingSettings(fieldName);
-
-  // Exceptions that already come formatted as external links
-  if (["pdfs", "url", "doi"].includes(fieldName)) {
-    settings.link_style = "no-links";
-  }
+function format_array(array, settings){
+  // let settings = getFormattingSettings(fieldName);
+  Zotero.debug("Links settings for arrays:" + settings.link_style);
 
   let formattedArray = [];
   for (let item of array) {
     formattedArray.push(format_string(item, settings));
   }
 
-  let line = settings.line ? settings.line : `{{bullet}} ${camelToTitleCase(fieldName)}: {{field}}`;
   let list_separator = settings.list_separator ? settings.list_separator : ", ";
   
-  return format_placeholders(line, {field: `${formattedArray.join(list_separator)}`, bullet: `${getPref("bullet")}`});
+  return formattedArray.join(list_separator);
 }
 
 function getFormattingSettings(field){
-  let fieldPrefs = getPref("wildcards." + field);
+  let fieldPrefs = getPref("placeholder." + field);
   let fieldSettings = fieldPrefs ? JSON.parse(fieldPrefs) : {};
   return fieldSettings;
 }
+
+async function getZoteroNoteFileContents(item) {
+  let note = noteToMarkdown(item);
+  let parentItem = Zotero.Items.get(item.parentItemID);
+  let formattedPlaceholders = format_placeholders(note);
+  let fileName = getZNoteFileName(parentItem, note.title);
+  let template = await readTemplate("Zotero Note Template");
+  let fileContents = remove_invalid_placeholders(replace_placeholders(template, formattedPlaceholders));
+  return {content: fileContents, name: fileName};
+}
+
+function getFilePath(path, filename) {
+  return OS.Path.join(OS.Path.normalize(path), `${filename}.md`);
+}
+
 Zotero.Mdnotes = Zotero.Mdnotes || new class {
 
   async openPreferenceWindow(paneID, action) {
@@ -581,7 +606,8 @@ Zotero.Mdnotes = Zotero.Mdnotes || new class {
     Zotero.Prefs.set(`extensions.mdnotes.${pref_name}`, value, true);
   }
 
-  async addLinkToMDNote(outputFile, itemID, existingAttachments) {
+  async addLinkToMDNote(outputFile, parentItem) {
+    let existingAttachments = parentItem.getAttachments();
     let linkExists = false;
 
     for (let id of existingAttachments) {
@@ -597,12 +623,12 @@ Zotero.Mdnotes = Zotero.Mdnotes || new class {
     if (!linkExists && getPref("attach_to_zotero")) {
       var attachmentFile = await Zotero.Attachments.linkFromFile({
         file: outputFile,
-        parentItemID: itemID
+        parentItemID: parentItem.id
       });
     }
   }
 
-  async createNoteFile() {
+  async createNoteFileMenu() {
     var items = Zotero.getActiveZoteroPane().getSelectedItems()
       .filter(item =>
         Zotero.ItemTypes.getName(item.itemTypeID) !== "attachment" &&
@@ -619,10 +645,10 @@ Zotero.Mdnotes = Zotero.Mdnotes || new class {
       fp.displayDirectory = oldPath;
     }
     for (const item of items) {
-      var itemExport = getItemExport(item);
-      const fileName = `${getFileName(item)}${getPref('notes_suffix')}`;
+      const fileName = getMDNoteFileName(item);
+      Zotero.debug("Creating markdown note...");
 
-      fp.init(window, "Export markdown notes...", fp.modeSave);
+      fp.init(window, "Save markdown note...", fp.modeSave);
       fp.appendFilter("Markdown", "*.md");
       fp.defaultString = `${fileName}.md`;
 
@@ -632,21 +658,72 @@ Zotero.Mdnotes = Zotero.Mdnotes || new class {
         if (outputFile.split('.').pop().toLowerCase() != "md") {
           outputFile += ".md";
         }
-        let attachmentIDs = item.getAttachments();
-        let titleSuffix = getPref("title_suffix");
-        const fileContents = getMDNoteFileContents(itemExport, fileName, titleSuffix);
-        Zotero.File.putContentsAsync(outputFile, fileContents);
+        const file = await getMDNoteFileContents(item);
+        Zotero.File.putContentsAsync(outputFile, file.content);
 
         // Attach note
-        this.addLinkToMDNote(outputFile, item.id, attachmentIDs);
+        this.addLinkToMDNote(outputFile, item);
       }
     }
   }
 
-  async exportNoteToMarkdown() {
+  async getRegularItemContents(item) {
+        let metadata = getItemMetadata(item);
+        let template = await readTemplate("Zotero-Metadata-Template");
+        let formattedPlaceholders = format_placeholders(metadata);
+        let newContents = remove_invalid_placeholders(replace_placeholders(template, formattedPlaceholders));
+        let fileName = getZMetadataFileName(item);
+        return {content: newContents, name: fileName};
+  }
+
+  /**
+   * Return an object with all the exportable files from a top-level item
+   * @param {Item} item A Zotero item
+   */
+  async getFiles(item) {
+  var fileArray = [];
+  let mdnotesFile = await getMDNoteFileContents(item);
+  fileArray.push({
+      name: mdnotesFile.name,
+      content: mdnotesFile.content
+    });
+
+  let itemFile = await this.getRegularItemContents(item);
+  fileArray.push({name:itemFile.name, content: itemFile.content});
+
+  let noteIDs = item.getNotes();
+  if (noteIDs) {
+    for (let noteID of noteIDs) {
+      let note = Zotero.Items.get(noteID);
+      let zotNoteFile = await getZoteroNoteFileContents(note);
+      fileArray.push({name: zotNoteFile.name, content: zotNoteFile.content});
+    }
+  }
+
+  return fileArray;
+  }
+
+  async getSingleFileExport(item) {
+    let files = await this.getFiles(item);
+    var noteFileName = getMDNoteFileName(item);
+    let exportFile = {name: noteFileName};
+    let content = "";
+    for (let file of files) {
+      content += `${file.content}\n\n`;
+    }
+
+    exportFile.content = content;
+    Zotero.debug(exportFile);
+    return exportFile;
+  }
+
+  /**
+   * Export Zotero items (regular items and notes) to markdown
+   */
+  async exportToMarkdownMenu() {
     var items = Zotero.getActiveZoteroPane().getSelectedItems().filter(item =>
-      // Zotero.ItemTypes.getName(item.itemTypeID) !== "attachment" &&
-      Zotero.ItemTypes.getName(item.itemTypeID) === "note");
+      Zotero.ItemTypes.getName(item.itemTypeID) !== "attachment" 
+      );
     await Zotero.Schema.schemaUpdatePromise;
 
     const FilePicker = require("zotero/filePicker").default;
@@ -658,60 +735,32 @@ Zotero.Mdnotes = Zotero.Mdnotes || new class {
       fp.displayDirectory = oldPath;
     }
 
-    fp.init(window, "Export markdown notes...", fp.modeGetFolder);
+    fp.init(window, "Export to markdown...", fp.modeGetFolder);
     const rv = await fp.show();
 
     if (rv === fp.returnOK) {
       for (const item of items) {
-        let noteContent = item.getNote();
-        let note = noteToMarkdown(noteContent);
-        let parentItem = Zotero.Items.get(item.parentItemID);
-        const path = OS.Path.normalize(fp.file);
-        var fileName = `${getFileName(parentItem)} - ${note.title}`;
-        var outputFile = OS.Path.join(path, `${fileName}.md`);
-        var fileContents = `# ${note.title}\n\n${note.content}`;
-        Zotero.File.putContentsAsync(outputFile, fileContents);
+        let file;
+        if (item && !item.isNote()){
+          Zotero.debug("Exporting a regular Zotero item");
+          file = await this.getRegularItemContents(item);
+
+        } else if (item && item.isNote()){
+          Zotero.debug("Exporting a Zotero note");
+          file = await getZoteroNoteFileContents(item);
+        } else {
+          continue;
+        }
+        let outputFile = getFilePath(fp.file, `${file.name}`);
+        Zotero.File.putContentsAsync(outputFile, file.content);
 
         // Attach note
-        this.addLinkToMDNote(outputFile, parentItem.id, parentItem.getAttachments());
+        this.addLinkToMDNote(outputFile, item);
       }
     }
   }
 
-  async exportZoteroItem() {
-    var items = Zotero.getActiveZoteroPane().getSelectedItems().filter(item =>
-      Zotero.ItemTypes.getName(item.itemTypeID) !== "attachment" &&
-      Zotero.ItemTypes.getName(item.itemTypeID) !== "note");
-    await Zotero.Schema.schemaUpdatePromise;
-
-    const FilePicker = require("zotero/filePicker").default;
-
-    const fp = new FilePicker();
-    var oldPath = getPref("directory") ? getPref("directory") : OS.Constants.Path.homeDir;
-
-    if (oldPath) {
-      fp.displayDirectory = oldPath;
-    }
-
-    fp.init(window, "Export markdown notes...", fp.modeGetFolder);
-    const rv = await fp.show();
-
-    if (rv === fp.returnOK) {
-      for (const item of items) {
-        var itemExport = getItemExport(item);
-        const path = OS.Path.normalize(fp.file);
-        const fileName = getFileName(item);
-        var outputFile = OS.Path.join(path, `${fileName}${getPref('title_suffix')}.md`);
-        const fileContents = getZoteroFileContents(itemExport, fileName);
-        Zotero.File.putContentsAsync(outputFile, fileContents);
-
-        // Attach note
-        this.addLinkToMDNote(outputFile, item.id, item.getAttachments());
-      }
-    }
-  }
-
-  async batchExport() {
+  async batchExportMenu() {
     var items = Zotero.getActiveZoteroPane().getSelectedItems()
       .filter(item =>
         Zotero.ItemTypes.getName(item.itemTypeID) !== "attachment" &&
@@ -733,36 +782,29 @@ Zotero.Mdnotes = Zotero.Mdnotes || new class {
 
     if (rv === fp.returnOK) {
       for (const item of items) {
-        var itemExport = getItemExport(item);
-        let attachmentIDs = item.getAttachments();
-        const path = OS.Path.normalize(fp.file);
-        let titleSuffix = getPref("title_suffix");
-        var fileName = getFileName(item);
-
+        let outputFile;
         if (getPref("file_conf") === "split") {
-          const files = getFiles(itemExport, fileName, titleSuffix);
-
-          var noteFileName = `${fileName}${getPref("notes_suffix")}`;
-
+          const files = await this.getFiles(item);
+          var noteFileName = getMDNoteFileName(item);
           for (let exportFile of files) {
-            var outputFile = OS.Path.join(path, `${exportFile.name}.md`);
+            outputFile = getFilePath(fp.file, exportFile.name);
             var fileExists = await OS.File.exists(outputFile);
 
             if (exportFile.name === `${noteFileName}` && (fileExists || !getPref("create_notes_file"))) {
               continue;
             }
-            Zotero.File.putContentsAsync(outputFile, exportFile.contents);
+            Zotero.File.putContentsAsync(outputFile, exportFile.content);
 
             // Attach new notes
-            this.addLinkToMDNote(outputFile, item.id, attachmentIDs);
+            this.addLinkToMDNote(outputFile, item);
           }
         } else {
-          const fileContents = getFileContents(itemExport);
-          var outputFile = OS.Path.join(path, `${fileName}${titleSuffix}.md`);
-          Zotero.File.putContentsAsync(outputFile, fileContents);
+          let exportFile = await this.getSingleFileExport(item);
+          outputFile = getFilePath(fp.file, exportFile.name);
+          Zotero.File.putContentsAsync(outputFile, exportFile.content);
 
           // Attach new notes
-          this.addLinkToMDNote(outputFile, item.id, attachmentIDs);
+          this.addLinkToMDNote(outputFile, item);
         }
       }
     }

@@ -36,6 +36,9 @@
       <!-- Zotero notes -->
       <preference id="pref-mdnotes-export-notes" name="extensions.mdnotes.export_notes" type="bool" />
       <preference id="pref-mdnotes-export-notes-heading" name="extensions.mdnotes.export_notes_heading" type="string" />
+      <preference id="pref-mdnotes-export-notes-template" name="extensions.mdnotes.export_notes_template" type="string" />
+      <preference id="pref-mdnotes-export-item-template" name="extensions.mdnotes.export_item_template" type="string" />
+      <preference id="pref-mdnotes-export-znote-template" name="extensions.mdnotes.export_zotero_note_template" type="string" />
 
       <!-- Notes file -->
       <preference id="pref-mdnotes-create-note" name="extensions.mdnotes.create_notes_file" type="bool" />
@@ -49,6 +52,9 @@
         <tab label="&mdnotes-export;" />
         <tab label="&mdnotes-metadata;" />
         <tab label="&note-file-settings;" />
+        <tab label="Note template" />
+        <tab label="Item export template" />
+        <tab label="Zotero note template" />
       </tabs>
       <tabpanels>
         <tabpanel>
@@ -186,6 +192,30 @@
               What suffix to add to Notes file name
             </description>
           </vbox>
+        </tabpanel>
+        <!-- Notes template -->
+        <tabpanel>
+              <vbox align="center">
+                <label id="id-mdnotes-export-notes-label" value="&export-notes-label;"
+                  control="id-mdnotes-export-notes-template" />
+                <textbox id="id-mdnotes-export-notes-template" preference="pref-mdnotes-export-notes-template" flex="1" rows="22" cols="55" multiline="true"/>
+              </vbox>
+        </tabpanel>
+        <!-- Item export template -->
+        <tabpanel>
+              <vbox align="center">
+                <label id="id-mdnotes-export-item-label" value="&export-notes-label;"
+                  control="id-mdnotes-export-item-template" />
+                <textbox id="id-mdnotes-export-item-template" preference="pref-mdnotes-export-item-template" flex="1" rows="22" cols="55" multiline="true"/>
+              </vbox>
+        </tabpanel>
+        <!-- Zotero note template -->
+        <tabpanel>
+              <vbox align="center">
+                <label id="id-mdnotes-export-znote-label" value="&export-notes-label;"
+                  control="id-mdnotes-export-znote-template" />
+                <textbox id="id-mdnotes-export-znote-template" preference="pref-mdnotes-export-znote-template" flex="1" rows="22" cols="55" multiline="true"/>
+              </vbox>
         </tabpanel>
       </tabpanels>
     </tabbox>
