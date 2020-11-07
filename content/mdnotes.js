@@ -217,7 +217,7 @@ function getMetadata(item) {
   }
 
   if (getPref("export_citekey")) {
-    metadataString += `* Cite key: ${getCiteKey(item)}\n`;
+    metadataString += `* Cite key: \`${getCiteKey(item)}\`\n`;
   }
 
   if (getPref("export_collections")) {
