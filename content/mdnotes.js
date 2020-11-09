@@ -131,17 +131,10 @@ function getRelatedItems(item) {
 
       // Get the link content based on settings and item type
       let linkContent;
-      if (getPref("citekey_title") && !relatedItem.isNote()) {
-        linkContent = getCiteKey(relatedItem);
-      } else if (getPref("citekey_title") && relatedItem.isNote()) {
-        let parentItem = Zotero.Items.get(relatedItem.parentID);
-        if (parentItem) {
-          linkContent = `${getCiteKey(parentItem)} - ${relatedItem.getField(
-            "title"
-          )}`;
-        } else {
-          linkContent = `${relatedItem.getField("title")}`;
-        }
+      if (!relatedItem.isNote()) {
+        linkContent = getMDNoteFileName(relatedItem);
+      } else if (relatedItem.isNote() && !relatedItem.isTopLevelItem()) {
+        linkContent = getZNoteFileName(relatedItem);
       } else {
         linkContent = relatedItem.getField("title");
       }
@@ -199,14 +192,10 @@ function getItemMetadata(item) {
   metadata.localLibrary = getLocalZoteroLink(item);
   metadata.cloudLibrary = getCloudZoteroLink(item);
   metadata.dateAdded = getDateAdded(item);
-  let notes = getZoteroNotes(item);
-  let fileName = getFileName(item);
-  metadata.notes = getZoteroNoteTitles({ notes: notes }, fileName);
+  metadata.notes = getZoteroNoteTitles(item);
   metadata.mdnotesFileName = getMDNoteFileName(item);
   metadata.metadataFileName = getZMetadataFileName(item);
-  // metadata.standalone_file = `${getPref("files.mdnotes.standalone_prefix")}${fileName}${getPref("files.mdnotes.standalone_suffix")}`;
 
-  Zotero.debug(metadata);
   return metadata;
 }
 
@@ -245,7 +234,7 @@ function getZoteroNotes(item) {
   if (noteIDs) {
     for (let noteID of noteIDs) {
       let note = Zotero.Items.get(noteID);
-      noteArray.push(noteToMarkdown(note));
+      noteArray.push(note);
     }
   }
 
@@ -384,46 +373,60 @@ function getFileName(item) {
 }
 
 /**
- * Return file names for Zotero notes based on the naming convention
+ * Return file names for an array of notes based on the naming convention
  *
- * @param {object} itemExport
- * @param {string} fileName
+ * @param {object} item A Zotero item
  */
-function getZoteroNoteTitles(itemExport, fileName) {
+function getZoteroNoteTitles(item) {
   let noteTitleArray = [];
+  let noteArray = getZoteroNotes(item);
 
-  for (let note of itemExport.notes) {
-    let noteFileName = `${getPref("files.zotero.note_prefix")}${fileName} - ${
-      note.title
-    }${getPref("files.zotero.note_suffix")}`;
+  for (let note of noteArray) {
+    let noteFileName = getZNoteFileName(note);
     noteTitleArray.push(noteFileName);
   }
 
   return noteTitleArray;
 }
 
+/**
+ * Return the file name according to the naming convention
+ * @param {Item|NoteExport} item A Zotero item
+ * @param {string} filePrefs The substring of the preferences to get the prefix and suffix
+ */
+function getNCFileName(item, filePrefs) {
+  let fileName;
+  if (item.isNote()) {
+    let parentItem = Zotero.Items.get(item.parentItemID);
+    let parentTitle = getFileName(parentItem);
+    let noteTitle = item.getField("title");
+    fileName = `${parentTitle} - ${noteTitle}`;
+  } else {
+    fileName = getFileName(item);
+  }
+  let prefix = getPref("files." + filePrefs + ".prefix");
+  let suffix = getPref("files." + filePrefs + ".suffix");
+  return `${prefix}${fileName}${suffix}`;
+}
+
 function getMDNoteFileName(item) {
-  return `${getPref("files.mdnotes.hub_prefix")}${getFileName(item)}${getPref(
-    "files.mdnotes.hub_suffix"
-  )}`;
+  return getNCFileName(item, "mdnotes.hub");
 }
 
 function getStandaloneFileName(item) {
-  return `${getPref("files.mdnotes.standalone_prefix")}${getFileName(
-    item
-  )}${getPref("files.mdnotes.standalone_suffix")}`;
+  return getNCFileName(item, "mdnotes.standalone");
 }
 
-function getZNoteFileName(item, noteTitle) {
-  return `${getPref("files.zotero.note_prefix")}${getFileName(
-    item
-  )} - ${noteTitle}${getPref("files.zotero.note_suffix")}`;
+/**
+ * Return the file name for a Zotero note based on the naming convention
+ * @param {object} item A Zotero item that isNote()
+ */
+function getZNoteFileName(item) {
+  return getNCFileName(item, "zotero.note");
 }
 
 function getZMetadataFileName(item) {
-  return `${getPref("files.zotero.metadata_prefix")}${getFileName(
-    item
-  )}${getPref("files.zotero.metadata_suffix")}`;
+  return getNCFileName(item, "zotero.metadata");
 }
 
 /**
@@ -488,26 +491,7 @@ function skipItem(value) {
 function format_placeholders(placeholders) {
   let formattedPlaceholders = {};
   for (const [key, value] of Object.entries(placeholders)) {
-    // If we have an empty field and we DON'T want to include empty values, continue
-    // if (
-    //   value === undefined &&
-    //   !getPref("templates.include_empty_placeholders")
-    // ) {
-    //   continue;
-    // }
-    // If the value is an empty string, we also skip it
-    // if (value === "" && !getPref("templates.include_empty_placeholders")) {
-    //   continue;
-    // }
 
-    // If it's an array and is empty
-    // if (
-    //   typeof value === "object" &&
-    //   value.length === 0 &&
-    //   !getPref("templates.include_empty_placeholders")
-    // ) {
-    //   continue;
-    // }
     if (skipItem(value)) {
       continue;
     }
@@ -634,9 +618,8 @@ function getFormattingSettings(field) {
 
 async function getZoteroNoteFileContents(item) {
   let note = noteToMarkdown(item);
-  let parentItem = Zotero.Items.get(item.parentItemID);
   let formattedPlaceholders = format_placeholders(note);
-  let fileName = getZNoteFileName(parentItem, note.title);
+  let fileName = getZNoteFileName(item);
   let template = await readTemplate("Zotero Note Template");
   let fileContents = remove_invalid_placeholders(
     replace_placeholders(template, formattedPlaceholders)
