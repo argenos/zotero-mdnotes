@@ -174,7 +174,7 @@ function getItemMetadata(item) {
   let fields = Zotero.ItemFields.getItemTypeFields(item.getField("itemTypeID"));
   var zoteroType = Zotero.ItemTypes.getName(item.getField("itemTypeID"));
   let creatorTypes = Zotero.Utilities.getCreatorsForType(zoteroType);
-  Zotero.debug(creatorTypes);
+
   for (let creatorType of creatorTypes) {
     let creatorArray = getCreatorArray(item, creatorType);
     metadata[creatorType] = creatorArray;
@@ -183,7 +183,6 @@ function getItemMetadata(item) {
   for (let x of fields) {
     let field = Zotero.ItemFields.getName(x);
     let content = item.getField(field, false, true);
-    // Only add field if it's not empty
     if (field === "DOI") {
       content = getDOI(item);
     } else if (field === "url") {
@@ -366,10 +365,6 @@ function noteToMarkdown(item) {
   return noteMD;
 }
 
-function getItemTitle(item) {
-  return format_array([item.getField("title")], "title");
-}
-
 /*
  * Get an item's base file name from setting's preferences
  */
@@ -470,6 +465,22 @@ function remove_invalid_placeholders(str) {
   return str.replace(/{{invalid}}\n?\r?/g, (match, name) => "");
 }
 
+function skipItem(value) {
+  let skip = false;
+  // If we have an empty field and we DON'T want to include empty values, continue
+  // If the value is an empty string, we also skip it
+  if (value === "" || value === undefined) {
+    skip = true;
+  }
+
+  // If it's an array and is empty
+  if (typeof value === "object" && value.length === 0) {
+    skip = true;
+  }
+
+  return skip && !getPref("templates.include_empty_placeholders");
+}
+
 /**
  * @param {Object} placeholders An object that contains the item's fields as keys, and its contents as values
  * @return {string} The formatted string
@@ -478,23 +489,26 @@ function format_placeholders(placeholders) {
   let formattedPlaceholders = {};
   for (const [key, value] of Object.entries(placeholders)) {
     // If we have an empty field and we DON'T want to include empty values, continue
-    if (
-      value === undefined &&
-      !getPref("templates.include_empty_placeholders")
-    ) {
-      continue;
-    }
+    // if (
+    //   value === undefined &&
+    //   !getPref("templates.include_empty_placeholders")
+    // ) {
+    //   continue;
+    // }
     // If the value is an empty string, we also skip it
-    if (value === "" && !getPref("templates.include_empty_placeholders")) {
-      continue;
-    }
+    // if (value === "" && !getPref("templates.include_empty_placeholders")) {
+    //   continue;
+    // }
 
     // If it's an array and is empty
-    if (
-      typeof value === "object" &&
-      value.length === 0 &&
-      !getPref("templates.include_empty_placeholders")
-    ) {
+    // if (
+    //   typeof value === "object" &&
+    //   value.length === 0 &&
+    //   !getPref("templates.include_empty_placeholders")
+    // ) {
+    //   continue;
+    // }
+    if (skipItem(value)) {
       continue;
     }
 
