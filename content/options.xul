@@ -10,51 +10,30 @@
       <preference id="pref-mdnotes-directory" name="extensions.mdnotes.directory" type="string" />
       <preference id="pref-mdnotes-citekey-title" name="extensions.mdnotes.citekey_title" type="bool" />
       <preference id="pref-mdnotes-link-style" name="extensions.mdnotes.link_style" type="string" />
-      <preference id="pref-mdnotes-title-suffix" name="extensions.mdnotes.title_suffix" type="string" />
-      <preference id="pref-mdnotes-notes-suffix" name="extensions.mdnotes.notes_suffix" type="string" />
+
+
+      <preference id="pref-mdnotes-templates-directory" name="extensions.mdnotes.templates.directory" type="string" />
+      <preference id="pref-mdnotes-templates-empty-placeholders" name="extensions.mdnotes.templates.include_empty_placeholders" type="bool" />
+
       <preference id="pref-mdnotes-file-conf" name="extensions.mdnotes.file_conf" type="string" />
-
-      <!-- Metadata -->
-      <preference id="pref-mdnotes-export-type" name="extensions.mdnotes.export_type" type="bool" />
-      <preference id="pref-mdnotes-export-authors" name="extensions.mdnotes.export_authors" type="bool" />
-      <preference id="pref-mdnotes-export-dates" name="extensions.mdnotes.export_dates" type="bool" />
-      <preference id="pref-mdnotes-export-pub-title" name="extensions.mdnotes.export_pub_title" type="bool" />
-      <preference id="pref-mdnotes-export-local-library" name="extensions.mdnotes.export_local_library" type="bool" />
-      <preference id="pref-mdnotes-export-cloud-library" name="extensions.mdnotes.export_cloud_library" type="bool" />
-      <preference id="pref-mdnotes-export-citekey" name="extensions.mdnotes.export_citekey" type="bool" />
-      <preference id="pref-mdnotes-export-urls" name="extensions.mdnotes.export_urls" type="bool" />
-      <preference id="pref-mdnotes-export-collections" name="extensions.mdnotes.export_collections" type="bool" />
-      <preference id="pref-mdnotes-export-related" name="extensions.mdnotes.export_related" type="bool" />
-      <preference id="pref-mdnotes-export-tags" name="extensions.mdnotes.export_tags" type="bool" />
-      <preference id="pref-mdnotes-export-pdfs" name="extensions.mdnotes.export_pdfs" type="bool" />
-      <preference id="pref-mdnotes-export-abstract" name="extensions.mdnotes.export_abstract" type="bool" />
-
-      <!-- Tags -->
-      <preference id="pref-mdnotes-tag-format" name="extensions.mdnotes.tag_format" type="string" />
-      <preference id="pref-mdnotes-import-tag" name="extensions.mdnotes.import_tag" type="string" />
-
-      <!-- Zotero notes -->
-      <preference id="pref-mdnotes-export-notes" name="extensions.mdnotes.export_notes" type="bool" />
-      <preference id="pref-mdnotes-export-notes-heading" name="extensions.mdnotes.export_notes_heading" type="string" />
-      <preference id="pref-mdnotes-export-notes-template" name="extensions.mdnotes.export_notes_template" type="string" />
-      <preference id="pref-mdnotes-export-item-template" name="extensions.mdnotes.export_item_template" type="string" />
-      <preference id="pref-mdnotes-export-znote-template" name="extensions.mdnotes.export_zotero_note_template" type="string" />
+      <preference id="pref-mdnotes-files-zotero-metadata-prefix" name="extensions.mdnotes.files.zotero.metadata.prefix" type="string" />
+      <preference id="pref-mdnotes-files-zotero-metadata-suffix" name="extensions.mdnotes.files.zotero.metadata.suffix" type="string" />
+      <preference id="pref-mdnotes-files-zotero-note-prefix" name="extensions.mdnotes.files.zotero.note.prefix" type="string" />
+      <preference id="pref-mdnotes-files-zotero-note-suffix" name="extensions.mdnotes.files.zotero.note.suffix" type="string" />
+      <preference id="pref-mdnotes-files-mdnotes-hub-prefix" name="extensions.mdnotes.files.mdnotes.hub.prefix" type="string" />
+      <preference id="pref-mdnotes-files-mdnotes-hub-suffix" name="extensions.mdnotes.files.mdnotes.hub.suffix" type="string" />
+      <preference id="pref-mdnotes-files-mdnotes-standalone-prefix" name="extensions.mdnotes.files.mdnotes.standalone.prefix" type="string" />
+      <preference id="pref-mdnotes-files-mdnotes-standalone-suffix" name="extensions.mdnotes.files.mdnotes.standalone.suffix" type="string" />
 
       <!-- Notes file -->
       <preference id="pref-mdnotes-create-note" name="extensions.mdnotes.create_notes_file" type="bool" />
-      <preference id="pref-mdnotes-transclude-metadata" name="extensions.mdnotes.obsidian.transclude_metadata"
-        type="bool" />
       <preference id="pref-mdnotes-attach-to-zotero" name="extensions.mdnotes.attach_to_zotero" type="bool" />
     </preferences>
 
     <tabbox id="mdnotes-pref-tabs" selectedIndex="0">
       <tabs>
         <tab label="&mdnotes-export;" />
-        <tab label="&mdnotes-metadata;" />
-        <tab label="&note-file-settings;" />
-        <tab label="Note template" />
-        <tab label="Item export template" />
-        <tab label="Zotero note template" />
+        <tab label="&file-names;" />
       </tabs>
       <tabpanels>
         <tabpanel>
@@ -91,8 +70,7 @@
             </radiogroup>
             <separator />
             <hbox align="center">
-              <label id="id-mdnotes-vault-path-label" value="&note-directory-label;"
-                control="id-mdnotes-title-suffix" />
+              <label id="id-mdnotes-vault-path-label" value="&note-directory-label;" control="id-mdnotes-vault-path" />
               <textbox id="id-mdnotes-vault-path" preference="pref-mdnotes-directory" flex="1" />
               <button id="id-mdnotes-vault-path-button" label="&choose;" oncommand="Zotero.ZotFile.chooseDirectory().then((folder) => { if(folder != '') {Zotero.Mdnotes.setPref('directory', folder);} });"/>
             </hbox>
@@ -101,121 +79,72 @@
             </description>
             <separator />
             <checkbox preference="pref-mdnotes-attach-to-zotero" label="&mdnotes-attach-to-zotero;" />
-
-          </vbox>
-
-        </tabpanel>
-        <tabpanel>
-          <!-- Zotero item export -->
-          <vbox>
+            <separator />
             <hbox align="center">
-              <label id="id-mdnotes-title-suffix-label" value="&title-suffix-label;"
-                control="id-mdnotes-title-suffix" />
-              <textbox id="id-mdnotes-title-suffix" preference="pref-mdnotes-title-suffix" flex="1" />
+              <label id="id-mdnotes-templates-path-label" value="&template-directory-label;" control="id-mdnotes-templates-path" />
+              <textbox id="id-mdnotes-templates-path" preference="pref-mdnotes-templates-directory" flex="1" />
+              <button id="id-mdnotes-templates-path-button" label="&choose;" oncommand="Zotero.ZotFile.chooseDirectory().then((folder) => { if(folder != '') {Zotero.Mdnotes.setPref('templates.directory', folder);} });"/>
             </hbox>
             <description style="font-size: 10px">
-              What suffix to add to file name when exporting a Zotero item.
+              Path where templates are stored. Templates should be stored in the root folder; subfolders are not supported.
             </description>
-            <hbox>
-              <groupbox>
-                <caption label="Metadata" />
-                <description style="font-size: 10px"> Which item metadata to export. </description>
-                <hbox>
-                  <vbox>
-                    <checkbox preference="pref-mdnotes-export-type" label="&mdnotes-export-type;" />
-                    <checkbox preference="pref-mdnotes-export-authors" label="&mdnotes-export-authors;" />
-                    <checkbox preference="pref-mdnotes-export-dates" label="&mdnotes-export-dates;" />
-                  </vbox>
-                  <vbox>
-                    <checkbox preference="pref-mdnotes-export-pub-title" label="&mdnotes-export-pub-title;" />
-                    <checkbox preference="pref-mdnotes-export-urls" label="&mdnotes-export-urls;" />
-                    <checkbox preference="pref-mdnotes-export-citekey" label="&mdnotes-export-citekey;" />
-                  </vbox>
-                  <vbox>
-                    <checkbox preference="pref-mdnotes-export-tags" label="&mdnotes-export-tags;" />
-                    <checkbox preference="pref-mdnotes-export-collections" label="&mdnotes-export-collections;" />
-                    <checkbox preference="pref-mdnotes-export-pdfs" label="&mdnotes-export-pdfs;" />
-                  </vbox>
-                  <vbox>
-                    <checkbox preference="pref-mdnotes-export-related" label="&mdnotes-export-related;" />
-                    <checkbox preference="pref-mdnotes-export-abstract" label="&mdnotes-export-abstract;" />
-                  </vbox>
-                </hbox>
-              </groupbox>
-              <groupbox>
-                <caption label="Links" />
-                <checkbox preference="pref-mdnotes-export-local-library" label="&mdnotes-export-local-library;" />
-                <checkbox preference="pref-mdnotes-export-cloud-library" label="&mdnotes-export-cloud-library;" />
-              </groupbox>
-            </hbox>
-            <!-- Tags -->
-            <groupbox>
-              <caption label="&mdnotes-include-tags;" />
-              <radiogroup id="id-mdnotes-tag-format-group" preference="pref-mdnotes-tag-format">
-                <hbox align="center">
-                  <description value="&mdnotes-tag-format-label;"></description>
-                  <radio id="hash-sign" label="Hash sign" value="hash" />
-                  <radio id="internal-links" label="Internal links" selected="true" value="internal" />
-                </hbox>
-              </radiogroup>
 
-              <hbox align="center">
-                <label id="id-mdnotes-import-tag-label" value="&import-tag;" control="id-mdnotes-import-tag" />
-                <textbox id="id-mdnotes-import-tag" preference="pref-mdnotes-import-tag" flex="1" />
-              </hbox>
-            </groupbox>
-
-            <!-- Zotero Notes settings -->
-            <groupbox>
-              <caption label="&mdnotes-settings;" />
-              <checkbox id="id-mdnotes-export-notes" preference="pref-mdnotes-export-notes" label="&export-notes;" />
-              <hbox align="center">
-                <label id="id-mdnotes-export-notes-label" value="&export-notes-label;"
-                  control="id-mdnotes-export-notes-heading" />
-                <textbox id="id-mdnotes-export-notes-heading" preference="pref-mdnotes-export-notes-heading" flex="1" />
-              </hbox>
-
-            </groupbox>
           </vbox>
+
         </tabpanel>
         <tabpanel>
-          <!-- Own notes settings -->
           <vbox>
-            <checkbox preference="pref-mdnotes-create-note" label="&mdnotes-create-note;" />
-            <checkbox preference="pref-mdnotes-transclude-metadata" label="&mdnotes-transclude-metadata;" />
-            <hbox align="center">
-              <label id="id-mdnotes-notes-suffix-label" value="&notes-suffix-label;"
-                control="id-mdnotes-notes-suffix" />
-              <textbox id="id-mdnotes-notes-suffix" preference="pref-mdnotes-notes-suffix" flex="1" />
-            </hbox>
-            <description style="font-size: 10px">
-              What suffix to add to Notes file name
-            </description>
+            <!-- Mdnotes files -->
+            <groupbox>
+              <caption label="&mdnotes-files;"/>
+              <hbox align="center">
+                <label id="id-mdnotes-hub-prefix-label" value="&prefix;" control="id-mdnotes-hub-prefix" />
+                <textbox id="id-mdnotes-hub-prefix" preference="pref-mdnotes-files-mdnotes-hub-prefix" flex="1" />
+                <label id="id-mdnotes-hub-suffix-label" value="&suffix;" control="id-mdnotes-hub-suffix" />
+                <textbox id="id-mdnotes-hub-suffix" preference="pref-mdnotes-files-mdnotes-hub-suffix" flex="1" />
+              </hbox>
+              <description style="font-size: 10px">
+                What prefix and suffix to add to the mdnotes file name
+              </description>
+            </groupbox>
+            <groupbox>
+              <caption label="&standalone-files;"/>
+              <hbox align="center">
+                <label id="id-mdnotes-standalone-prefix-label" value="&prefix;" control="id-mdnotes-standalone-prefix" />
+                <textbox id="id-mdnotes-standalone-prefix" preference="pref-mdnotes-files-mdnotes-standalone-prefix" flex="1" />
+                <label id="id-mdnotes-standalone-suffix-label" value="&suffix;" control="id-mdnotes-standalone-suffix" />
+                <textbox id="id-mdnotes-standalone-suffix" preference="pref-mdnotes-files-mdnotes-standalone-suffix" flex="1" />
+              </hbox>
+              <description style="font-size: 10px">
+                What prefix and suffix to add to standalone notes
+              </description>
+            </groupbox>
+            <!-- Zotero items -->
+            <groupbox>
+              <caption label="&zotero-metadata-files;"/>
+              <hbox align="center">
+                <label id="id-mdnotes-metadata-prefix-label" value="&prefix;" control="id-mdnotes-metadata-prefix" />
+                <textbox id="id-mdnotes-metadata-prefix" preference="pref-mdnotes-files-zotero-metadata-prefix" flex="1" />
+                <label id="id-mdnotes-metadata-suffix-label" value="&suffix;" control="id-mdnotes-metadata-suffix" />
+                <textbox id="id-mdnotes-metadata-suffix" preference="pref-mdnotes-files-zotero-metadata-suffix" flex="1" />
+              </hbox>
+              <description style="font-size: 10px">
+                What suffix to add to file name when exporting a Zotero item.
+              </description>
+            </groupbox>
+            <groupbox>
+              <caption label="&zotero-note-files;"/>
+              <hbox align="center">
+                <label id="id-mdnotes-znote-prefix-label" value="&prefix;" control="id-mdnotes-znote-prefix" />
+                <textbox id="id-mdnotes-znote-prefix" preference="pref-mdnotes-files-zotero-note-prefix" flex="1" />
+                <label id="id-mdnotes-znote-suffix-label" value="&suffix;" control="id-mdnotes-znote-suffix" />
+                <textbox id="id-mdnotes-znote-suffix" preference="pref-mdnotes-files-zotero-note-suffix" flex="1" />
+              </hbox>
+              <description style="font-size: 10px">
+                What prefix and suffix to add to file name when exporting a Zotero note.
+              </description>
+            </groupbox>
           </vbox>
-        </tabpanel>
-        <!-- Notes template -->
-        <tabpanel>
-              <vbox align="center">
-                <label id="id-mdnotes-export-notes-label" value="&export-notes-label;"
-                  control="id-mdnotes-export-notes-template" />
-                <textbox id="id-mdnotes-export-notes-template" preference="pref-mdnotes-export-notes-template" flex="1" rows="22" cols="55" multiline="true"/>
-              </vbox>
-        </tabpanel>
-        <!-- Item export template -->
-        <tabpanel>
-              <vbox align="center">
-                <label id="id-mdnotes-export-item-label" value="&export-notes-label;"
-                  control="id-mdnotes-export-item-template" />
-                <textbox id="id-mdnotes-export-item-template" preference="pref-mdnotes-export-item-template" flex="1" rows="22" cols="55" multiline="true"/>
-              </vbox>
-        </tabpanel>
-        <!-- Zotero note template -->
-        <tabpanel>
-              <vbox align="center">
-                <label id="id-mdnotes-export-znote-label" value="&export-notes-label;"
-                  control="id-mdnotes-export-znote-template" />
-                <textbox id="id-mdnotes-export-znote-template" preference="pref-mdnotes-export-znote-template" flex="1" rows="22" cols="55" multiline="true"/>
-              </vbox>
         </tabpanel>
       </tabpanels>
     </tabbox>
