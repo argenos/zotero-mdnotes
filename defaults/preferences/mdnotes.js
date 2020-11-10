@@ -29,7 +29,7 @@ pref("extensions.mdnotes.files.zotero.note.suffix", "");
 pref("extensions.mdnotes.files.mdnotes.hub.prefix", "");
 pref("extensions.mdnotes.files.mdnotes.hub.suffix", "");
 pref("extensions.mdnotes.files.mdnotes.standalone.prefix", "");
-pref("extensions.mdnotes.files.mdnotes.standalone.suffix", "");
+pref("extensions.mdnotes.files.mdnotes.standalone.suffix", " - New Note");
 pref("extensions.mdnotes.create_notes_file", true);
 pref("extensions.mdnotes.attach_to_zotero", true);
 

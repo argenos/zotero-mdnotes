@@ -16,9 +16,13 @@
     <menuitem id="id-mdnotes-batch-export-item" label="Batch export to markdown" tooltiptext="Create all markdown files for the selected items" 
       oncommand="Zotero.Mdnotes.run('batchExportMenu')"/>
 
-    <menuitem id="id-mdnotes-create-notes-file" label="Create Notes file" 
+    <menuitem id="id-mdnotes-create-notes-file" label="Create Mdnotes file" 
       tooltiptext="Create a markdown file for your notes" 
-      oncommand="Zotero.Mdnotes.run('createNoteFileMenu')"/>
+      oncommand="Zotero.Mdnotes.run('createNoteFileMenu', false)"/>
+
+    <menuitem id="id-mdnotes-create-standalone-note-file" label="Create a standalone note" 
+      tooltiptext="Create a standalone markdown note" 
+      oncommand="Zotero.Mdnotes.run('createNoteFileMenu', true)"/>
 
     <menuitem id="id-mdnotes-export-item" label="Export to markdown" tooltiptext="Export the selected items into a markdown file" 
       oncommand="Zotero.Mdnotes.run('exportToMarkdownMenu')"/>
