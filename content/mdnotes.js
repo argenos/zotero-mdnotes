@@ -436,7 +436,7 @@ function getZMetadataFileName(item) {
 
 async function getMDNoteFileContents(item) {
   let metadata = getItemMetadata(item);
-  let template = await readTemplate("Mdnotes default template");
+  let template = await readTemplate("Mdnotes Default Template");
   let formattedPlaceholders = format_placeholders(metadata);
   let content = remove_invalid_placeholders(
     replace_placeholders(template, formattedPlaceholders)
@@ -724,7 +724,7 @@ Zotero.Mdnotes =
 
     async getRegularItemContents(item) {
       let metadata = getItemMetadata(item);
-      let template = await readTemplate("Zotero-Metadata-Template");
+      let template = await readTemplate("Zotero Metadata Template");
       let formattedPlaceholders = format_placeholders(metadata);
       let newContents = remove_invalid_placeholders(
         replace_placeholders(template, formattedPlaceholders)
