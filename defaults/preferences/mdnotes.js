@@ -19,19 +19,17 @@ pref("extensions.mdnotes.placeholder.localLibrary", '{"content":"{{bullet}} {{fi
 pref("extensions.mdnotes.placeholder.noteContent", '{"content":"{{field_contents}}"}');
 
 pref("extensions.mdnotes.templates.directory", "");
-pref("extensions.mdnotes.templates.zotero_metadata", "");
-pref("extensions.mdnotes.templates.zotero_note", "");
 pref("extensions.mdnotes.templates.include_empty_placeholders", false);
 
 pref("extensions.mdnotes.file_conf", "split");
-pref("extensions.mdnotes.files.zotero.metadata.prefix", "Z-");
+pref("extensions.mdnotes.files.zotero.metadata.prefix", "");
 pref("extensions.mdnotes.files.zotero.metadata.suffix", "-zotero");
-pref("extensions.mdnotes.files.zotero.note.prefix", "ZN-");
-pref("extensions.mdnotes.files.zotero.note.suffix", "-zotero-note");
-pref("extensions.mdnotes.files.mdnotes.hub.prefix", "MD-");
-pref("extensions.mdnotes.files.mdnotes.hub.suffix", "-mdnotes");
-pref("extensions.mdnotes.files.mdnotes.standalone.prefix", "S-");
-pref("extensions.mdnotes.files.mdnotes.standalone.suffix", "-standalone");
+pref("extensions.mdnotes.files.zotero.note.prefix", "");
+pref("extensions.mdnotes.files.zotero.note.suffix", "");
+pref("extensions.mdnotes.files.mdnotes.hub.prefix", "");
+pref("extensions.mdnotes.files.mdnotes.hub.suffix", "");
+pref("extensions.mdnotes.files.mdnotes.standalone.prefix", "");
+pref("extensions.mdnotes.files.mdnotes.standalone.suffix", "");
 pref("extensions.mdnotes.create_notes_file", true);
 pref("extensions.mdnotes.attach_to_zotero", true);
 
