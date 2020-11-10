@@ -434,15 +434,22 @@ function getZMetadataFileName(item) {
  * @param {item} item A Zotero item
  */
 
-async function getMDNoteFileContents(item) {
+async function getMDNoteFileContents(item, standalone) {
   let metadata = getItemMetadata(item);
-  let template = await readTemplate("Mdnotes Default Template");
+  let template;
+  let fileName;
+  if (standalone) {
+    template = await readTemplate("Standalone Note Template");
+    fileName = getStandaloneFileName(item);
+  } else {
+    fileName = metadata.mdnotesFileName;
+    template = await readTemplate("Mdnotes Default Template");
+  }
   let formattedPlaceholders = format_placeholders(metadata);
   let content = remove_invalid_placeholders(
     replace_placeholders(template, formattedPlaceholders)
   );
   content = replace_wildcards(content, metadata);
-  const fileName = metadata.mdnotesFileName;
   return { content: content, name: fileName };
 }
 
@@ -679,7 +686,7 @@ Zotero.Mdnotes =
       }
     }
 
-    async createNoteFileMenu() {
+    async createNoteFileMenu(standalone) {
       var items = Zotero.getActiveZoteroPane()
         .getSelectedItems()
         .filter(
@@ -700,11 +707,18 @@ Zotero.Mdnotes =
         fp.displayDirectory = oldPath;
       }
       for (const item of items) {
-        const fileName = getMDNoteFileName(item);
         Zotero.debug("Creating markdown note...");
+        Zotero.debug("Standalone: "+ standalone);
 
         fp.init(window, "Save markdown note...", fp.modeSave);
         fp.appendFilter("Markdown", "*.md");
+
+        let fileName;
+        if (standalone) {
+          fileName = getStandaloneFileName(item);
+        } else {
+          fileName  = getMDNoteFileName(item);
+        }
         fp.defaultString = `${fileName}.md`;
 
         const rv = await fp.show();
@@ -713,7 +727,7 @@ Zotero.Mdnotes =
           if (outputFile.split(".").pop().toLowerCase() != "md") {
             outputFile += ".md";
           }
-          const file = await getMDNoteFileContents(item);
+          const file = await getMDNoteFileContents(item, standalone);
           Zotero.File.putContentsAsync(outputFile, file.content);
 
           // Attach note
