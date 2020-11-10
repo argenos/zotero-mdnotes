@@ -1,47 +1,27 @@
-<!ENTITY zotero.mdnotes "Export to markdown notes">
-
-<!ENTITY mdnotes-export-item.label "Export to markdown">
-<!ENTITY mdnotes-export-item.tooltiptext "Export the current item to markdown">
-
-<!ENTITY mdnotes-options.label "Mdnotes preferences">
 <!ENTITY mdnotes-preferences "Mdnotes prefereces">
 <!ENTITY mdnotes-prefpane "Markdown preferences">
 
+<!-- First tab -->
 <!ENTITY mdnotes-export "Export preferences">
 <!ENTITY citekey-title "Use the item's citekey as title?">
 <!ENTITY mdnotes-file-number-label "File organization:">
 <!ENTITY mdnotes-links-label "Internal Links">
-
-<!ENTITY mdnotes-metadata "Item metadata">
-<!ENTITY mdnotes-export-type "Item type">
-<!ENTITY mdnotes-export-authors "Authors">
-<!ENTITY mdnotes-export-dates "Dates">
-<!ENTITY mdnotes-export-pub-title "Publication title">
-<!ENTITY mdnotes-export-local-library "Local library link">
-<!ENTITY mdnotes-export-cloud-library "Cloud library link">
-<!ENTITY mdnotes-export-citekey "Cite key">
-<!ENTITY mdnotes-export-urls "URLs (DOI, website, etc.)">
-<!ENTITY mdnotes-export-collections "Collection names">
-<!ENTITY mdnotes-export-related "Related items">
-<!ENTITY mdnotes-export-tags "Tags">
-<!ENTITY mdnotes-export-pdfs "Links to PDFs">
-<!ENTITY mdnotes-export-abstract "Abstract">
-
-<!ENTITY mdnotes-include-tags "Tags">
-<!ENTITY import-tag "Mdnotes Tag">
-<!ENTITY mdnotes-tag-format-label "Tag format: ">
-
-
-<!ENTITY export-notes "Export Zotero notes">
-<!ENTITY export-notes-label "Heading">
-
-<!ENTITY mdnotes-settings "Annotations and highlights">
-
-<!ENTITY note-file-settings "Note file settings">
 <!ENTITY note-directory-label "Export directory">
-<!ENTITY mdnotes-create-note "Create Notes file">
-<!ENTITY title-suffix-label "Zotero file name suffix:">
-<!ENTITY notes-suffix-label "Notes file name suffix:">
-<!ENTITY mdnotes-transclude-metadata "Transclude metadata">
 <!ENTITY mdnotes-attach-to-zotero "Attach file links to Zotero">
+<!ENTITY template-directory-label "Template folder">
+
+<!-- Second tab -->
+<!ENTITY file-names "File names">
+
+<!ENTITY mdnotes-files "Mdnotes">
+<!ENTITY standalone-files "Standalone">
+<!ENTITY zotero-metadata-files "Zotero metadata">
+<!ENTITY zotero-note-files "Zotero note">
+<!ENTITY prefix "Prefix:">
+<!ENTITY suffix "Suffix:">
+
+<!-- Tools menu -->
+<!ENTITY mdnotes-options.label "Mdnotes preferences">
+
+<!-- Common -->
 <!ENTITY choose "Choose...">
