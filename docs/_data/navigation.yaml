@@ -1,0 +1,26 @@
+main:
+  - title: "What's new?"
+    url: /
+  - title: "Documentation"
+    url: /docs/quick-start-guide/
+  - title: "FAQ"
+    url: /faq/
+
+docs:
+  - title: Getting Started
+    children:
+      - title: "Quick-Start Guide"
+        url: /docs/quick-start-guide/
+      - title: "Installation"
+        url: /docs/installation/
+      - title: "Configuration"
+        url: /docs/configuration/
+
+  - title: Customization
+    children:
+      - title: "Templates"
+        url: /docs/templates/
+      - title: "Placeholders"
+        url: /docs/placeholders/
+      - title: "Field formatting"
+        url: /docs/formatting/
