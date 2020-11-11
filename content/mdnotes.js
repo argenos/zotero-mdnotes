@@ -506,10 +506,44 @@ async function getMDNoteFileContents(item, standalone) {
 }
 
 async function readTemplate(fileName) {
-  let template = await Zotero.File.getContentsAsync(
-    getFilePath(getPref("templates.directory"), fileName)
+  let availableTemplates = await getTemplatesAtDirectory();
+  let template;
+  if (availableTemplates.includes(`${fileName}.md`)) {
+    template = await Zotero.File.getContentsAsync(
+      getFilePath(getPref("templates.directory"), fileName)
+    );
+    return template;
+  } else {
+    switch (fileName) {
+      case "Mdnotes Default Template":
+        return mdnotesTemplate;
+      case "Standalone Note Template":
+        return standaloneTemplate;
+      case "Zotero Metadata Template":
+        return zoteroMetadataTemplate;
+      case "Zotero Note Template":
+        return zoteroNoteTemplate;
+    }
+  }
+}
+
+async function getTemplatesAtDirectory() {
+  let fileArray = [];
+  await Zotero.File.iterateDirectory(
+    getPref("templates.directory"),
+    async function (entry) {
+      if (
+        entry.isDir ||
+        entry.name.startsWith(".") ||
+        !entry.name.endsWith(".md")
+      ) {
+        return;
+      }
+      fileArray.push(entry.name);
+    }
   );
-  return template;
+
+  return fileArray;
 }
 
 // From https://github.com/jlegewie/zotfile/blob/master/chrome/content/zotfile/utils.js#L104
@@ -550,7 +584,6 @@ function skipItem(value) {
 function format_placeholders(placeholders) {
   let formattedPlaceholders = {};
   for (const [key, value] of Object.entries(placeholders)) {
-
     if (skipItem(value)) {
       continue;
     }
@@ -571,7 +604,6 @@ function format_placeholders(placeholders) {
         "noteContent",
       ].includes(key)
     ) {
-      Zotero.debug("This key shouldn't have wiki links: " + key);
       settings.link_style = "no-links";
     }
 
@@ -622,7 +654,6 @@ function change_case(text, textCase) {
 }
 
 function format_string(str, settings) {
-  Zotero.debug("Formatting " + str);
   let formattedString;
   // First format links
   formattedString = `${formatInternalLink(str, settings.link_style)}`;
@@ -656,9 +687,6 @@ function camelToTitleCase(str) {
 }
 
 function format_array(array, settings) {
-  // let settings = getFormattingSettings(fieldName);
-  Zotero.debug("Links settings for arrays:" + settings.link_style);
-
   let formattedArray = [];
   for (let item of array) {
     formattedArray.push(format_string(item, settings));
@@ -760,7 +788,7 @@ Zotero.Mdnotes =
       }
       for (const item of items) {
         Zotero.debug("Creating markdown note...");
-        Zotero.debug("Standalone: "+ standalone);
+        Zotero.debug("Standalone: " + standalone);
 
         fp.init(window, "Save markdown note...", fp.modeSave);
         fp.appendFilter("Markdown", "*.md");
@@ -769,7 +797,7 @@ Zotero.Mdnotes =
         if (standalone) {
           fileName = getStandaloneFileName(item);
         } else {
-          fileName  = getMDNoteFileName(item);
+          fileName = getMDNoteFileName(item);
         }
         fp.defaultString = `${fileName}.md`;
 
@@ -839,7 +867,6 @@ Zotero.Mdnotes =
       }
 
       exportFile.content = content;
-      Zotero.debug(exportFile);
       return exportFile;
     }
 
