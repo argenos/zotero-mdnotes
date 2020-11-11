@@ -505,7 +505,26 @@ async function getMDNoteFileContents(item, standalone) {
   return { content: content, name: fileName };
 }
 
+function getDefaultTemplate(fileName) {
+  switch (fileName) {
+    case "Mdnotes Default Template":
+      return mdnotesTemplate;
+    case "Standalone Note Template":
+      return standaloneTemplate;
+    case "Zotero Metadata Template":
+      return zoteroMetadataTemplate;
+    case "Zotero Note Template":
+      return zoteroNoteTemplate;
+  }
+}
+
 async function readTemplate(fileName) {
+  let templateDir = getPref("templates.directory");
+
+  if (templateDir === "") {
+    return getDefaultTemplate(fileName);
+  }
+
   let availableTemplates = await getTemplatesAtDirectory();
   let template;
   if (availableTemplates.includes(`${fileName}.md`)) {
@@ -514,16 +533,7 @@ async function readTemplate(fileName) {
     );
     return template;
   } else {
-    switch (fileName) {
-      case "Mdnotes Default Template":
-        return mdnotesTemplate;
-      case "Standalone Note Template":
-        return standaloneTemplate;
-      case "Zotero Metadata Template":
-        return zoteroMetadataTemplate;
-      case "Zotero Note Template":
-        return zoteroNoteTemplate;
-    }
+    return getDefaultTemplate(fileName);
   }
 }
 
