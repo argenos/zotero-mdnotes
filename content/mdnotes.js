@@ -1,5 +1,57 @@
 /*globals Zotero, OS, require, Components, window */
-"use strict";
+
+const mdnotesTemplate = `{{title}}
+
+![[%(metadataFileName)#Metadata]]
+
+Other files:
+{{mdnotesFileName}}
+{{metadataFileName}}
+
+##  Zotero links
+{{localLibrary}}
+{{cloudLibrary}}
+
+## Notes
+- `;
+
+const standaloneTemplate = `Related to: [[%(metadataFileName)]]
+
+## Notes
+- `;
+
+const zoteroNoteTemplate = `{{tags}}
+{{related}}
+{{parentTitle}}
+
+{{title}}
+
+{{noteContent}}`;
+
+const zoteroMetadataTemplate = `{{title}}
+
+## Metadata
+
+{{itemType}}
+{{author}}
+{{proceedingsTitle}}
+{{date}}
+{{dateAdded}}
+{{url}}
+{{DOI}}
+{{citekey}}
+{{collections}}
+{{related}}
+{{tags}}, #zotero, #literature-notes, #reference
+{{pdfAttachments}}
+
+{{abstractNote}}
+
+##  Zotero links
+{{localLibrary}}
+{{cloudLibrary}}
+
+{{notes}}`;
 
 function getPref(pref_name) {
   return Zotero.Prefs.get(`extensions.mdnotes.${pref_name}`, true);
