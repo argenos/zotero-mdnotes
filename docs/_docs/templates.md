@@ -21,6 +21,9 @@ If there is no path specified or the file doesn't exist, Mdnotes will use the [d
 The default templates can give you an idea of existing [placeholders and wildcards](/docs/placeholders).
 
 ### Mdnotes Default Template
+
+This template is used when you use the menu `Create mdnotes file`.
+
 {% raw %}
 
 ```markdown
@@ -43,6 +46,8 @@ Other files:
 
 ### Standalone Note Template
 
+This template is used when you use the menu `Create a standalone note`.
+
 {% raw %}
 
 ```markdown
@@ -55,6 +60,8 @@ Related to: [[%(metadataFileName)]]
 {% endraw %}
 
 ### Zotero Metadata Template
+
+This template is used when you use the menu `Export to markdown` and you have a Zotero item selected.
 
 {% raw %}
 
@@ -89,6 +96,8 @@ Related to: [[%(metadataFileName)]]
 {% endraw %}
 
 ### Zotero Note Template
+
+This template is used when you use the menu `Export to markdown` and you have a Zotero note selected.
 
 {% raw %}
 

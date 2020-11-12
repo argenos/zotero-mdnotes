@@ -1,8 +1,8 @@
 main:
-  - title: "What's new?"
-    url: /
   - title: "Documentation"
-    url: /docs/quick-start-guide/
+    url: /
+  - title: "What's new?"
+    url: /changelog/
   - title: "FAQ"
     url: /faq/
 
@@ -10,7 +10,7 @@ docs:
   - title: Getting Started
     children:
       - title: "Quick-Start Guide"
-        url: /docs/quick-start-guide/
+        url: /
       - title: "Installation"
         url: /docs/installation/
       - title: "Configuration"
