@@ -22,7 +22,7 @@ const standaloneTemplate = `Related to: [[%(metadataFileName)]]
 
 const zoteroNoteTemplate = `{{tags}}
 {{related}}
-{{parentTitle}}
+{{mdnotesFileName}}
 
 {{title}}
 

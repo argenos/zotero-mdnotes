@@ -111,7 +111,7 @@ You can add (or remove) any [note placeholders](/docs/placeholders/#note-placeho
 ```markdown
 {{tags}}
 {{related}}
-{{parentTitle}}
+{{mdnotesFileName}}
 
 {{title}}
 
