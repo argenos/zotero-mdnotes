@@ -9,7 +9,8 @@ toc: true
 ### Item placeholders
 
 {% raw %}
-You can add a `{{placeholder}}` for any [item field](https://www.zotero.org/support/kb/item_types_and_fields) in your templates.
+You can add a `{{placeholder}}` for any [item field](https://www.zotero.org/support/kb/item_types_and_fields) in your templates. Fields are formatted in camel case, so make sure you find the right [field](https://api.zotero.org/itemFields?pprint=1) in Zotero's API.
+
 {% endraw %}
 
 During export, any placeholder that is not a match for the selected item or that is blank will not be included in the markdown file.
