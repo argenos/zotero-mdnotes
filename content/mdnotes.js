@@ -293,15 +293,28 @@ function getZoteroNotes(item) {
   return noteArray;
 }
 
+function getZoteroPDFLink(attachment) {
+  return `zotero://open-pdf/library/items/${attachment.key}`;
+}
+
+function getPDFFileLink(attachment) {
+  let fileLink = Zotero.File.pathToFileURI(attachment.getFilePath());
+  return fileLink;
+}
+
 function getZoteroAttachments(item) {
   let attachmentIDs = item.getAttachments();
   var linksArray = [];
   for (let id of attachmentIDs) {
     let attachment = Zotero.Items.get(id);
     if (attachment.attachmentContentType == "application/pdf") {
-      var link = `[${attachment.getField(
-        "title"
-      )}](zotero://open-pdf/library/items/${attachment.key})`;
+      let linkContent;
+      if (getPref("pdf_link_style") === "zotero") {
+        linkContent = getZoteroPDFLink(attachment);
+      } else {
+        linkContent = getPDFFileLink(attachment);
+      }
+      var link = `[${attachment.getField("title")}](${linkContent})`;
       linksArray.push(link);
     }
   }
