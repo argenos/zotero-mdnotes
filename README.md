@@ -8,82 +8,21 @@ Tested with Zotero v5.0.89 in Ubuntu 18.04.
 
 Right now the menu is not context-aware, so read below to see what has to be selected for the menu to correctly create the files.
 
-| Option                                                       | What to select |
-| ------------------------------------------------------------ | -------------- |
-| [Export Zotero item metadata file](#Export-items-metadata-to-a-markdown-file) | Zotero Item    |
-| [Export Zotero notes to markdown](#Export-Zotero-notes-to-markdown) | Zotero Note    |
-| [Create a file for your own notes](#Create-a-file-for-your-own-notes) | Zotero Item    |
-| [Batch export all of the above](#Batch-exportcreate-all-of-the-above) | Zotero Item    |
+| What you want to do                                                       | What to select | Menu |
+| ------------------------------------------------------------ | -------------- | --|
+| [Export Zotero item metadata file](https://argenos.github.io/zotero-mdnotes/#export-a-zotero-item-or-notes-to-markdown) | Zotero Item  | `Export to markdown` |
+| [Export Zotero notes to markdown](https://argenos.github.io/zotero-mdnotes/#export-a-zotero-item-or-notes-to-markdown) | Zotero Note    | `Export to markdown` |
+| [Create a file for your own notes](https://argenos.github.io/zotero-mdnotes/#create-a-file-for-your-own-notes) | Zotero Item    | `Create mdnotes file` |
+| [Batch export all of the above](http://argenos.github.io/zotero-mdnotes/#batch-export-all-metadata-and-notes) | Zotero Item    | `Batch export to markdown` |
 
-* Based on your configuration, any of the above actions [adds the created files as linked files to Zotero](#Add-the-created-files-as-linked-files-to-Zotero).
+<br>
+Based on your configuration, any of the above actions [adds the created files as linked files to Zotero](http://argenos.github.io/zotero-mdnotes/docs/configuration/#add-the-created-files-as-linked-files-to-zotero).
 
-With the exception of `Create file for your own notes`, you will be asked to choose a path. The file name(s) are automatically chosen based on the naming convention described in the section for each menu (so keep reading!).
+With the exception of `Create mdnotes file` (for your own notes), you will be asked to choose a path. The file name(s) are automatically chosen based on the naming convention described in the section for each menu. You can read more about how to configure Mdnotes [here](https://argenos.github.io/zotero-mdnotes/)
 
-**Note:** After installing, go to `Tools > Mdnotes preferences` and change the Notes directory to a valid path.
-See [Configuration](#Configuration).
+To access the menu right-click on an item or note:  
 
-To access the menu right-click on an item or note to see the options below:  
-
-![mdnotes-menu](docs/mdnotes-menu.png)
-
-<img src="docs/mdnotes-batch.gif" alt="mdnotes-batch" style="zoom:80%;" />
-
-### Export items' metadata to a markdown file
-
-  **Only works with Zotero items.**
-
-  The `Export Zotero item metadata file` creates a file using the naming convention and (a configurable) suffix, e.g. `citekey - suffix.md`. The file contains the item's title as H1, and the item's metadata and Zotfile-extracted annotations under H2 headers.
-
-  <img src="docs/zotero-item-export.png" alt="Zotero item export" style="zoom:80%;" />
-
-### Export Zotero notes to markdown
-
-**Only works with Zotero notes**.
-
-The `Export Zotero note to markdown` menu only works with Zotero notes (the ones with the little yellow icon), and that one will export the note contents and save them on a file using the naming convention, e.g. `citekey - <note title>.md`
-
-|                                    | Selected note                                                | Exported note                                                |
-| ---------------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| "Manually" written child notes     | <img src="docs/dont-panic-zotero-note.png" alt="dont panic note" style="zoom: 80%;" /> | <img src="docs/dont-panic-md-note.png" alt="dont panic note" style="zoom:80%;" /> |
-| Annotations extracted with Zotfile | <img src="docs/yellow-zotero-note.png" alt="yellow note" style="zoom:80%;" /> | <img src="docs/yellow-md-note.png" alt="yellow note" style="zoom:80%;" /> |
-
-**v0.0.3:** Zotfile-extracted annotations include characters that are invalid for Windows file names. For that reason, the date is changed to follow an ISO format and stripping time, i.e. `yyyy-mm-dd`. This might not always work correctly depending on your timezone and it might be better to fix it directly in Zotfile (see [this issue](https://github.com/jlegewie/zotfile/issues/480)). For more details about Mdnotes, see [Notes and Known Limitations](#Notes-and-known-limitations).
-
-### Create a file for your own notes
-
-**Only works with Zotero items.**
-
-The `Create Notes file` menu creates a file for your own notes, i.e. it only uses the naming convention (e.g. `citekey.md`) to save a file that includes the item's title as an H1 header, a few links, and a H2 Notes header so you can write below.
-
-#### Format 
-
-```
-# <Item's full title>
-
-* Zotero links: <links>
-
-<Metadata link>
-
-## Notes
-
-<Your notes go here>
-```
-
-#### Example
-
-<img src="docs/notes-file.png" alt="notes file" style="zoom:80%;" />
-
-### Batch export/create all of the above
-
-  **Only works with Zotero items.**
-
-  If you are having issues with this menu, try creating the files individually first.
-
-  See if your Zotero notes have invalid characters as described in [Export Zotero notes to markdown](#Export-Zotero-notes-to-markdown)
-
-### Add the created files as linked files to Zotero
-
-  ![attach](docs/attach-link-to-zotero.png)
+<img src="docs/images/mdnotes-batch.gif" alt="mdnotes-batch" style="zoom:80%;" />
 
 ## Install
 
@@ -97,12 +36,6 @@ It is highly recommended that you have the following plugins installed:
 * [BetterBibtex](https://retorque.re/zotero-better-bibtex/)
 
 I have not tested without them, so I can't guarantee nothing will break.
-
-## Configuration
-
-Go to `Tools > Mdnotes preferences`
-
-![options](docs/options.png)
 
 ## Notes and Known Limitations
 
@@ -124,14 +57,16 @@ Go to `Tools > Mdnotes preferences`
 
   Pull requests are welcome to handle this in a smarter way.
 
+* Zotero note exports reformat the date in the title:
+
+  **v0.0.3:** Zotfile-extracted annotations include characters that are invalid for Windows file names. For that reason, the date is changed to follow an ISO format and stripping time, i.e. `yyyy-mm-dd`. This might not always work correctly depending on your timezone and it might be better to fix it directly in Zotfile (see [this issue](https://github.com/jlegewie/zotfile/issues/480)). For more details about Mdnotes, see [Notes and Known Limitations](#Notes-and-known-limitations).
+
 * If you move or rename your markdown files, the links in Zotero will be outdated. The only solution is to manually locate them.
 
 * So far I've been creating one or two notes at a time, as I've been needing them, i.e. I have not tested exporting large numbers of items or notes.
 
 * I can only work on this on my spare time, so it might take me a while to fix your issue. That being said, I'll try to point you in the right direction if you [open an issue](https://github.com/argenos/zotero-mdnotes/issues/new). [Pull requests](https://github.com/argenos/zotero-mdnotes/pulls) are most definitely welcome if you can spare some time.
 
-TL;DR: It works on my machine  
-[![works badge](https://cdn.jsdelivr.net/gh/nikku/works-on-my-machine@v0.2.0/badge.svg)](https://github.com/nikku/works-on-my-machine)
 
 ## Acknowledgements
 
