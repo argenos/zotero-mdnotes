@@ -40,10 +40,10 @@ Note: The setting `extensions.mdnotes.templates.include_empty_placeholders` is *
 
 Mdnotes supports the following placeholders for Zotero notes:
 
-- `{{mdnotesFileName}}` - The filename for the [mdnotes file](/docs/configuration/#file-naming-convention) according to the file naming convention.
-- `{{metadataFileName}}` - The filename for a [Zotero Item export](/docs/configuration/#file-naming-convention) according to the file naming convention.
+- `{{mdnotesFileName}}` - The filename for the [mdnotes file](/zotero-mdnotes/docs/configuration/#file-naming-convention) according to the file naming convention.
+- `{{metadataFileName}}` - The filename for a [Zotero Item export](/zotero-mdnotes/docs/configuration/#file-naming-convention) according to the file naming convention.
 - `{{title}}` - The note's title (usually the first line).
-- `{{noteContent}}` - The contents of the note, translated to markdown as defined in the [preferences](/docs/formatting/#zotero-note-formatting)
+- `{{noteContent}}` - The contents of the note, translated to markdown as defined in the [preferences](/zotero-mdnotes/docs/formatting/#zotero-note-formatting)
 - `{{related}}` - A list of [related items](https://www.zotero.org/support/related).
 - `{{tags}}` - The list of tags for the selected note.
 
