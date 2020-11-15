@@ -356,11 +356,10 @@ function getFileName(item) {
   if (citekeyTitle) {
     return getCiteKey(item);
   } else {
-    // TODO add checks for Windows special characters
     if (getPref("link_style") === "wiki") {
-      return item.getField("title");
+      return sanitizeFilename(item.getField("title"));
     } else {
-      return lowerCaseDashTitle(item.getField("title"));
+      return sanitizeFilename(lowerCaseDashTitle(item.getField("title")));
     }
   }
 }
