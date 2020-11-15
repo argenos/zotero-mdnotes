@@ -678,7 +678,7 @@ function getFilePath(path, filename) {
  * @return  {string}               The sanitized filename.
  */
 function sanitizeFilename(filename, replacement = '') {
-  return filename.replace(/[\/\?<>\\:\*\|"]/g, replacement)
+  return filename.replace(/[\/\?<>\\:\*\|"]/g, replacement).trim()
 }
 
 Zotero.Mdnotes =
@@ -923,11 +923,12 @@ Zotero.Mdnotes =
             const files = await this.getFiles(item);
             var noteFileName = getMDNoteFileName(item);
             for (let exportFile of files) {
-              outputFile = getFilePath(fp.file, exportFile.name);
+              const sanitizedName = sanitizeFilename(exportFile.name)
+              outputFile = getFilePath(fp.file, sanitizedName);
               var fileExists = await OS.File.exists(outputFile);
 
               if (
-                exportFile.name === `${noteFileName}` &&
+                sanitizedName === `${noteFileName}` &&
                 (fileExists || !getPref("create_notes_file"))
               ) {
                 continue;
@@ -939,7 +940,8 @@ Zotero.Mdnotes =
             }
           } else {
             let exportFile = await this.getSingleFileExport(item);
-            outputFile = getFilePath(fp.file, exportFile.name);
+            const sanitizedName = sanitizeFilename(exportFile.name)
+            outputFile = getFilePath(fp.file, sanitizedName);
             Zotero.File.putContentsAsync(outputFile, exportFile.content);
 
             // Attach new notes
