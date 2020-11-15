@@ -36,3 +36,6 @@ pref("extensions.mdnotes.attach_to_zotero", true);
 pref("extensions.mdnotes.pdf_link_style", "zotero");
 
 pref("extensions.mdnotes.html_to_md", '{"<p>": "", "</p>": "", "<strong>": "**", "</strong>": "**","<b>": "**","</b>": "**","<u>": "#### ","</u>": "","<em>": "*","</em>": "*", "<blockquote>": "> ", "</blockquote>": "", "<br><br>": "\\n\\n"}');
+
+pref("extensions.mdnotes.obsidian.vault", "");
+pref("extensions.mdnotes.obsidian.attach_obsidian_uri", false);

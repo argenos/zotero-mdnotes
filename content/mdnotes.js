@@ -741,6 +741,52 @@ function getFilePath(path, filename) {
   return OS.Path.join(OS.Path.normalize(path), `${filename}.md`);
 }
 
+function getObsidianURI(fileName) {
+  let uriStart = `obsidian://open?vault=${getPref("obsidian.vault")}&file=`;
+  let encodedFileName = Zotero.File.encodeFilePath(fileName);
+
+  return `${uriStart}${encodedFileName}`;
+}
+
+function itemHasAttachment(comparableField, parentItem) {
+  let existingAttachments = parentItem.getAttachments();
+  let linkExists = false;
+
+  for (let id of existingAttachments) {
+    let attachment = Zotero.Items.get(id);
+
+    if (attachment.attachmentContentType === "text/markdown") {
+      if (attachment.attachmentPath === comparableField) {
+        linkExists = true;
+        break;
+      }
+    } else if (
+      attachment.attachmentContentType === "x-scheme-handler/obsidian"
+    ) {
+      if (attachment.getField("url") === comparableField) {
+        linkExists = true;
+        break;
+      }
+    }
+  }
+  return linkExists;
+}
+
+async function addObsidianLink(outputFile, parentItem) {
+  let fileName = outputFile.split("/").pop();
+  fileName = fileName.split(".")[0];
+  let obsidianURI = getObsidianURI(fileName);
+
+  if (!itemHasAttachment(obsidianURI, parentItem)) {
+    await Zotero.Attachments.linkFromURL({
+      url: obsidianURI,
+      contentType: "x-scheme-handler/obsidian",
+      title: fileName,
+      parentItemID: parentItem.id,
+    });
+  }
+}
+
 Zotero.Mdnotes =
   Zotero.Mdnotes ||
   new (class {
@@ -835,6 +881,7 @@ Zotero.Mdnotes =
 
           // Attach note
           this.addLinkToMDNote(outputFile, item);
+          addObsidianLink(outputFile, item);
         }
       }
     }
@@ -935,6 +982,7 @@ Zotero.Mdnotes =
 
           // Attach note
           this.addLinkToMDNote(outputFile, item);
+          addObsidianLink(outputFile, item);
         }
       }
     }
@@ -983,6 +1031,7 @@ Zotero.Mdnotes =
 
               // Attach new notes
               this.addLinkToMDNote(outputFile, item);
+              addObsidianLink(outputFile, item);
             }
           } else {
             let exportFile = await this.getSingleFileExport(item);
@@ -991,6 +1040,7 @@ Zotero.Mdnotes =
 
             // Attach new notes
             this.addLinkToMDNote(outputFile, item);
+            addObsidianLink(outputFile, item);
           }
         }
       }
