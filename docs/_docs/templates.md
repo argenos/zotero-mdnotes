@@ -2,7 +2,7 @@
 toc: true
 ---
 
-Templates define how the final markdown document will look like. Starting on [v0.1.0](/v0.1.0) you can specify a templates directory in the `Tools > Mdnote preferences`.
+Templates define how the final markdown document will look like. Starting on [v0.1.0](/zotero-mdnotes/v0.1.0) you can specify a templates directory in the `Tools > Mdnote preferences`.
 Once a directory is specified, Mdnotes will look for the following files:
 
 ```
