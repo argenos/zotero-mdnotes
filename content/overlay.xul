@@ -4,7 +4,7 @@
 
 <overlay id="mdnotes-overlay"
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
-	
+
   <stringbundleset>
     <stringbundle
             id="mdnotes-bundle"
@@ -13,18 +13,18 @@
 
   <popup id="zotero-itemmenu">
     <menuseparator id="id-mdnotes-separator"/>
-    <menuitem id="id-mdnotes-batch-export-item" label="Batch export to markdown" tooltiptext="Create all markdown files for the selected items" 
+    <menuitem id="id-mdnotes-batch-export-item" label="Batch export to markdown" tooltiptext="Create all markdown files for the selected items"
       oncommand="Zotero.Mdnotes.run('batchExportMenu')"/>
 
-    <menuitem id="id-mdnotes-create-notes-file" label="Create Mdnotes file" 
-      tooltiptext="Create a markdown file for your notes" 
+    <menuitem id="id-mdnotes-create-notes-file" label="Create Mdnotes file"
+      tooltiptext="Create a markdown file for your notes"
       oncommand="Zotero.Mdnotes.run('createNoteFileMenu', false)"/>
 
-    <menuitem id="id-mdnotes-create-standalone-note-file" label="Create a standalone note" 
-      tooltiptext="Create a standalone markdown note" 
+    <menuitem id="id-mdnotes-create-standalone-note-file" label="Create a standalone note"
+      tooltiptext="Create a standalone markdown note"
       oncommand="Zotero.Mdnotes.run('createNoteFileMenu', true)"/>
 
-    <menuitem id="id-mdnotes-export-item" label="Export to markdown" tooltiptext="Export the selected items into a markdown file" 
+    <menuitem id="id-mdnotes-export-item" label="Export to markdown" tooltiptext="Export the selected items into a markdown file"
       oncommand="Zotero.Mdnotes.run('exportToMarkdownMenu')"/>
 
   </popup>
@@ -40,4 +40,5 @@
 	<!-- Include the main extension logic -->
   <script src="chrome://zotero/content/include.js"/>
   <script type="application/x-javascript" src="chrome://mdnotes/content/mdnotes.js"/>
+  <script type="application/x-javascript" src="chrome://mdnotes/content/markdown-utils.js"/>
 </overlay>
