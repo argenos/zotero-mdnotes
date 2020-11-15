@@ -12,14 +12,18 @@ redirect_from:
 
 In `Tools > Mdnotes preferences` set the starting path.
 
-## Export a Zotero item or Zotero note (the yellow ones) to markdown
+## Export a Zotero item or notes to markdown
 
-Right-click on the item you want to export, and select `Export to markdown`.
+Right-click on the item or Zotero note (the yellow ones) you want to export, and select `Export to markdown`.
 
 ## Create a file for your own notes
 
 Select a Zotero item, right-click and select `Create mdnotes file` or `Create a standalone note`.
 You can read what each of those do [here](/docs/templates/#mdnotes-default-template).
+
+## Batch export all metadata and notes
+
+Selecting a Zotero item, and choosing the menu `Batch export to markdown` will create the markdown files for the metadata, export all Zotero notes and (optionally) create a file for your own notes.
 
 ## Customize how your export looks by adding templates
 
