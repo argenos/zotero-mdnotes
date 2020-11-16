@@ -4,7 +4,7 @@
     <em:name>Mdnotes for Zotero</em:name>
     <em:description>Export Zotero items and notes to markdown</em:description>
     <em:id>mdnotes@mdnotes.github.io</em:id>
-    <em:version>0.1.0</em:version>
+    <em:version>0.1.1</em:version>
     <em:homepageURL>https://github.com/argenos/zotero-mdnotes</em:homepageURL>
     <em:creator>A. Ortega</em:creator>
     <em:updateURL>https://raw.githubusercontent.com/argenos/zotero-mdnotes/master/update.rdf</em:updateURL>
