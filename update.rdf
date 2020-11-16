@@ -5,13 +5,13 @@
       <RDF:Seq>
         <RDF:li>
           <RDF:Description>
-            <em:version>0.1.1</em:version>
+            <em:version>0.1.2</em:version>
             <em:targetApplication>
               <RDF:Description>
                 <em:id>zotero@chnm.gmu.edu</em:id>
                 <em:minVersion>5.0.79</em:minVersion>
                 <em:maxVersion>5.0.*</em:maxVersion>
-                <em:updateLink>https://github.com/argenos/zotero-mdnotes/releases/download/0.1.1/mdnotes-0.1.1.xpi</em:updateLink>
+                <em:updateLink>https://github.com/argenos/zotero-mdnotes/releases/download/0.1.2/mdnotes-0.1.2.xpi</em:updateLink>
               </RDF:Description>
             </em:targetApplication>
             <em:targetApplication>
@@ -19,7 +19,7 @@
                 <em:id>juris-m@juris-m.github.io</em:id>
                 <em:minVersion>5.0.79</em:minVersion>
                 <em:maxVersion>5.0.*</em:maxVersion>
-                <em:updateLink>https://github.com/argenos/zotero-mdnotes/releases/download/0.1.1/mdnotes-0.1.1.xpi</em:updateLink>
+                <em:updateLink>https://github.com/argenos/zotero-mdnotes/releases/download/0.1.2/mdnotes-0.1.2.xpi</em:updateLink>
               </RDF:Description>
             </em:targetApplication>
           </RDF:Description>
