@@ -4,7 +4,7 @@
 <!DOCTYPE window SYSTEM "chrome://mdnotes/locale/mdnotes.dtd">
 
 <prefwindow id="mdnotes-pref" title="&mdnotes-preferences;"
-  xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" onload="Zotero.Mdnotes.Options.load();">
+  xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
   <prefpane label="&mdnotes-prefpane;" id="mdnotes-prefpane">
     <preferences>
       <preference id="pref-mdnotes-directory" name="extensions.mdnotes.directory" type="string" />
@@ -150,6 +150,6 @@
     </tabbox>
 
     <script src="chrome://zotero/content/include.js" />
-    <script type="application/x-javascript" src="chrome://mdnotes/content/options.js"/>
+    <!-- <script type="application/x-javascript" src="chrome://mdnotes/content/options.js"/> -->
   </prefpane>
 </prefwindow>
