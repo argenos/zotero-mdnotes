@@ -139,7 +139,7 @@ function getDOI(item) {
 }
 
 function getURL(item) {
-  let url = item.getField("URL");
+  let url = item.getField("url");
   if (url) {
     return `[${url}](${url})`;
   } else {
