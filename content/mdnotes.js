@@ -469,6 +469,7 @@ function getNCFileName(item, filePrefs) {
   } else {
     fileName = getFileName(item);
   }
+  fileName = Zotero.File.getValidFileName(fileName);
   let prefix = getPref("files." + filePrefs + ".prefix");
   let suffix = getPref("files." + filePrefs + ".suffix");
   return `${prefix}${fileName}${suffix}`;
