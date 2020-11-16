@@ -772,12 +772,25 @@ function itemHasAttachment(comparableField, parentItem) {
   return linkExists;
 }
 
-async function addObsidianLink(outputFile, parentItem) {
+function getParentItem(item) {
+  let parentItem;
+
+  if (item.isNote()) {
+    parentItem = Zotero.Items.get(item.parentItemID);
+  } else {
+    parentItem = item;
+  }
+
+  return parentItem;
+}
+
+async function addObsidianLink(outputFile, item) {
   let fileName = outputFile.split("/").pop();
   fileName = fileName.split(".")[0];
   let obsidianURI = getObsidianURI(fileName);
+  let parentItem = getParentItem(item);
 
-  if (!itemHasAttachment(obsidianURI, parentItem)) {
+  if (!itemHasAttachment(obsidianURI, parentItem) && getPref("obsidian.attach_obsidian_uri")) {
     await Zotero.Attachments.linkFromURL({
       url: obsidianURI,
       contentType: "x-scheme-handler/obsidian",
@@ -810,29 +823,19 @@ Zotero.Mdnotes =
       Zotero.Prefs.set(`extensions.mdnotes.${pref_name}`, value, true);
     }
 
-    async addLinkToMDNote(outputFile, parentItem) {
-      let existingAttachments = parentItem.getAttachments();
-      let linkExists = false;
+    async addLinkToMDNote(outputFile, item) {
+      let parentItem = getParentItem(item);
 
-      for (let id of existingAttachments) {
-        let attachment = Zotero.Items.get(id);
-
-        if (attachment.attachmentPath === outputFile) {
-          attachment.setField(
-            "dateModified",
-            Zotero.Date.dateToSQL(new Date())
-          );
-          linkExists = true;
-          break;
-        }
-      }
-
-      if (!linkExists && getPref("attach_to_zotero")) {
-        var attachmentFile = await Zotero.Attachments.linkFromFile({
+      if (
+        !itemHasAttachment(outputFile, parentItem) &&
+        getPref("attach_to_zotero")
+      ) {
+        await Zotero.Attachments.linkFromFile({
           file: outputFile,
           parentItemID: parentItem.id,
         });
       }
+
     }
 
     async createNoteFileMenu(standalone) {
