@@ -303,18 +303,20 @@ function getPDFFileLink(attachment) {
 }
 
 function getZoteroAttachments(item) {
+  const linkStylePref = getPref("pdf_link_style");
   let attachmentIDs = item.getAttachments();
   var linksArray = [];
   for (let id of attachmentIDs) {
     let attachment = Zotero.Items.get(id);
     if (attachment.attachmentContentType == "application/pdf") {
-      let linkContent;
-      if (getPref("pdf_link_style") === "zotero") {
-        linkContent = getZoteroPDFLink(attachment);
+      let link;
+      if (linkStylePref === "zotero") {
+        link = `[${attachment.getField("title")}](${getZoteroPDFLink(attachment)})`;
+      } else if (linkStylePref === "plain") {
+        link = `[[${attachment.getField("title")}]]`;
       } else {
-        linkContent = getPDFFileLink(attachment);
+        link = `[${attachment.getField("title")}](${getPDFFileLink(attachment)})`;
       }
-      var link = `[${attachment.getField("title")}](${linkContent})`;
       linksArray.push(link);
     }
   }
