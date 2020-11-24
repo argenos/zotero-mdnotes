@@ -312,8 +312,8 @@ function getZoteroAttachments(item) {
       let link;
       if (linkStylePref === "zotero") {
         link = `[${attachment.getField("title")}](${getZoteroPDFLink(attachment)})`;
-      } else if (linkStylePref === "plain") {
-        link = `[[${attachment.getField("title")}]]`;
+      } else if (linkStylePref === "wiki") {
+        link = formatInternalLink(attachment.getField("title"), "wiki");
       } else {
         link = `[${attachment.getField("title")}](${getPDFFileLink(attachment)})`;
       }
