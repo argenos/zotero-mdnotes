@@ -53,6 +53,9 @@ Other files:
 This template is used when you use the menu `Create a standalone note`. It is essentially a duplicate of the [mdnotes default template](#mdnotes-default-template).
 Its purpose is to provide a secondary template that can be used to add notes with *some* metadata and automatically adding links to Zotero.
 
+**Note**: Standalone notes must be activated in the `Preferences`.
+{: .notice--info}
+
 {% raw %}
 
 ```markdown
