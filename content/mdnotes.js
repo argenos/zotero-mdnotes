@@ -372,6 +372,7 @@ function noteToMarkdown(item) {
 
     if (i === 0) {
       noteMD.title = formatNoteTitle(para.textContent);
+      noteMD.noteTitle = formatNoteTitle(para.textContent);
       continue;
     }
 
