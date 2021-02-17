@@ -1,7 +1,7 @@
 ---
 title: "Quick-Start Guide"
 permalink: /
-last_modified_at: 2020-11-11
+last_modified_at: 2021-02-17
 toc: true
 redirect_from:
   - /docs/quick-start-guide/
@@ -18,12 +18,18 @@ Right-click on the item or Zotero note (the yellow ones) you want to export, and
 
 ## Create a file for your own notes
 
+**Note:** This is only available for the `Split file` file organization. Check your [configuration](/zotero-mdnotes/docs/configuration/).
+{: .notice--info}
+
 Select a Zotero item, right-click and select `Create mdnotes file` or `Create a standalone note`.
 You can read what each of those do [here](/zotero-mdnotes/docs/templates/#mdnotes-default-template).
 
 ## Batch export all metadata and notes
 
-Selecting a Zotero item, and choosing the menu `Batch export to markdown` will create the markdown files for the metadata, export all Zotero notes and (optionally) create a file for your own notes.
+**Note:** This is only available for the `Split file` file organization. Check your [configuration](/zotero-mdnotes/docs/configuration/).
+{: .notice--info}
+
+Selecting a Zotero item, and choosing the menu `Batch export to markdown` will create the markdown files for the metadata, export all Zotero notes and create a file for your own notes.
 
 ## Customize how your export looks by adding templates
 
