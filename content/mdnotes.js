@@ -353,6 +353,7 @@ function noteToMarkdown(item) {
   // Markdown line (= paragraph).
   const extractedTitle = Zotero.MarkdownUtils.extractTitle(noteMD.noteContent);
   noteMD.title = formatNoteTitle(extractedTitle);
+  noteMD.noteTitle = noteMD.title;
   noteMD.tags = getTags(item);
   noteMD.related = getRelatedItems(item);
 
