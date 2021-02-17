@@ -16,6 +16,7 @@
       <preference id="pref-mdnotes-templates-empty-placeholders" name="extensions.mdnotes.templates.include_empty_placeholders" type="bool" />
 
       <preference id="pref-mdnotes-file-conf" name="extensions.mdnotes.file_conf" type="string" />
+      <preference id="pref-mdnotes-standalone-menu" name="extensions.mdnotes.standalone_menu" type="bool" />
       <preference id="pref-mdnotes-files-zotero-metadata-prefix" name="extensions.mdnotes.files.zotero.metadata.prefix" type="string" />
       <preference id="pref-mdnotes-files-zotero-metadata-suffix" name="extensions.mdnotes.files.zotero.metadata.suffix" type="string" />
       <preference id="pref-mdnotes-files-zotero-note-prefix" name="extensions.mdnotes.files.zotero.note.prefix" type="string" />
@@ -40,6 +41,7 @@
           <!-- General export settings -->
           <vbox>
             <checkbox id="id-mdnotes-citekey-title" preference="pref-mdnotes-citekey-title" label="&citekey-title;" />
+            <checkbox id="id-mdnotes-standalone-menu" preference="pref-mdnotes-standalone-menu" label="&pref-standalone-menu;" />
             <separator />
             <radiogroup id="id-mdnotes-file-group" preference="pref-mdnotes-file-conf">
               <caption label="&mdnotes-file-number-label;" />

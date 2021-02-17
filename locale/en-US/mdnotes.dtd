@@ -9,6 +9,7 @@
 <!ENTITY note-directory-label "Export directory">
 <!ENTITY mdnotes-attach-to-zotero "Attach file links to Zotero">
 <!ENTITY template-directory-label "Template folder">
+<!ENTITY pref-standalone-menu "Show Standalone Note menu">
 
 <!-- Second tab -->
 <!ENTITY file-names "File names">

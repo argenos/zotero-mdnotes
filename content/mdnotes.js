@@ -850,6 +850,10 @@ Zotero.Mdnotes =
         disableItems.push(items.mdnotes);
       }
 
+      if (!getPref("standalone_menu")) {
+        disableItems.push(items.standalone)
+      }
+
       // Enable all items by default and make them visible
       for (let i = 0; i < menu.childNodes.length; i++) {
         menu.childNodes[i].setAttribute("disabled", false);
