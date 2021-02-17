@@ -303,18 +303,20 @@ function getPDFFileLink(attachment) {
 }
 
 function getZoteroAttachments(item) {
+  const linkStylePref = getPref("pdf_link_style");
   let attachmentIDs = item.getAttachments();
   var linksArray = [];
   for (let id of attachmentIDs) {
     let attachment = Zotero.Items.get(id);
     if (attachment.attachmentContentType == "application/pdf") {
-      let linkContent;
-      if (getPref("pdf_link_style") === "zotero") {
-        linkContent = getZoteroPDFLink(attachment);
+      let link;
+      if (linkStylePref === "zotero") {
+        link = `[${attachment.getField("title")}](${getZoteroPDFLink(attachment)})`;
+      } else if (linkStylePref === "wiki") {
+        link = formatInternalLink(attachment.getField("title"), "wiki");
       } else {
-        linkContent = getPDFFileLink(attachment);
+        link = `[${attachment.getField("title")}](${getPDFFileLink(attachment)})`;
       }
-      var link = `[${attachment.getField("title")}](${linkContent})`;
       linksArray.push(link);
     }
   }
@@ -791,7 +793,10 @@ async function addObsidianLink(outputFile, item) {
   let obsidianURI = getObsidianURI(fileName);
   let parentItem = getParentItem(item);
 
-  if (!itemHasAttachment(obsidianURI, parentItem) && getPref("obsidian.attach_obsidian_uri")) {
+  if (
+    !itemHasAttachment(obsidianURI, parentItem) &&
+    getPref("obsidian.attach_obsidian_uri")
+  ) {
     await Zotero.Attachments.linkFromURL({
       url: obsidianURI,
       contentType: "x-scheme-handler/obsidian",
@@ -820,6 +825,48 @@ Zotero.Mdnotes =
       );
     }
 
+    updateMenus() {
+      // Follow Zotfile's example:
+      // https://github.com/jlegewie/zotfile/blob/master/chrome/content/zotfile/ui.js#L190
+      let win = Services.wm.getMostRecentWindow("navigator:browser");
+      let menu = win.ZoteroPane.document.getElementById("id-mdnotes-menupopup");
+
+      // This is the order in which menuitems are added in overlay.xul
+      let items = {
+        mdexport: 0,
+        separator: 1,
+        single: 2,
+        batch: 3,
+        mdnotes: 4,
+        standalone: 5,
+      };
+
+      let disableItems = [];
+
+      if (getPref("file_conf") === "split") {
+        disableItems.push(items.single);
+      } else {
+        disableItems.push(items.batch);
+        disableItems.push(items.mdnotes);
+      }
+
+      if (!getPref("standalone_menu")) {
+        disableItems.push(items.standalone)
+      }
+
+      // Enable all items by default and make them visible
+      for (let i = 0; i < menu.childNodes.length; i++) {
+        menu.childNodes[i].setAttribute("disabled", false);
+        menu.childNodes[i].setAttribute("hidden", false);
+      }
+
+      // Hide and disable menus based on the single vs split files
+      for (let i in disableItems) {
+        menu.childNodes[disableItems[i]].setAttribute("disabled", true);
+        menu.childNodes[disableItems[i]].setAttribute("hidden", true);
+      }
+    }
+
     setPref(pref_name, value) {
       Zotero.Prefs.set(`extensions.mdnotes.${pref_name}`, value, true);
     }
@@ -836,7 +883,6 @@ Zotero.Mdnotes =
           parentItemID: parentItem.id,
         });
       }
-
     }
 
     async createNoteFileMenu(standalone) {
@@ -902,7 +948,8 @@ Zotero.Mdnotes =
     }
 
     /**
-     * Return an object with all the exportable files from a top-level item
+     * Return an object with all the exportable files from a top-level item. 
+     * Only used for batch export. 
      * @param {Item} item A Zotero item
      */
     async getFiles(item) {
@@ -913,8 +960,11 @@ Zotero.Mdnotes =
         content: mdnotesFile.content,
       });
 
-      let itemFile = await this.getRegularItemContents(item);
-      fileArray.push({ name: itemFile.name, content: itemFile.content });
+      // Only add the metadata file for multi-file exports
+      if (getPref("file_conf") === "split") {
+        let itemFile = await this.getRegularItemContents(item);
+        fileArray.push({ name: itemFile.name, content: itemFile.content });
+      }
 
       let noteIDs = item.getNotes();
       if (noteIDs) {

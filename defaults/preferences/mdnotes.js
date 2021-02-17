@@ -22,6 +22,7 @@ pref("extensions.mdnotes.templates.directory", "");
 pref("extensions.mdnotes.templates.include_empty_placeholders", false);
 
 pref("extensions.mdnotes.file_conf", "split");
+pref("extensions.mdnotes.standalone_menu", false)
 pref("extensions.mdnotes.files.zotero.metadata.prefix", "");
 pref("extensions.mdnotes.files.zotero.metadata.suffix", "-zotero");
 pref("extensions.mdnotes.files.zotero.note.prefix", "");
