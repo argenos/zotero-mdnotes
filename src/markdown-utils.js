@@ -5,7 +5,10 @@ const Turndown = require('joplin-turndown').default
 // as long as the app is running.
 const converter = new Turndown({
   headingStyle: 'atx',
-  hr: '---'
+  hr: '---',
+  bulletListMarker: Zotero.Prefs.get(`extensions.mdnotes.html2md.default.bullet`, true),
+  strongDelimiter: Zotero.Prefs.get(`extensions.mdnotes.html2md.default.strong`, true),
+  emDelimiter: Zotero.Prefs.get(`extensions.mdnotes.html2md.default.em`, true)
 })
 
 // Attach all utility functions to the Zotero.MarkdownUtils object. Any file

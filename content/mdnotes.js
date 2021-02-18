@@ -579,7 +579,7 @@ function format_placeholders(placeholders) {
       : `{{bullet}} {{field_name}}: {{field_contents}}`;
     let args = {
       field_contents: formatted_content,
-      bullet: `${getPref("bullet")}`,
+      bullet: `${getPref("html2md.default.bullet")}`,
       field_name: formatted_label,
     };
     formattedPlaceholders[key] = replace_placeholders(placeholder, args);
