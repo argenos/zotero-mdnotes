@@ -1,3 +1,4 @@
+const css = require('css');
 const Turndown = require('joplin-turndown').default
 
 // Create a single Turndown provider which we'll use for all exporting. This
@@ -9,6 +10,47 @@ const converter = new Turndown({
   bulletListMarker: Zotero.Prefs.get(`extensions.mdnotes.html2md.default.bullet`, true),
   strongDelimiter: Zotero.Prefs.get(`extensions.mdnotes.html2md.default.strong`, true),
   emDelimiter: Zotero.Prefs.get(`extensions.mdnotes.html2md.default.em`, true)
+})
+
+function hasStyle(node, property, value) {
+  // From https://github.com/laurent22/joplin-turndown/blob/master/src/commonmark-rules.js#L150
+  if (!node.nodeName =='SPAN') return false;
+
+  const style = node.getAttribute('style');
+  if (!style) return false;
+
+  const o = css.parse('pre {' + style + '}');
+  if (!o.stylesheet.rules.length) return;
+
+  const textDecoration = o.stylesheet.rules[0].declarations.find(d => d.property.toLowerCase() === property);
+  if (!textDecoration || !textDecoration.value) return false;
+
+  const underlined = textDecoration.value.split(',').map(e => e.trim().toLowerCase()).indexOf(value) >= 0;
+  return underlined;
+
+}
+
+converter.addRule('strikethrough', {
+  // filter: ['del', 's', 'strike'],
+  filter: function (node) {
+    return hasStyle(node, 'text-decoration', 'line-through') || node.nodeName === 'S' || node.nodeName === 'DEL' || node.nodeName === 'STRIKE';
+  },
+  replacement: function (content) {
+    let delimiter = Zotero.Prefs.get("extensions.mdnotes.html2md.default.strikethrough", true);
+    return delimiter + content + delimiter;
+  }
+})
+
+converter.addRule('underline', {
+  // filter: 'u',
+  filter: function (node) {
+    return hasStyle(node, 'text-decoration', 'underline') || node.nodeName === 'U';
+  },
+  replacement: function(content) {
+    let open = Zotero.Prefs.get(`extensions.mdnotes.html2md.rules.underline.open`, true);
+    let close = Zotero.Prefs.get(`extensions.mdnotes.html2md.rules.underline.close`, true);
+    return open + content + close;
+  }
 })
 
 // Attach all utility functions to the Zotero.MarkdownUtils object. Any file
