@@ -57,40 +57,6 @@ function getPref(pref_name) {
   return Zotero.Prefs.get(`extensions.mdnotes.${pref_name}`, true);
 }
 
-const typemap = {
-  artwork: "Illustration",
-  audioRecording: "Recording",
-  bill: "Legislation",
-  blogPost: "Blog post",
-  book: "Book",
-  bookSection: "Chapter",
-  case: "Legal case",
-  computerProgram: "Data",
-  conferencePaper: "Conference paper",
-  email: "Letter",
-  encyclopediaArticle: "Encyclopaedia article",
-  film: "Film",
-  forumPost: "Forum post",
-  hearing: "Hearing",
-  instantMessage: "Instant message",
-  interview: "Interview",
-  journalArticle: "Article",
-  letter: "Letter",
-  magazineArticle: "Magazine article",
-  manuscript: "Manuscript",
-  map: "Image",
-  newspaperArticle: "Newspaper article",
-  patent: "Patent",
-  podcast: "Podcast",
-  presentation: "Presentation",
-  radioBroadcast: "Radio broadcast",
-  report: "Report",
-  statute: "Legislation",
-  thesis: "Thesis",
-  tvBroadcast: "TV broadcast",
-  videoRecording: "Recording",
-  webpage: "Webpage",
-};
 
 function day_of_the_month(d) {
   return (d.getDate() < 10 ? "0" : "") + d.getDate();
@@ -235,7 +201,7 @@ function getItemMetadata(item) {
     }
     metadata[field] = content;
   }
-  metadata.itemType = typemap[zoteroType];
+  metadata.itemType = Zotero.getString("itemTypes."+itemType)
   metadata.citekey = getCiteKey(item);
   metadata.collections = getCollectionNames(item);
   metadata.related = getRelatedItems(item);
