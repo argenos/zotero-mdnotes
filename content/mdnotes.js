@@ -738,6 +738,8 @@ async function getZoteroNoteFileContents(item) {
   let fileContents = remove_invalid_placeholders(
     replace_placeholders(template, formattedPlaceholders)
   );
+  
+  fileContents = replace_wildcards(fileContents, note);
   return { content: fileContents, name: fileName };
 }
 
