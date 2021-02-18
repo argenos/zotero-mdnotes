@@ -744,6 +744,8 @@ async function addObsidianLink(outputFile, item) {
       parentItemID: parentItem.id,
     });
   }
+}
+
 /**
  * Sanitizes the filename using the given replacement
  *
