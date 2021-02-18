@@ -95,6 +95,8 @@ const typemap = {
 function getDate(date) {
   const d = new Date(date);
   return d.toISOString().substring(0,10);;
+  yourDate = new Date(yourDate.getTime() - (offset*60*1000))
+  return yourDate.toISOString().split('T')[0]
 }
 
 function getDateAdded(item) {
