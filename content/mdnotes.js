@@ -92,16 +92,9 @@ const typemap = {
   webpage: "Webpage",
 };
 
-function getDate(date) {
-  const d = new Date(date);
-  return d.toISOString().substring(0,10);;
-  yourDate = new Date(yourDate.getTime() - (offset*60*1000))
-  return yourDate.toISOString().split('T')[0]
-}
-
 function getDateAdded(item) {
  const date = new Date(item.getField("dateAdded"));
- return date.toISOString().substring(0,10);;
+ return simpleISODate(date)
 }
 function getCiteKey(item) {
   if (typeof Zotero.BetterBibTeX === "object" && Zotero.BetterBibTeX !== null) {
@@ -228,7 +221,7 @@ function getItemMetadata(item) {
     } else if (field === "url") {
       content = getURL(item);
     } else if (field === "date") {
-      content = getDate(content);
+      content = simpleISODate(content);
     }
     metadata[field] = content;
   }
