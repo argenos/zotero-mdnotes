@@ -251,17 +251,6 @@ function getItemMetadata(item) {
   return metadata;
 }
 
-function htmlLinkToMarkdown(link) {
-  const mdLink = `[${link.text}](${link.href})`;
-  return mdLink;
-}
-
-function formatLists(list, bullet) {
-  for (const element of list.childNodes) {
-    element.innerHTML = `${bullet} ${element.innerHTML}`;
-  }
-}
-
 function formatInternalLink(content, linkStyle) {
   linkStyle =
     typeof linkStyle !== "undefined" ? linkStyle : getPref("link_style");
@@ -356,68 +345,20 @@ function formatNoteTitle(titleString) {
 
 function noteToMarkdown(item) {
   let noteContent = item.getNote();
-  const domParser = Components.classes[
-      "@mozilla.org/xmlextras/domparser;1"
-    ].createInstance(Components.interfaces.nsIDOMParser),
-    mapObj = JSON.parse(getPref("html_to_md")),
-    re = new RegExp(Object.keys(mapObj).join("|"), "gi");
   var noteMD = {};
-  let noteString = "";
-  const fullDomNoteBody = domParser.parseFromString(noteContent, "text/html")
-    .body;
-  const fullDomNote = fullDomNoteBody.childNodes;
-
-  for (let i = 0; i < fullDomNote.length; i++) {
-    const para = fullDomNote[i];
-
-    if (i === 0) {
-      noteMD.title = formatNoteTitle(para.textContent);
-      continue;
-    }
-
-    if (para.innerHTML) {
-      for (const link of para.getElementsByTagName("a")) {
-        link.outerHTML = htmlLinkToMarkdown(link);
-      }
-
-      const parsedInner = para.innerHTML.replace(re, function (matched) {
-        return mapObj[matched];
-      });
-      para.innerHTML = parsedInner;
-
-      if (para.innerHTML.startsWith('"#')) {
-        noteString +=
-          para.textContent.substring(1, para.textContent.lastIndexOf('"')) +
-          "\n\n";
-        continue;
-      }
-
-      if (para.innerHTML.startsWith('"')) {
-        noteString += `> ${para.textContent}\n\n`;
-        continue;
-      }
-
-      // Handle lists
-      if (para.outerHTML.startsWith("<ul>")) {
-        formatLists(para, getPref("bullet"));
-      }
-
-      if (para.outerHTML.startsWith("<ol>")) {
-        formatLists(para, "1.");
-      }
-
-      noteString += para.textContent + "\n\n";
-    }
-  }
-
-  noteMD.noteContent = noteString;
+  // Use the turndown provider to turn the HTML into Markdown
+  noteMD.noteContent = Zotero.MarkdownUtils.html2md(noteContent);
+  // The original implementation took the text contents of the first
+  // paragraph and formatted it. Let's do the same with the first
+  // Markdown line (= paragraph).
+  const extractedTitle = Zotero.MarkdownUtils.extractTitle(noteMD.noteContent);
+  noteMD.title = formatNoteTitle(extractedTitle);
   noteMD.tags = getTags(item);
   noteMD.related = getRelatedItems(item);
 
   let parentItem = Zotero.Items.get(item.parentItemID);
   noteMD.mdnotesFileName = getMDNoteFileName(parentItem);
   noteMD.metadataFileName = getZMetadataFileName(parentItem);
-
   return noteMD;
 }
 
@@ -430,11 +371,10 @@ function getFileName(item) {
   if (citekeyTitle) {
     return getCiteKey(item);
   } else {
-    // TODO add checks for Windows special characters
     if (getPref("link_style") === "wiki") {
-      return item.getField("title");
+      return sanitizeFilename(item.getField("title"));
     } else {
-      return lowerCaseDashTitle(item.getField("title"));
+      return sanitizeFilename(lowerCaseDashTitle(item.getField("title")));
     }
   }
 }
@@ -804,6 +744,16 @@ async function addObsidianLink(outputFile, item) {
       parentItemID: parentItem.id,
     });
   }
+/**
+ * Sanitizes the filename using the given replacement
+ *
+ * @param   {string}  filename     The filename to sanitize
+ * @param   {string}  replacement  The replacement character(s), default none
+ *
+ * @return  {string}               The sanitized filename.
+ */
+function sanitizeFilename(filename, replacement = '') {
+  return filename.replace(/[\/\?<>\\:\*\|"]/g, replacement).trim()
 }
 
 Zotero.Mdnotes =
@@ -948,8 +898,8 @@ Zotero.Mdnotes =
     }
 
     /**
-     * Return an object with all the exportable files from a top-level item. 
-     * Only used for batch export. 
+     * Return an object with all the exportable files from a top-level item.
+     * Only used for batch export.
      * @param {Item} item A Zotero item
      */
     async getFiles(item) {
@@ -1028,10 +978,16 @@ Zotero.Mdnotes =
           } else if (item && item.isNote()) {
             Zotero.debug("Exporting a Zotero note");
             file = await getZoteroNoteFileContents(item);
+            // Make sure to format the MDNote title correctly
+            file.name = formatNoteTitle(file.name)
           } else {
             continue;
           }
-          let outputFile = getFilePath(fp.file, `${file.name}`);
+
+          // Sanitize the filename
+          const sanitizedFileName = sanitizeFilename(file.name)
+          let outputFile = getFilePath(fp.file, `${sanitizedFileName}`);
+          Zotero.debug(`Exporting file ${outputFile} ...`)
           Zotero.File.putContentsAsync(outputFile, file.content);
 
           // Attach note
@@ -1072,11 +1028,12 @@ Zotero.Mdnotes =
             const files = await this.getFiles(item);
             var noteFileName = getMDNoteFileName(item);
             for (let exportFile of files) {
-              outputFile = getFilePath(fp.file, exportFile.name);
+              const sanitizedName = sanitizeFilename(exportFile.name)
+              outputFile = getFilePath(fp.file, sanitizedName);
               var fileExists = await OS.File.exists(outputFile);
 
               if (
-                exportFile.name === `${noteFileName}` &&
+                sanitizedName === `${noteFileName}` &&
                 (fileExists || !getPref("create_notes_file"))
               ) {
                 continue;
@@ -1089,7 +1046,8 @@ Zotero.Mdnotes =
             }
           } else {
             let exportFile = await this.getSingleFileExport(item);
-            outputFile = getFilePath(fp.file, exportFile.name);
+            const sanitizedName = sanitizeFilename(exportFile.name)
+            outputFile = getFilePath(fp.file, sanitizedName);
             Zotero.File.putContentsAsync(outputFile, exportFile.content);
 
             // Attach new notes

@@ -34,4 +34,5 @@
   <!-- Include the main extension logic -->
   <script src="chrome://zotero/content/include.js"/>
   <script type="application/x-javascript" src="chrome://mdnotes/content/mdnotes.js"/>
+  <script type="application/x-javascript" src="chrome://mdnotes/content/markdown-utils.js"/>
 </overlay>
