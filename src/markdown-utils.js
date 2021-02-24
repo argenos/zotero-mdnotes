@@ -1,4 +1,5 @@
 const css = require('css');
+var shajs = require('sha.js')
 const Turndown = require('joplin-turndown').default
 
 // Create a single Turndown provider which we'll use for all exporting. This
@@ -110,4 +111,34 @@ Zotero.MarkdownUtils = new function () {
     // Return an empty string as fallback. TODO: Add handling in mdnotes.js!
     return ''
   }
+
+  /**
+   * Append Obsidian-style block IDs at the end of each block
+   * @param {string} md Markdown string
+   */
+  this.addBlockIds = function (md, citekey) {
+    const lines = md.split('\n')
+    let new_md = "";
+
+    // Loop through the file
+    for (let line of lines) {
+      let blockId = this.generateBlockId(line, citekey);
+
+      if (line.startsWith('#') || /^\s*$/gm.test(line)){
+        new_md += `${line}\n`;
+      } else {
+        new_md += `${line} ^${blockId}\n`;
+      }
+
+    }
+
+    return new_md;
+  }
+
+  this.generateBlockId = function (str, citekey) {
+    let ck = citekey ? citekey + "-" : "";
+    let hash = shajs('sha256').update(str).digest('hex').substr(0, 7);
+    return `${ck}${hash}`
+  }
+
 }
