@@ -92,22 +92,10 @@ const typemap = {
   webpage: "Webpage",
 };
 
-function day_of_the_month(d) {
-  return (d.getDate() < 10 ? "0" : "") + d.getDate();
-}
-
-function get_month_mm_format(d) {
-  return (d.getMonth() < 10 ? "0" : "") + d.getMonth();
-}
-
 function getDateAdded(item) {
-  const date = new Date(item.getField("dateAdded"));
-  var dateAddedStr = `${date.getFullYear()}-${get_month_mm_format(
-    date
-  )}-${day_of_the_month(date)}`;
-  return dateAddedStr;
+ const date = new Date(item.getField("dateAdded"));
+ return simpleISODate(date)
 }
-
 function getCiteKey(item) {
   if (typeof Zotero.BetterBibTeX === "object" && Zotero.BetterBibTeX !== null) {
     var bbtItem = Zotero.BetterBibTeX.KeyManager.get(item.getField("id"));
@@ -232,6 +220,8 @@ function getItemMetadata(item) {
       content = getDOI(item);
     } else if (field === "url") {
       content = getURL(item);
+    } else if (field === "date") {
+      content = simpleISODate(content);
     }
     metadata[field] = content;
   }
