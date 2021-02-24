@@ -338,6 +338,7 @@ function noteToMarkdown(item) {
   var noteMD = {};
   // Use the turndown provider to turn the HTML into Markdown
   noteMD.noteContent = Zotero.MarkdownUtils.html2md(noteContent);
+
   // The original implementation took the text contents of the first
   // paragraph and formatted it. Let's do the same with the first
   // Markdown line (= paragraph).
@@ -350,6 +351,10 @@ function noteToMarkdown(item) {
   let parentItem = Zotero.Items.get(item.parentItemID);
   noteMD.mdnotesFileName = getMDNoteFileName(parentItem);
   noteMD.metadataFileName = getZMetadataFileName(parentItem);
+  if (getPref("obsidian.blocks")) {
+    noteMD.noteContent = Zotero.MarkdownUtils.addBlockIds(noteMD.noteContent, noteMD.mdnotesFileName);
+  }
+
   return noteMD;
 }
 
