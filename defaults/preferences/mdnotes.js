@@ -46,3 +46,4 @@ pref("extensions.mdnotes.html2md.rules.underline.close", "\n\n");
 
 pref("extensions.mdnotes.obsidian.vault", "");
 pref("extensions.mdnotes.obsidian.attach_obsidian_uri", false);
+pref("extensions.mdnotes.obsidian.blocks", true);
