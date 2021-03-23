@@ -15,7 +15,6 @@ Right now the menu is not context-aware, so read below to see what has to be sel
 | [Create a file for your own notes](https://argenos.github.io/zotero-mdnotes/#create-a-file-for-your-own-notes) | Zotero Item    | `Create mdnotes file` |
 | [Batch export all of the above](http://argenos.github.io/zotero-mdnotes/#batch-export-all-metadata-and-notes) | Zotero Item    | `Batch export to markdown` |
 
-<br>
 Based on your configuration, any of the above actions [adds the created files as linked files to Zotero](http://argenos.github.io/zotero-mdnotes/docs/configuration/#add-the-created-files-as-linked-files-to-zotero).
 
 With the exception of `Create mdnotes file` (for your own notes), you will be asked to choose a path. The file name(s) are automatically chosen based on the naming convention described in the section for each menu. You can read more about how to configure Mdnotes [here](https://argenos.github.io/zotero-mdnotes/)
