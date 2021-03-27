@@ -220,7 +220,7 @@ function getItemMetadata(item) {
       content = getDOI(item);
     } else if (field === "url") {
       content = getURL(item);
-    } else if (field === "date") {
+    } else if (field === "dateAdded") {
       content = simpleISODate(content);
     }
     metadata[field] = content;
