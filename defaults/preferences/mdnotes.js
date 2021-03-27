@@ -13,8 +13,8 @@ pref("extensions.mdnotes.placeholder.citekey", '{"content":"{{bullet}} Cite key:
 pref("extensions.mdnotes.placeholder.pdfAttachments", '{"content":"{{bullet}} PDF Attachments\\n\\t- {{field_contents}}", "field_contents": "{{content}}", "list_separator": "\\n\\t- "}');
 pref("extensions.mdnotes.placeholder.url", '{"content":"{{bullet}} URL: {{field_contents}}", "field_contents": "{{content}}"}');
 pref("extensions.mdnotes.placeholder.DOI", '{"content":"{{bullet}} DOI: {{field_contents}}", "field_contents": "{{content}}", "link_style": "no-links"}');
-pref("extensions.mdnotes.placeholder.cloudLibrary", '{"content":"{{bullet}} {{field_contents}}"}');
-pref("extensions.mdnotes.placeholder.localLibrary", '{"content":"{{bullet}} {{field_contents}}"}');
+pref("extensions.mdnotes.placeholder.cloudLibrary", '{"content":"{{bullet}} {{field_contents}}", "field_contents": "\[Cloud library\]({{content}})"}');
+pref("extensions.mdnotes.placeholder.localLibrary", '{"content":"{{bullet}} {{field_contents}}", "field_contents": "\[Local library\]({{content}})"}');
 pref("extensions.mdnotes.placeholder.noteContent", '{"content":"{{field_contents}}"}');
 
 pref("extensions.mdnotes.templates.directory", "");

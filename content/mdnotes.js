@@ -106,15 +106,15 @@ function getCiteKey(item) {
 }
 
 function getLocalZoteroLink(item) {
-  let linksString = "[Local library](zotero://select/items/";
+  let linksString = "zotero://select/items/";
   const library_id = item.libraryID ? item.libraryID : 0;
-  linksString += `${library_id}_${item.key})`;
+  linksString += `${library_id}_${item.key}`;
 
   return linksString;
 }
 
 function getCloudZoteroLink(item) {
-  return `[Cloud library](${Zotero.URI.getItemURI(item)})`;
+  return `${Zotero.URI.getItemURI(item)}`;
 }
 
 function getDOI(item) {
