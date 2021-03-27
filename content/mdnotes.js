@@ -449,6 +449,10 @@ async function getMDNoteFileContents(item, standalone) {
     fileName = metadata.mdnotesFileName;
     template = await readTemplate("Mdnotes Default Template");
   }
+
+  // Add custom placeholders
+  get_placeholder_contents(template, metadata);
+
   let formattedPlaceholders = format_placeholders(metadata);
   let content = remove_invalid_placeholders(
     replace_placeholders(template, formattedPlaceholders)
@@ -513,6 +517,13 @@ function replace_wildcards(str, args) {
   return str.replace(/%\((\w+)\)/g, (match, name) => args[name]);
 }
 
+
+/**
+ * 
+ * @param {string} str The string to be replaced
+ * @param {Object} args An array with the placeholder name as key and the (formatted) contents as values
+ * @returns {string} A string with the placeholders replaced
+ */
 function replace_placeholders(str, args) {
   return str.replace(/{{(\w+)}}/g, (match, name) =>
     args[name] ? args[name] : "{{invalid}}"
@@ -539,21 +550,53 @@ function skipItem(value) {
   return skip && !getPref("templates.include_empty_placeholders");
 }
 
+
+function get_placeholder_contents(template, fields) {
+  const re = /{{(\w+)}}/g;
+  let placeholders = template.match(re);
+
+  // Loop through all the placeholders
+  for (const result of placeholders) {
+    let placeholder = result.substring(2, result.length - 2)
+
+    // Check if it's a normal field, and skip it if so
+    if (fields.hasOwnProperty(placeholder)) {
+      continue;
+    }
+
+    // Get the settings for that particular placeholder
+    let settings = getFormattingSettings(placeholder);
+
+    if (settings.zotero_field){
+      if (fields.hasOwnProperty(settings.zotero_field)) {
+        let content = fields[settings.zotero_field];
+        fields[placeholder] = content;
+      }
+    } else if (settings.custom_content) {
+      fields[placeholder] = settings.custom_content;
+    }
+  }
+
+}
+
 /**
  * @param {Object} placeholders An object that contains the item's fields as keys, and its contents as values
  * @return {string} The formatted string
  */
 function format_placeholders(placeholders) {
   let formattedPlaceholders = {};
+
+  // Loop through the item metadata and replace any placeholder that matches its field
   for (const [key, value] of Object.entries(placeholders)) {
     if (skipItem(value)) {
       continue;
     }
 
+    let settings = getFormattingSettings(key);
+
     // Replace a potential undefined with an empty string instead of undefined
     let newValue = value ? value : "";
     let formatted_label = capitalize_field_label(key);
-    let settings = getFormattingSettings(key);
 
     // Exceptions that already come formatted as external links
     if (
@@ -666,10 +709,15 @@ function getFormattingSettings(field) {
 }
 
 async function getZoteroNoteFileContents(item) {
-  let note = noteToMarkdown(item);
-  let formattedPlaceholders = format_placeholders(note);
   let fileName = getZNoteFileName(item);
   let template = await readTemplate("Zotero Note Template");
+
+  let note = noteToMarkdown(item);
+
+  // Add custom placeholders
+  get_placeholder_contents(template, note);
+
+  let formattedPlaceholders = format_placeholders(note);
   let fileContents = remove_invalid_placeholders(
     replace_placeholders(template, formattedPlaceholders)
   );
@@ -889,6 +937,11 @@ Zotero.Mdnotes =
     async getRegularItemContents(item) {
       let metadata = getItemMetadata(item);
       let template = await readTemplate("Zotero Metadata Template");
+      
+      // Add custom placeholders
+      get_placeholder_contents(template, metadata);
+      
+      // Add formatting
       let formattedPlaceholders = format_placeholders(metadata);
       let newContents = remove_invalid_placeholders(
         replace_placeholders(template, formattedPlaceholders)
