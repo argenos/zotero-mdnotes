@@ -8,9 +8,9 @@ const Turndown = require('joplin-turndown').default
 const converter = new Turndown({
   headingStyle: 'atx',
   hr: '---',
-  bulletListMarker: Zotero.Prefs.get(`extensions.mdnotes.html2md.default.bullet`, true),
-  strongDelimiter: Zotero.Prefs.get(`extensions.mdnotes.html2md.default.strong`, true),
-  emDelimiter: Zotero.Prefs.get(`extensions.mdnotes.html2md.default.em`, true)
+  bulletListMarker: Zotero.Prefs.get('extensions.mdnotes.html2md.default.bullet', true),
+  strongDelimiter: Zotero.Prefs.get('extensions.mdnotes.html2md.default.strong', true),
+  emDelimiter: Zotero.Prefs.get('extensions.mdnotes.html2md.default.em', true)
 })
 
 function hasStyle(node, property, value) {
