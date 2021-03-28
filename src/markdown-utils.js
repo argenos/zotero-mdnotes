@@ -2,17 +2,6 @@ const css = require('css');
 var shajs = require('sha.js')
 const Turndown = require('joplin-turndown').default
 
-// Create a single Turndown provider which we'll use for all exporting. This
-// instance will be generated during Zotero load and will be kept in memory for
-// as long as the app is running.
-const converter = new Turndown({
-  headingStyle: 'atx',
-  hr: '---',
-  bulletListMarker: Zotero.Prefs.get('extensions.mdnotes.html2md.default.bullet', true),
-  strongDelimiter: Zotero.Prefs.get('extensions.mdnotes.html2md.default.strong', true),
-  emDelimiter: Zotero.Prefs.get('extensions.mdnotes.html2md.default.em', true)
-})
-
 function hasStyle(node, property, value) {
   // From https://github.com/laurent22/joplin-turndown/blob/master/src/commonmark-rules.js#L150
   if (!node.nodeName =='SPAN') return false;
@@ -31,28 +20,44 @@ function hasStyle(node, property, value) {
 
 }
 
-converter.addRule('strikethrough', {
-  // filter: ['del', 's', 'strike'],
-  filter: function (node) {
-    return hasStyle(node, 'text-decoration', 'line-through') || node.nodeName === 'S' || node.nodeName === 'DEL' || node.nodeName === 'STRIKE';
-  },
-  replacement: function (content) {
-    let delimiter = Zotero.Prefs.get("extensions.mdnotes.html2md.default.strikethrough", true);
-    return delimiter + content + delimiter;
-  }
-})
 
-converter.addRule('underline', {
-  // filter: 'u',
-  filter: function (node) {
-    return hasStyle(node, 'text-decoration', 'underline') || node.nodeName === 'U';
-  },
-  replacement: function(content) {
-    let open = Zotero.Prefs.get(`extensions.mdnotes.html2md.rules.underline.open`, true);
-    let close = Zotero.Prefs.get(`extensions.mdnotes.html2md.rules.underline.close`, true);
-    return open + content + close;
-  }
-})
+function getConverter(){
+  // Create a single Turndown provider which we'll use for all exporting. This
+  // instance will be generated during Zotero load and will be kept in memory for
+  // as long as the app is running.
+  const converter = new Turndown({
+    headingStyle: 'atx',
+    hr: '---',
+    bulletListMarker: Zotero.Prefs.get('extensions.mdnotes.html2md.default.bullet', true),
+    strongDelimiter: Zotero.Prefs.get('extensions.mdnotes.html2md.default.strong', true),
+    emDelimiter: Zotero.Prefs.get('extensions.mdnotes.html2md.default.em', true)
+  })
+
+  converter.addRule('strikethrough', {
+    // filter: ['del', 's', 'strike'],
+    filter: function (node) {
+      return hasStyle(node, 'text-decoration', 'line-through') || node.nodeName === 'S' || node.nodeName === 'DEL' || node.nodeName === 'STRIKE';
+    },
+    replacement: function (content) {
+      let delimiter = Zotero.Prefs.get("extensions.mdnotes.html2md.default.strikethrough", true);
+      return delimiter + content + delimiter;
+    }
+  })
+
+  converter.addRule('underline', {
+    // filter: 'u',
+    filter: function (node) {
+      return hasStyle(node, 'text-decoration', 'underline') || node.nodeName === 'U';
+    },
+    replacement: function(content) {
+      let open = Zotero.Prefs.get(`extensions.mdnotes.html2md.rules.underline.open`, true);
+      let close = Zotero.Prefs.get(`extensions.mdnotes.html2md.rules.underline.close`, true);
+      return open + content + close;
+    }
+  })
+
+  return converter;
+}
 
 // Attach all utility functions to the Zotero.MarkdownUtils object. Any file
 // that has access to the Zotero object can then use it.
@@ -65,6 +70,7 @@ Zotero.MarkdownUtils = new function () {
    * @return  {string}        The Markdown result
    */
   this.html2md = function (html) {
+    const converter = getConverter();
     return converter.turndown(html)
   }
 
