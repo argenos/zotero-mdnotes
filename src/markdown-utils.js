@@ -33,6 +33,42 @@ function getConverter(){
     emDelimiter: Zotero.Prefs.get('extensions.mdnotes.html2md.default.em', true)
   })
 
+  converter.addRule('p', {
+    filter: 'p',
+    replacement: function (content) {
+      return '\n\n' + content + '\n\n'
+    }, 
+    escapeContent: function() {
+      return false;
+    },
+  })
+
+  converter.addRule('emphasis', {
+    filter: ['em', 'i'],
+
+    replacement: function (content, node, options) {
+     if (!content.trim()) return ''
+     return options.emDelimiter + content + options.emDelimiter
+    },
+    escapeContent: function() {
+      return false;
+    },
+  })
+
+  converter.addRule('strong', {
+  filter: ['strong', 'b'],
+
+  replacement: function (content, node, options) {
+    if (!content.trim()) return ''
+    return options.strongDelimiter + content + options.strongDelimiter
+  },
+  escapeContent: function() {
+    return false;
+  },
+})
+
+  converter.keep(['span', 'font'])
+
   converter.addRule('strikethrough', {
     // filter: ['del', 's', 'strike'],
     filter: function (node) {
