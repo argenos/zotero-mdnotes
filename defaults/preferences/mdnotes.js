@@ -17,6 +17,9 @@ pref("extensions.mdnotes.placeholder.DOI", '{"content":"{{bullet}} DOI: {{field_
 pref("extensions.mdnotes.placeholder.cloudLibrary", '{"content":"{{bullet}} {{field_contents}}"}');
 pref("extensions.mdnotes.placeholder.localLibrary", '{"content":"{{bullet}} {{field_contents}}"}');
 pref("extensions.mdnotes.placeholder.noteContent", '{"content":"{{field_contents}}"}');
+pref("extensions.mdnotes.placeholder.date", '{"field_contents": "{{content}}", "link_style": "no-links"}');
+pref("extensions.mdnotes.placeholder.dateAdded", '{"field_contents": "{{content}}", "link_style": "no-links"}');
+pref("extensions.mdnotes.placeholder.itemType", '{"field_contents": "{{content}}", "link_style": "no-links"}');
 
 pref("extensions.mdnotes.templates.directory", "");
 pref("extensions.mdnotes.templates.include_empty_placeholders", false);
