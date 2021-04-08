@@ -1,5 +1,7 @@
 # Summary
 
+- [Known limitations](./limitations.md)
+
 ## Getting started
 
 - [Quick-Start Guide](./getting-started/README.md)
