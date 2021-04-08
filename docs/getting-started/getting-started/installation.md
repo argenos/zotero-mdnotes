@@ -1,4 +1,4 @@
-# How to install?
+# Installation
 
 ## Requirements
 
@@ -18,3 +18,4 @@ You can install the plugin in Zotero as described [here](https://www.zotero.org/
 You can grab the latest version of `zotero-mdnotes` [here](https://github.com/argenos/zotero-mdnotes/releases/latest).
 
 ## Update
+

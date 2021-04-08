@@ -1,17 +1,19 @@
-# Summary
+# Table of contents
 
-- [Known limitations](./limitations.md)
-- [Changelog](./../CHANGELOG.md)
+* [Introduction](README.md)
+* [Known limitations](limitations.md)
+* [Changelog](changelog.md)
 
 ## Getting started
 
-- [Quick-Start Guide](./getting-started/README.md)
-  - [Installation](./getting-started/installation.md)
-  - [Configuration](./getting-started/configuration.md)
-  - [Update](./getting-started/update.md)
+* [Quick-Start Guide](getting-started/getting-started/README.md)
+  * [Installation](getting-started/getting-started/installation.md)
+  * [Configuration](getting-started/getting-started/configuration.md)
+  * [Update](getting-started/getting-started/update.md)
 
 ## Customization
 
-- [Templates](./advanced/templates.md)
-- [Placeholders](./advanced/placeholders.md)
-- [Field formatting](./advanced/formatting.md)
+* [Templates](customization/templates.md)
+* [Placeholders](customization/placeholders.md)
+* [Field formatting](customization/formatting.md)
+
