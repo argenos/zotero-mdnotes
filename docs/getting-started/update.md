@@ -5,11 +5,13 @@ toc: true
 
 ## Update
 
-You can update .xpi package automatically through the zotero app or manually update it.
+You can update `.xpi` package automatically through the zotero app or manually update it.
 On the top menu bar click on `Tools` >> `AddOns` and you the following page.
 
-![](./images/mdnotes-update.png)
+![Configure mdnotes updates in the Add-ons Manager of Zotero](../images/mdnote-update.png)
 
-Click on the gear
+### Manually check for updates
 
-{% include figure image_path="/images/mdnotes-check-for-updates.png" alt="this is a placeholder image" caption="" %}
+To manually check for updates, on the top-right corner click on the gear and select `Check for Updates`:
+
+![Manually check for updates](../images/mdnotes-check-for-updates.png)

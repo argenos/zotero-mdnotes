@@ -1,6 +1,4 @@
----
-toc: true
----
+# Custom Formatting
 
 Starting with **v0.1.0** it's possible to specify custom formatting and to use templates.
 
@@ -15,13 +13,11 @@ The internal link preference influences how file names and therefore how links l
 
 Zotero Notes are formated in HTML. The hidden preference `extensions.mdnotes.html_to_md` has a dictionary of how the HTML elements are translated into markdown.
 
-
 ## Placeholders
 
 With a few exceptions, you can format any placeholder by adding (or modifying) them in the settings. You can reach the hidden preferences menu from `Edit > Preferences > Advanced > Config Editor`. You can use the search to find existing configurations:
 
-{% include figure image_path="/images/config-editor.png" alt="A screenshot of the config editor window" caption="Config editor" %}
-
+![Zotero's Config editor](../images/config-editor.png)
 
 ### Default formatting
 
@@ -29,23 +25,15 @@ With a few exceptions, you can format any placeholder by adding (or modifying) t
 
 By default, placeholder contents are replaced with:
 
-{% raw %}
-
 ```markdown
 {{bullet}} {{field_name}}: {{field_contents}}
 ```
 
-{% endraw %}
-
 Where:
-
-{% raw %}
 
 - `{{bullet}}` - Defined in `extensions.mdnotes.bullet`
 - `{{field_name}}` - The name of the field transformed from camel case into sentence case.
 - `{{field_contents}}` - The contents of the field as described below.
-
-{% endraw %}
 
 #### Field format
 
@@ -66,7 +54,6 @@ The preference name should be `extensions.mdnotes.placeholder.<yourFieldHere>`, 
 
 #### Preference value
 
-{% raw %}
 The value of the preference should be enclosed in braces, and defined as key/value pairs, e.g `{"key": "value"}`.
 
 In addition to the fields described in the [default field format](#field-format), the following options can be specified:
@@ -74,22 +61,16 @@ In addition to the fields described in the [default field format](#field-format)
 - `content` - Formatting the placeholder's content ([default placeholder format](#placeholder-format))
 - `field_contents` - Formatting the field itself, which defaults to `{{content}}`
 
-{% endraw %}
-
 ##### Examples
 
-{% raw %}
+Replacing the field label with custom text and changing the list separator to make a list:
 
-- Replacing the field label with custom text and changing the list separator to make a list:
+```markdown
+{"content":"{{bullet}} PDF Attachments\n\t- {{field_contents}}", "field_contents": "{{content}}", "list_separator": "\n\t- "}
+```
 
-    ```markdown
-    {"content":"{{bullet}} PDF Attachments\n\t- {{field_contents}}", "field_contents": "{{content}}", "list_separator": "\n\t- "}
-    ```
+Making the tags placeholder remove spaces and adding a hash sign before each tag:
 
-- Making the tags placeholder remove spaces and adding a hash sign before each tag:
-
-    ```markdown
-    {"content":"{{bullet}} Tags: {{field_contents}}", "field_contents": "#{{content}}", "link_style": "no-links", "list_separator": ", ", "remove_spaces": "true"}
-    ```
-
-{% endraw %}
+```markdown
+{"content":"{{bullet}} Tags: {{field_contents}}", "field_contents": "#{{content}}", "link_style": "no-links", "list_separator": ", ", "remove_spaces": "true"}
+```
