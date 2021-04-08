@@ -1,6 +1,7 @@
 # Summary
 
 - [Known limitations](./limitations.md)
+- [Changelog](./../CHANGELOG.md)
 
 ## Getting started
 
