@@ -37,6 +37,8 @@ Other files:
 -
 ```
 
+{% file src="../.gitbook/assets/mdnotes-default-template.md" caption="Mdnotes Default Template" %}
+
 ### Standalone Note Template
 
 This template is used when you use the menu `Create a standalone note`. It is essentially a duplicate of the [mdnotes default template](templates.md#mdnotes-default-template). Its purpose is to provide a secondary template that can be used to add notes with _some_ metadata and automatically adding links to Zotero.
@@ -44,6 +46,8 @@ This template is used when you use the menu `Create a standalone note`. It is es
 {% hint style="info" %}
 **Note**: Standalone notes must be activated in the `Preferences`.
 {% endhint %}
+
+{% file src="../.gitbook/assets/standalone-note-template.md" caption="Standalone Note Template" %}
 
 ```text
 Related to: [[%(metadataFileName)]]
@@ -84,6 +88,8 @@ This template is used when you use the menu `Export to markdown` and you have a 
 {{notes}}
 ```
 
+{% file src="../.gitbook/assets/zotero-metadata-template.md" caption="Default Zotero Metadata Template" %}
+
 ### Zotero Note Template
 
 This template is used when you use the menu `Export to markdown` and you have a Zotero note selected. You can add \(or remove\) any [note placeholders](placeholders.md#note-placeholders) to your template.
@@ -97,4 +103,6 @@ This template is used when you use the menu `Export to markdown` and you have a 
 
 {{noteContent}}
 ```
+
+{% file src="../.gitbook/assets/zotero-note-template.md" caption="Default Zotero Notes Template" %}
 
