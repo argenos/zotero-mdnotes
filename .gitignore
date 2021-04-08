@@ -1,5 +1,5 @@
 # Ignore the build artefacts which are produced by webpack
-content/markdown-utils.js
+content/markdown-utils.js*
 
 wiki
 gen
@@ -16,6 +16,9 @@ node_modules
 .env
 
 Makefile.in
+
+# Obsidian
+docs/.obsidian 
 
 # Deal with yarn's habit of throwing files into your root directory
 yarn-error.log
