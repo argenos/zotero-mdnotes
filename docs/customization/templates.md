@@ -37,7 +37,7 @@ Other files:
 -
 ```
 
-{% file src="../.gitbook/assets/mdnotes-default-template.md" caption="Mdnotes Default Template" %}
+{% file src="https://raw.githubusercontent.com/argenos/zotero-mdnotes/master/docs/advanced/templates/Mdnotes%20Default%20Template.md" caption="Mdnotes Default Template" %}
 
 ### Standalone Note Template
 
