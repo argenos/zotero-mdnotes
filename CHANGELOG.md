@@ -6,6 +6,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## Unreleased
 
+- Block references for the exported Zotero notes.
+  **Important note**: The block ID is using a hash of the block contents, i.e. if you change your format the block won't match any more.
+- The Zotero note export now uses [Joplin turndown](https://github.com/laurent22/joplin-turndown) instead of regexp for the html -> md translation.
+  - Add custom rules to avoid escaping characters to the turndown converter.
+    The custom rules prevent the escaping of Markdown exports within italics, bold, and `<p>` tags. It also leaves any `<font>` and `<span>` tags untranslated.
+  - **Note**: This means you probably have to set up again some of the custom formatting you've added. Some custom rules for the translations can be configured in the hidden preferences with the `html2md` properties, but they now require you to restart Zotero. Please ping me if you need additional rules not included there.
+- Custom placeholders (not yet in the documentation). 
+- Added a `noteTitle` placeholder to have different formatting from an item's title.
+- Added the ability to customise the text for Zotero links in hidden preferences
+- A few bug fixes
+
 ## [v0.1.3](https://github.com/argenos/zotero-mdnotes/releases/tag/0.1.3) - 2021-02-17
 
 - The `Create Standalone Note` menu is now optional and can be deactivated in the preferences.
