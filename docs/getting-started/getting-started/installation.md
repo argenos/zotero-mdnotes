@@ -19,3 +19,5 @@ You can grab the latest version of `zotero-mdnotes` [here](https://github.com/ar
 
 ## Update
 
+{% page-ref page="update.md" %}
+
