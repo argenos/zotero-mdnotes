@@ -2,13 +2,13 @@
 
 ## Getting started
 
-- [Quick-Start Guide](_docs/getting-started.md)
-  - [Installation](_docs/installation.md)
-  - [Configuration](_docs/configuration.md)
-  - [Update](_docs/update.md)
+- [Quick-Start Guide](getting-started/README.md)
+  - [Installation](getting-started/installation.md)
+  - [Configuration](getting-started/configuration.md)
+  - [Update](getting-started/update.md)
 
 ## Customization
 
-- [Templates](_docs/templates.md)
-- [Placeholders](_docs/placeholders.md)
-- [Field formatting](_docs/formatting.md)
+- [Templates](advanced/templates.md)
+- [Placeholders](advanced/placeholders.md)
+- [Field formatting](advanced/formatting.md)
