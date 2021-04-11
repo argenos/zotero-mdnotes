@@ -352,7 +352,11 @@ function noteToMarkdown(item) {
   noteMD.mdnotesFileName = getMDNoteFileName(parentItem);
   noteMD.metadataFileName = getZMetadataFileName(parentItem);
   if (getPref("obsidian.blocks")) {
-    noteMD.noteContent = Zotero.MarkdownUtils.addBlockIds(noteMD.noteContent, noteMD.mdnotesFileName);
+    let citekey = '';
+    if (citekey !== "undefined" && getPref("obsidian.blocks.use_citekey")) {
+      citekey = getCiteKey(parentItem);
+    }
+    noteMD.noteContent = Zotero.MarkdownUtils.addBlockIds(noteMD.noteContent, citekey);
   }
 
   return noteMD;
