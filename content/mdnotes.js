@@ -555,6 +555,9 @@ function get_placeholder_contents(template, fields) {
   const re = /{{(\w+)}}/g;
   let placeholders = template.match(re);
 
+  // In case a template doesn't have any placeholders
+  if (!placeholders) return;
+
   // Loop through all the placeholders
   for (const result of placeholders) {
     let placeholder = result.substring(2, result.length - 2)
