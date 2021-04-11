@@ -1,10 +1,9 @@
 <?xml version="1.0"?>
 <?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
 <?xml-stylesheet href="chrome://zotero-platform/content/preferences.css"?>
-<!DOCTYPE window SYSTEM "chrome://mdnotes/locale/mdnotes.dtd">
+<!DOCTYPE window SYSTEM "chrome://zotero-mdnotes/locale/zotero-mdnotes.dtd">
 
-<prefwindow id="mdnotes-pref" title="&mdnotes-preferences;"
-  xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+<prefwindow id="mdnotes-pref" title="&mdnotes-preferences;" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
   <prefpane label="&mdnotes-prefpane;" id="mdnotes-prefpane">
     <preferences>
       <preference id="pref-mdnotes-directory" name="extensions.mdnotes.directory" type="string" />

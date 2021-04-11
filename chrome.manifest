@@ -1,5 +1,5 @@
-content	mdnotes				content/
-locale	mdnotes	en-US		locale/en-US/
-skin	mdnotes	default		skin/
+content	zotero-mdnotes				content/
+locale	zotero-mdnotes	en-US		locale/en-US/
+skin	zotero-mdnotes	default		skin/
 
-overlay	chrome://zotero/content/zoteroPane.xul	chrome://mdnotes/content/overlay.xul
+overlay	chrome://zotero/content/zoteroPane.xul	chrome://zotero-mdnotes/content/overlay.xul

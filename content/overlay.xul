@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
-<?xml-stylesheet href="chrome://mdnotes/skin/overlay.css" type="text/css"?>
-<!DOCTYPE overlay SYSTEM "chrome://mdnotes/locale/mdnotes.dtd">
+<?xml-stylesheet href="chrome://zotero-mdnotes/skin/overlay.css" type="text/css"?>
+<!DOCTYPE window SYSTEM "chrome://zotero-mdnotes/locale/zotero-mdnotes.dtd">
 
-<overlay id="mdnotes-overlay"
-  xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+<overlay id="zotero-mdnotes-overlay"
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
   <stringbundleset>
     <stringbundle id="mdnotes-bundle" src="chrome://mdnotes/locale/mdnotes.properties"/>
@@ -31,8 +31,11 @@
     <menuitem id="mdnotes-options" insertafter="menu_preferences" label="&mdnotes-options.label;" oncommand="Zotero.Mdnotes.openPreferenceWindow();"/>
   </menupopup>
 
-  <!-- Include the main extension logic -->
+
+	<!-- Include the main extension logic -->
   <script src="chrome://zotero/content/include.js"/>
-  <script type="application/x-javascript" src="chrome://mdnotes/content/mdnotes.js"/>
-  <script type="application/x-javascript" src="chrome://mdnotes/content/markdown-utils.js"/>
+  <script src="chrome://zotero-mdnotes/content/webpack.js"/>
+  <!-- <script src="chrome://zotero-mdnotes/content/Mdnotes.js"/> -->
+  <script type="application/x-javascript" src="chrome://zotero-mdnotes/content/mdnotes.js"/>
+  <script type="application/x-javascript" src="chrome://zotero-mdnotes/content/MarkdownUtils.js"/>
 </overlay>
