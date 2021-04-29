@@ -25,7 +25,7 @@ Which configuration to choose depends on your preferences, and on your Zotfile c
 
 ### Template directory
 
-[Templates](../advanced/templates/defaults.md) define how the final Markdown document will look like. Starting on [v0.1.0](/zotero-mdnotes/v0.1.0) you can specify a templates directory in the `Tools > Mdnotes preferences`.
+[Templates](../advanced/templates/defaults.md) define how the final Markdown document will look like. Starting on [v0.1.0](/changelog#v010---2020-11-15) you can specify a templates directory in the `Tools > Mdnotes preferences`.
 
 Depending on your choice of [file organization](#file-organization), you'll need to edit different templates.
 

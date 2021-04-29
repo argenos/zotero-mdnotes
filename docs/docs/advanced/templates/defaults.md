@@ -3,7 +3,7 @@ title: Default Templates
 sidebar_position: 1
 ---
 
-Templates define how the final Markdown document will look like. Starting on [v0.1.0](/zotero-mdnotes/v0.1.0) you can specify a templates directory in the `Tools > Mdnote preferences`.
+Templates define how the final Markdown document will look like. Starting on [v0.1.0](/changelog#v010---2020-11-15) you can specify a templates directory in the `Tools > Mdnote preferences`.
 Once a directory is specified, `Mdnotes` will look for the following files (they must be named **exactly** like this):
 
 ```txt
