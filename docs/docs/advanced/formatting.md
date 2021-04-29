@@ -1,4 +1,7 @@
-# Custom Formatting
+---
+title: Custom Formatting
+sidebar_position: 3
+---
 
 Starting with **v0.1.0** it's possible to specify custom formatting and to use templates.
 
@@ -41,7 +44,7 @@ Any placeholder that doesn't have their formatting defined in the hidden prefere
 
 - `link_style`: As defined by the preference of [Internal links](#internal-links). Valid values include `wiki`, `markdown` and `no-links`.
 - `list_separator`: For fields that contain more than one value, the default is `, `.
-- `change_case`: How to capitalize the contents of the field: `title`, `sentence`, `lower` or `upper` case. The default will return the field content in its original case.
+- `text_case`: How to capitalize the contents of the field: `title`, `sentence`, `lower` or `upper` case. The default will return the field content in its original case.
 - `remove_spaces`: If this is set to `true` spaces will be replaced with dashes.
 
 ### Adding new formatting rules
