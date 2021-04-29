@@ -1,5 +1,0 @@
-Related to: [[%(metadataFileName)]]
-
-## Notes
-
-- 

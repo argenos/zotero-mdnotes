@@ -1,4 +1,7 @@
-# Custom Formatting
+---
+title: Custom Formatting
+sidebar_position: 3
+---
 
 Starting with **v0.1.0** it's possible to specify custom formatting and to use templates.
 

@@ -1,4 +1,7 @@
-# Placeholders and wildcards
+---
+title: Placeholders and wildcards
+sidebar_position: 2
+---
 
 ## Placeholders
 
@@ -23,7 +26,7 @@ In addition to Zotero's supported fields, Mdnotes adds a few placeholders for an
 - `{{mdnotesFileName}}` - The name of the default mdnotes file (following the naming convention).
 - `{{metadataFileName}}` - The name of the Zotero metadata file (following the naming convention).
 
-Note: The setting `extensions.mdnotes.templates.include_empty_placeholders` is *NOT* being used right now and won't have an effect.
+Note: The setting `extensions.mdnotes.templates.include_empty_placeholders` is _NOT_ being used right now and won't have an effect.
 
 ### Note placeholders
 
