@@ -24,6 +24,11 @@ module.exports = {
           label: 'Docs',
         },
         {
+          to: '/changelog',
+          position: 'left',
+          label: 'Changelog',
+        },
+        {
           href: 'https://github.com/argenos/zotero-mdnotes',
           label: 'GitHub',
           position: 'right',
