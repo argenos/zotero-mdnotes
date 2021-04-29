@@ -30,9 +30,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [v0.1.0](https://github.com/argenos/zotero-mdnotes/releases/tag/0.1.0) - 2020-11-15
 
-- Add support for [templates](./docs/advanced/templates.md)
-  - Removes unused preferences that are replaced by [placeholders](./docs/advanced/placeholders.md)
-- Add [custom formatting](./docs/advanced/formatting.md) for fields
+- Add support for templates.
+  - Removes unused preferences that are replaced by placeholders.
+- Add custom formatting for fields
   - Add hidden preference to customize the format of Zotero Notes
 - The content of the batch export with the single-file setting is now consistent with the split-files settings.
 - Remove automatic capitalization of links
