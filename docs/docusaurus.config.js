@@ -29,13 +29,13 @@ module.exports = {
           label: 'Changelog',
         },
         {
+          type: 'docsVersionDropdown',
+          position: 'right'
+        },
+        {
           href: 'https://github.com/argenos/zotero-mdnotes',
           label: 'GitHub',
           position: 'right',
-        },
-        {
-          type: 'docsVersionDropdown',
-          position: 'right'
         },
       ],
     },
