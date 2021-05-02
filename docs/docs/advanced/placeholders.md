@@ -3,6 +3,15 @@ title: Placeholders and wildcards
 sidebar_position: 2
 ---
 
+There are both placeholders (e.g. `{{citekey}}`) and wildcards (e.g. `%(citekey)` for all fields.
+
+So when should you use them on your templates?
+
+- `{{placeholders}}` are a quick way to get `- <name of field>: <field content>` and allows you to apply some formatting.
+- `%(wildcards)%` are the raw contents of that field.
+
+Another important distinction is that `{{placeholders}}` are removed from your template if the item you're exporting doesn't have them, while `%(wildcards)` will be left there, and therefore should be used sparingly for things you know all items will have, e.g. title, authors, citekey, etc.
+
 ## Placeholders
 
 ### Item placeholders
@@ -41,4 +50,4 @@ Mdnotes supports the following placeholders for Zotero notes:
 
 ## Wildcards
 
-A `%(wildcard)` uses the same logic as the placeholder, but only includes the content of a Zotero item without any formatting. Keep in mind that any fields not included in a Zotero item will not be deleted from your file.
+A `%(wildcard)` uses the same logic as the placeholder, but only includes the content of a Zotero field without any formatting. Keep in mind that any fields not included in a Zotero item will not be deleted from your file.
