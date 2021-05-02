@@ -35,7 +35,17 @@ In addition to Zotero's supported fields, Mdnotes adds a few placeholders for an
 - `{{mdnotesFileName}}` - The name of the default mdnotes file (following the naming convention).
 - `{{metadataFileName}}` - The name of the Zotero metadata file (following the naming convention).
 
-Note: The setting `extensions.mdnotes.templates.include_empty_placeholders` is _NOT_ being used right now and won't have an effect.
+#### Adding a new placeholder
+
+After setting up your templates, adding a new placeholder is as simple as adding the placeholder in the template you for your exports. For example, adding `{{publicationTitle}}` to your template will include the correct field for journals.
+
+```markdown {2} title="Zotero Metadata Template.md"
+{{proceedingsTitle}}
+{{publicationTitle}}
+{{date}}
+```
+
+The placeholder will use the [default](formatting.md#placeholder-format) formatting, unless you add a [new formatting rule](formatting.md#adding-new-formatting-rules).
 
 ### Note placeholders
 
@@ -43,10 +53,54 @@ Mdnotes supports the following placeholders for Zotero notes:
 
 - `{{mdnotesFileName}}` - The filename for the [mdnotes file](../getting-started/configuration.md#file-naming-convention) according to the file naming convention.
 - `{{metadataFileName}}` - The filename for a [Zotero Item export](../getting-started/configuration.md#file-naming-convention) according to the file naming convention.
-- `{{title}}` - The note's title (usually the first line).
+- `{{noteTitle}}` - The note's title (usually the first line).
 - `{{noteContent}}` - The contents of the note, translated to markdown as defined in the [preferences](./formatting.md#zotero-note-formatting)
 - `{{related}}` - A list of [related items](https://www.zotero.org/support/related).
 - `{{tags}}` - The list of tags for the selected note.
+
+### Custom placeholders
+
+Much like [adding new field placeholders](#adding-a-new-placeholder), it is possible to add custom placeholders. For this you'll need to add [new formatting rules](formatting.md#adding-new-formatting-rules). There are two main types of custom placeholders depending on their contents:
+
+- those that get their content from a Zotero field, in which case you need to define which field to get the contents from: `zotero_field: <fieldName>`.
+  :::tip
+  To define an additional placeholder that formats the authors as a list, named `{{authorList}}`, you should add a preference with the following:
+
+  **Name**:
+
+  ```txt
+  extensions.mdnotes.placeholder.authorList
+  ```
+
+  **Value**:
+
+  ```txt
+  {"content":"List of Authors:\n\t- {{field_contents}}", "zotero_field":"author", "list_separator": "\n\t- ",}
+  ```
+
+  Note that your template can use both the default field placeholder `{{author}}` and your custom placeholder `{{authorList}}`.
+
+  :::
+
+- those that have pre-defined contents, which need a `custom_content: <content>` definition
+  :::tip
+  To define a custom placeholder for `{{Earth}}`, you should add a preference with the following:
+
+  **Name**:
+
+  ```txt
+  extensions.mdnotes.placeholder.Earth
+  ```
+
+  **Value**:
+
+  ```txt
+  {"custom_content":"Mostly harmless"}
+  ```
+
+  :::
+
+When specifying custom placeholders, the preference name shouldn't match a Zotero field.
 
 ## Wildcards
 

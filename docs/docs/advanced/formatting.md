@@ -14,7 +14,15 @@ The internal link preference influences how file names and therefore how links l
 
 ## Zotero Note formatting
 
-Zotero Notes are formated in HTML. The hidden preference `extensions.mdnotes.html_to_md` has a dictionary of how the HTML elements are translated into markdown.
+Zotero Notes are formatted in HTML. The hidden preferences `extensions.mdnotes.html2.md` configures the [Joplin turndown](https://github.com/laurent22/joplin-turndown) styles and additional rules.
+
+To keep some of the elements used in Zotfile's PDF extraction, `<font>` and `<span>` tags are currently kept unmodified when translated to Markdown.
+
+:::note Migration from v0.1.3 to v0.2.0
+
+The old dictionary on the `extensions.mdnotes.html_to_md` is no longer supported. If you need additional rules not included in the new `html2md` preferences, please open an issue.
+
+:::
 
 ## Placeholders
 
@@ -51,7 +59,7 @@ Any placeholder that doesn't have their formatting defined in the hidden prefere
 
 If you want to add custom formatting for any field not currently there, you can add the format for a placeholder with right-click and `New > String`.
 
-### Preference name
+#### Preference name
 
 The preference name should be `extensions.mdnotes.placeholder.<yourFieldHere>`, where `yourFieldHere` should match a [supported Zotero field](https://www.zotero.org/support/kb/item_types_and_fields). Keep in mind that Zotero fields are usually accessed using camel case, and should be (usually) formatted as `fieldName`, e.g. `seriesTitle`.
 
@@ -64,7 +72,7 @@ In addition to the fields described in the [default field format](#field-format)
 - `content` - Formatting the placeholder's content ([default placeholder format](#placeholder-format))
 - `field_contents` - Formatting the field itself, which defaults to `{{content}}`
 
-##### Examples
+### Examples
 
 Replacing the field label with custom text and changing the list separator to make a list:
 
