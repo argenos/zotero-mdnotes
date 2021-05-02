@@ -1,6 +1,6 @@
 # Single-file Exports
 
-:::warning
+:::caution
 Single-file exports will replace your existing file **without** asking for confirmation. If you don't want this to happen, you must use [multi-file exports](multi-file.md).
 :::
 
