@@ -15,14 +15,14 @@ Once a directory is specified, `Mdnotes` will look for the following files (they
 
 ```
 
-The files must be located at the root of the folder you chose. For now, hidden folders (those starting with `.`) are not supported.
+The files must be located at the root of the folder you chose. For now, hidden folders (those whose name starts with `.`) are not supported.
 If there is no path specified or the file doesn't exist, Mdnotes will use the default templates.
 
 The default templates can give you an idea of existing [placeholders and wildcards](../placeholders.md)
 
 ## Export to markdown
 
-Using the `Export to markdown` will export whatever you have selected, using the [zotero metadata template](#zotero-metadata-template) if you have selected an item or the [zotero note template](#zotero-note-template) of you have notes in your selected items.
+`Export to markdown` will export whatever you have selected. It uses the [zotero metadata template](#zotero-metadata-template), if you have selected an item, and the [zotero note template](#zotero-note-template) if there are notes in your selected items.
 
 ### Zotero Metadata Template
 
