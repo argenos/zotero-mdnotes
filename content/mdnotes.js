@@ -788,7 +788,7 @@ function getParentItem(item) {
 }
 
 async function addObsidianLink(outputFile, item) {
-  let fileName = outputFile.split("/").pop();
+  let fileName = OS.Path.basename(outputFile);
   fileName = fileName.split(".")[0];
   let obsidianURI = getObsidianURI(fileName);
   let parentItem = getParentItem(item);
