@@ -280,13 +280,15 @@ function lowerCaseDashTitle(content) {
 }
 
 function getZoteroNotes(item) {
-  var noteIDs = item.getNotes();
   var noteArray = [];
+  if (item.isRegularItem()) {
+    var noteIDs = item.getNotes();
 
-  if (noteIDs) {
-    for (let noteID of noteIDs) {
-      let note = Zotero.Items.get(noteID);
-      noteArray.push(note);
+    if (noteIDs) {
+      for (let noteID of noteIDs) {
+        let note = Zotero.Items.get(noteID);
+        noteArray.push(note);
+      }
     }
   }
 
@@ -304,20 +306,22 @@ function getPDFFileLink(attachment) {
 
 function getZoteroAttachments(item) {
   const linkStylePref = getPref("pdf_link_style");
-  let attachmentIDs = item.getAttachments();
   var linksArray = [];
-  for (let id of attachmentIDs) {
-    let attachment = Zotero.Items.get(id);
-    if (attachment.attachmentContentType == "application/pdf") {
-      let link;
-      if (linkStylePref === "zotero") {
-        link = `[${attachment.getField("title")}](${getZoteroPDFLink(attachment)})`;
-      } else if (linkStylePref === "wiki") {
-        link = formatInternalLink(attachment.getField("title"), "wiki");
-      } else {
-        link = `[${attachment.getField("title")}](${getPDFFileLink(attachment)})`;
+  if (item.isRegularItem()) {
+    let attachmentIDs = item.getAttachments();
+    for (let id of attachmentIDs) {
+      let attachment = Zotero.Items.get(id);
+      if (attachment.attachmentContentType == "application/pdf") {
+        let link;
+        if (linkStylePref === "zotero") {
+          link = `[${attachment.getField("title")}](${getZoteroPDFLink(attachment)})`;
+        } else if (linkStylePref === "wiki") {
+          link = formatInternalLink(attachment.getField("title"), "wiki");
+        } else {
+          link = `[${attachment.getField("title")}](${getPDFFileLink(attachment)})`;
+        }
+        linksArray.push(link);
       }
-      linksArray.push(link);
     }
   }
   return linksArray;
@@ -464,10 +468,14 @@ function getZoteroNoteTitles(item) {
 function getNCFileName(item, filePrefs) {
   let fileName;
   if (item.isNote()) {
-    let parentItem = Zotero.Items.get(item.parentItemID);
-    let parentTitle = getFileName(parentItem);
     let noteTitle = item.getField("title");
-    fileName = `${parentTitle} - ${noteTitle}`;
+    if (item.parentItemID) {
+      let parentItem = Zotero.Items.get(item.parentItemID);
+      let parentTitle = getFileName(parentItem);
+      fileName = `${parentTitle} - ${noteTitle}`;
+    } else {
+      fileName = `${noteTitle}`;
+    }
   } else {
     fileName = getFileName(item);
   }
