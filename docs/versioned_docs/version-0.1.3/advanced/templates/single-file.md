@@ -59,7 +59,7 @@ For single-file exports, you might want to edit your template to look like this:
 {{tags}}
 {{related}}
 
-{{noteTitle}}
+{{title}}
 
 {{noteContent}}
 ```
