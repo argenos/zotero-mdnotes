@@ -45,7 +45,7 @@
             <separator />
             <radiogroup id="id-mdnotes-file-group" preference="pref-mdnotes-file-conf">
               <caption label="&mdnotes-file-number-label;" />
-              <description style="font-size: 10px"> Exporting notes as a single file or in multiple files</description>
+              <description style="font-size: 10px"> &mdnotes-file-number-description; </description>
               <hbox>
                 <radio id="single-file" label="Single file" value="single" />
                 <radio id="split-files" label="Split files" selected="true" value="split" />
@@ -55,7 +55,7 @@
             <radiogroup id="id-mdnotes-link-group" preference="pref-mdnotes-link-style">
               <caption label="&mdnotes-links-label;" />
               <description style="font-size: 10px">
-                The link format is applied to all the metadata fields, except the cite key.
+                &mdnotes-links-description;
               </description>
               <hbox>
                 <radio id="no-links" label="No links" value="none" />
@@ -63,11 +63,11 @@
                 <radio id="markdown" label="[Markdown style](markdown-style)" value="markdown" />
               </hbox>
               <description style="font-size: 10px">
-                No links will output metadata as plain text
+                &mdnotes-links-no-links-description;
               </description>
 
               <description style="font-size: 10px">
-                Markdown links will change how files are renamed and substitute spaces with dashes.
+                &mdnotes-links-markdown-links-description;
               </description>
             </radiogroup>
             <separator />
@@ -77,7 +77,7 @@
               <button id="id-mdnotes-vault-path-button" label="&choose;" oncommand="Zotero.ZotFile.chooseDirectory().then((folder) => { if(folder != '') {Zotero.Mdnotes.setPref('directory', folder);} });"/>
             </hbox>
             <description style="font-size: 10px">
-              Which path to suggest in the file picker
+              &note-directory-description;
             </description>
             <separator />
             <checkbox preference="pref-mdnotes-attach-to-zotero" label="&mdnotes-attach-to-zotero;" />
@@ -88,7 +88,7 @@
               <button id="id-mdnotes-templates-path-button" label="&choose;" oncommand="Zotero.ZotFile.chooseDirectory().then((folder) => { if(folder != '') {Zotero.Mdnotes.setPref('templates.directory', folder);} });"/>
             </hbox>
             <description style="font-size: 10px">
-              Path where templates are stored. Templates should be stored in the root folder; subfolders are not supported.
+              &template-directory-description;
             </description>
 
           </vbox>

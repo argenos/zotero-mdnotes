@@ -4,12 +4,18 @@
 <!-- First tab -->
 <!ENTITY mdnotes-export "Export preferences">
 <!ENTITY citekey-title "Use the item's citekey as title?">
+<!ENTITY pref-standalone-menu "Show Standalone Note menu">
 <!ENTITY mdnotes-file-number-label "File organization:">
+<!ENTITY mdnotes-file-number-description "Exporting notes as a single file or in multiple files">
 <!ENTITY mdnotes-links-label "Internal Links">
+<!ENTITY mdnotes-links-description "The link format is applied to all the metadata fields, except the cite key">
+<!ENTITY mdnotes-links-no-links-description "No links will output metadata as plain text">
+<!ENTITY mdnotes-links-markdown-links-description "Markdown links will change how files are renamed and substitute spaces with dashes">
 <!ENTITY note-directory-label "Export directory">
+<!ENTITY note-directory-description "Which path to suggest in the file picker">
 <!ENTITY mdnotes-attach-to-zotero "Attach file links to Zotero">
 <!ENTITY template-directory-label "Template folder">
-<!ENTITY pref-standalone-menu "Show Standalone Note menu">
+<!ENTITY template-directory-description "Path where templates are stored. Templates should be stored in the root folder; subfolders are not supported">
 
 <!-- Second tab -->
 <!ENTITY file-names "File names">
@@ -26,3 +32,15 @@
 
 <!-- Common -->
 <!ENTITY choose "Choose...">
+
+<!-- onerlay -->
+<!ENTITY mdnotes-overlay-export-item-label "Export to markdown">
+<!ENTITY mdnotes-overlay-export-item-tooltiptext "Export the selected items into a markdown file">
+<!ENTITY mdnotes-overlay-single-file-export-label "Create full export note">
+<!ENTITY mdnotes-overlay-export-item-tooltiptext "Export an item's metadata and notes as a single file">
+<!ENTITY mdnotes-overlay-batch-export-item-label "Batch export to markdown">
+<!ENTITY mdnotes-overlay-batch-export-item-tooltiptext "Create all markdown files for the selected items">
+<!ENTITY mdnotes-overlay-create-notes-file-label "Create Mdnotes file">
+<!ENTITY mdnotes-overlay-create-notes-file-tooltiptext "Create a markdown file for your notes">
+<!ENTITY mdnotes-overlay-create-standalone-note-file-label "Create a standalone note">
+<!ENTITY mdnotes-overlay-create-standalone-note-file-tooltiptext "Create a standalone markdown note">

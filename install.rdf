@@ -13,12 +13,15 @@
       <Description>
         <em:id>zotero@chnm.gmu.edu</em:id>
         <em:minVersion>5.0.79</em:minVersion>
+        <!-- users could change below to 6 for "compatibility"(not real) with Zotero 6.0 -->
         <em:maxVersion>5.0.*</em:maxVersion>
+        <!-- <em:maxVersion>6.0.*</em:maxVersion> -->
       </Description>
       <Description>
         <em:id>juris-m@juris-m.github.io</em:id>
         <em:minVersion>5.0.79</em:minVersion>
         <em:maxVersion>5.0.*</em:maxVersion>
+        <!-- <em:maxVersion>6.0.*</em:maxVersion> -->
       </Description>
     </em:targetApplication>
   </Description>

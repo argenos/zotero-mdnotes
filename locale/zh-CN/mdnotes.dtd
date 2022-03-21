@@ -1,0 +1,53 @@
+<!ENTITY mdnotes-preferences "Mdnotes首选项">
+<!ENTITY mdnotes-prefpane "Markdown preferences">
+
+<!-- 第一个tab -->
+<!ENTITY mdnotes-export "导出设置">
+<!ENTITY citekey-title "使用条目的citekey作为文件标题？">
+<!ENTITY pref-standalone-menu "显示独立笔记菜单">
+<!ENTITY mdnotes-file-number-label "文件组织:">
+<!-- kooks unsuitable because of the font size...so comment it off -->
+<!-- <!ENTITY mdnotes-file-number-description "导出笔记为单个(single)文件/多个(split)文件"> -->
+<!ENTITY mdnotes-file-number-description "Exporting notes as a single file or in multiple files">
+<!ENTITY mdnotes-links-label "内部链接">
+<!-- <!ENTITY mdnotes-links-description "此链接格式应用于所有的元数据字段，除了citekey"> -->
+<!-- <!ENTITY mdnotes-links-no-links-description "No links将元数据输出为普通文本"> -->
+<!-- <!ENTITY mdnotes-links-markdown-links-description "Markdown links将改变文件的重命名方式，并使用破折号替换空格"> -->
+<!ENTITY mdnotes-links-description "The link format is applied to all the metadata fields, except the cite key">
+<!ENTITY mdnotes-links-no-links-description "No links will output metadata as plain text">
+<!ENTITY mdnotes-links-markdown-links-description "Markdown links will change how files are renamed and substitute spaces with dashes">
+<!ENTITY note-directory-label "导出目录">
+<!-- <!ENTITY note-directory-description "文件选择器中建议的路径…"> -->
+<!ENTITY note-directory-description "Which path to suggest in the file picker">
+<!ENTITY mdnotes-attach-to-zotero "将文件链接到Zotero">
+<!ENTITY template-directory-label "模板目录">
+<!-- <!ENTITY template-directory-description "模板存储的路径。模板应该存储在根文件夹中；不支持子文件夹"> -->
+<!ENTITY template-directory-description "Path where templates are stored. Templates should be stored in the root folder; subfolders are not supported">
+
+<!-- 第二个tab -->
+<!ENTITY file-names "文件名称">
+
+<!ENTITY mdnotes-files "Mdnotes">
+<!ENTITY standalone-files "独立笔记">
+<!ENTITY zotero-metadata-files "Zotero元数据">
+<!ENTITY zotero-note-files "Zotero笔记">
+<!ENTITY prefix "前缀:">
+<!ENTITY suffix "后缀:">
+
+<!-- Tools menu -->
+<!ENTITY mdnotes-options.label "Mdnotes首选项">
+
+<!-- Common -->
+<!ENTITY choose "选择...">
+
+<!-- onerlay -->
+<!ENTITY mdnotes-overlay-export-item-label "导出为markdown">
+<!ENTITY mdnotes-overlay-export-item-tooltiptext "导出所选条目为一个markdown文件">
+<!ENTITY mdnotes-overlay-single-file-export-label "创建完整的导出笔记">
+<!ENTITY mdnotes-overlay-export-item-tooltiptext "导出条目的元数据和笔记为单独的文件">
+<!ENTITY mdnotes-overlay-batch-export-item-label "批量导出为markdown文件">
+<!ENTITY mdnotes-overlay-batch-export-item-tooltiptext "为所选条目创建全部的markdown文件">
+<!ENTITY mdnotes-overlay-create-notes-file-label "创建Mdnotes文件">
+<!ENTITY mdnotes-overlay-create-notes-file-tooltiptext "为所选条目创建一个markdown文件">
+<!ENTITY mdnotes-overlay-create-standalone-note-file-label "创建一个单独的文件">
+<!ENTITY mdnotes-overlay-create-standalone-note-file-tooltiptext "创建一个单独的markdown笔记">
