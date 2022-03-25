@@ -1,4 +1,4 @@
-name: documentation
+name: Deploy documentation to GH Pages
 
 on:
   push:
