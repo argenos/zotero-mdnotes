@@ -900,7 +900,7 @@ Zotero.Mdnotes =
         );
       await Zotero.Schema.schemaUpdatePromise;
 
-      const FilePicker = require("zotero/filePicker").default;
+      const FilePicker = require("zotero/modules/filePicker").default;
 
       const fp = new FilePicker();
       var oldPath = getPref("directory")
@@ -1015,7 +1015,7 @@ Zotero.Mdnotes =
         );
       await Zotero.Schema.schemaUpdatePromise;
 
-      const FilePicker = require("zotero/filePicker").default;
+      const FilePicker = require("zotero/modules/filePicker").default;
 
       const fp = new FilePicker();
       var oldPath = getPref("directory")
@@ -1067,7 +1067,7 @@ Zotero.Mdnotes =
         );
       await Zotero.Schema.schemaUpdatePromise;
 
-      const FilePicker = require("zotero/filePicker").default;
+      const FilePicker = require("zotero/modules/filePicker").default;
 
       const fp = new FilePicker();
       var oldPath = getPref("directory")
