@@ -789,7 +789,8 @@ function getParentItem(item) {
 }
 
 async function addObsidianLink(outputFile, item) {
-  let fileName = outputFile.split("/").pop();
+  let folderSep = Zotero.isWin ? '\\' : '/';
+  let fileName = outputFile.split(folderSep).pop();
   fileName = fileName.split(".")[0];
   let obsidianURI = getObsidianURI(fileName);
   let parentItem = getParentItem(item);
