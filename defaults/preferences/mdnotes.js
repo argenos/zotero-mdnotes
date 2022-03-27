@@ -48,3 +48,4 @@ pref("extensions.mdnotes.obsidian.vault", "");
 pref("extensions.mdnotes.obsidian.attach_obsidian_uri", false);
 pref("extensions.mdnotes.obsidian.blocks", false);
 pref("extensions.mdnotes.obsidian.blocks.use_citekey", false);
+pref("extensions.mdnotes.obsidian.dir", "");
