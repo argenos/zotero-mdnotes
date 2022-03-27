@@ -739,7 +739,15 @@ function getFilePath(path, filename) {
 
 function getObsidianURI(fileName) {
   let uriStart = `obsidian://open?vault=${getPref("obsidian.vault")}&file=`;
-  let encodedFileName = Zotero.File.encodeFilePath(fileName);
+
+  if(getPref("obsidian.dir").length > 0) {
+    let fileWithPath = getPref("obsidian.dir") + "/" + fileName;
+  }
+  else{
+    let fileWithPath = fileName;
+  }
+
+  let encodedFileName = Zotero.File.encodeFilePath(fileWithPath);
 
   return `${uriStart}${encodedFileName}`;
 }
