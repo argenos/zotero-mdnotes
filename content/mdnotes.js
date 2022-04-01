@@ -92,22 +92,10 @@ const typemap = {
   webpage: "Webpage",
 };
 
-function day_of_the_month(d) {
-  return (d.getDate() < 10 ? "0" : "") + d.getDate();
-}
-
-function get_month_mm_format(d) {
-  return (d.getMonth() < 10 ? "0" : "") + d.getMonth();
-}
-
 function getDateAdded(item) {
-  const date = new Date(item.getField("dateAdded"));
-  var dateAddedStr = `${date.getFullYear()}-${get_month_mm_format(
-    date
-  )}-${day_of_the_month(date)}`;
-  return dateAddedStr;
+ const date = new Date(item.getField("dateAdded"));
+ return simpleISODate(date)
 }
-
 function getCiteKey(item) {
   if (typeof Zotero.BetterBibTeX === "object" && Zotero.BetterBibTeX !== null) {
     var bbtItem = Zotero.BetterBibTeX.KeyManager.get(item.getField("id"));
@@ -118,15 +106,15 @@ function getCiteKey(item) {
 }
 
 function getLocalZoteroLink(item) {
-  let linksString = "[Local library](zotero://select/items/";
+  let linksString = "zotero://select/items/";
   const library_id = item.libraryID ? item.libraryID : 0;
-  linksString += `${library_id}_${item.key})`;
+  linksString += `${library_id}_${item.key}`;
 
   return linksString;
 }
 
 function getCloudZoteroLink(item) {
-  return `[Cloud library](${Zotero.URI.getItemURI(item)})`;
+  return `${Zotero.URI.getItemURI(item)}`;
 }
 
 function getDOI(item) {
@@ -232,6 +220,8 @@ function getItemMetadata(item) {
       content = getDOI(item);
     } else if (field === "url") {
       content = getURL(item);
+    } else if (field === "dateAdded") {
+      content = simpleISODate(content);
     }
     metadata[field] = content;
   }
@@ -249,17 +239,6 @@ function getItemMetadata(item) {
   metadata.metadataFileName = getZMetadataFileName(item);
 
   return metadata;
-}
-
-function htmlLinkToMarkdown(link) {
-  const mdLink = `[${link.text}](${link.href})`;
-  return mdLink;
-}
-
-function formatLists(list, bullet) {
-  for (const element of list.childNodes) {
-    element.innerHTML = `${bullet} ${element.innerHTML}`;
-  }
 }
 
 function formatInternalLink(content, linkStyle) {
@@ -356,67 +335,29 @@ function formatNoteTitle(titleString) {
 
 function noteToMarkdown(item) {
   let noteContent = item.getNote();
-  const domParser = Components.classes[
-      "@mozilla.org/xmlextras/domparser;1"
-    ].createInstance(Components.interfaces.nsIDOMParser),
-    mapObj = JSON.parse(getPref("html_to_md")),
-    re = new RegExp(Object.keys(mapObj).join("|"), "gi");
   var noteMD = {};
-  let noteString = "";
-  const fullDomNoteBody = domParser.parseFromString(noteContent, "text/html")
-    .body;
-  const fullDomNote = fullDomNoteBody.childNodes;
+  // Use the turndown provider to turn the HTML into Markdown
+  noteMD.noteContent = Zotero.MarkdownUtils.html2md(noteContent);
 
-  for (let i = 0; i < fullDomNote.length; i++) {
-    const para = fullDomNote[i];
-
-    if (i === 0) {
-      noteMD.title = formatNoteTitle(para.textContent);
-      continue;
-    }
-
-    if (para.innerHTML) {
-      for (const link of para.getElementsByTagName("a")) {
-        link.outerHTML = htmlLinkToMarkdown(link);
-      }
-
-      const parsedInner = para.innerHTML.replace(re, function (matched) {
-        return mapObj[matched];
-      });
-      para.innerHTML = parsedInner;
-
-      if (para.innerHTML.startsWith('"#')) {
-        noteString +=
-          para.textContent.substring(1, para.textContent.lastIndexOf('"')) +
-          "\n\n";
-        continue;
-      }
-
-      if (para.innerHTML.startsWith('"')) {
-        noteString += `> ${para.textContent}\n\n`;
-        continue;
-      }
-
-      // Handle lists
-      if (para.outerHTML.startsWith("<ul>")) {
-        formatLists(para, getPref("bullet"));
-      }
-
-      if (para.outerHTML.startsWith("<ol>")) {
-        formatLists(para, "1.");
-      }
-
-      noteString += para.textContent + "\n\n";
-    }
-  }
-
-  noteMD.noteContent = noteString;
+  // The original implementation took the text contents of the first
+  // paragraph and formatted it. Let's do the same with the first
+  // Markdown line (= paragraph).
+  const extractedTitle = Zotero.MarkdownUtils.extractTitle(noteMD.noteContent);
+  noteMD.title = formatNoteTitle(extractedTitle);
+  noteMD.noteTitle = noteMD.title;
   noteMD.tags = getTags(item);
   noteMD.related = getRelatedItems(item);
 
   let parentItem = Zotero.Items.get(item.parentItemID);
   noteMD.mdnotesFileName = getMDNoteFileName(parentItem);
   noteMD.metadataFileName = getZMetadataFileName(parentItem);
+  if (getPref("obsidian.blocks")) {
+    let citekey = '';
+    if (citekey !== "undefined" && getPref("obsidian.blocks.use_citekey")) {
+      citekey = getCiteKey(parentItem);
+    }
+    noteMD.noteContent = Zotero.MarkdownUtils.addBlockIds(noteMD.noteContent, citekey);
+  }
 
   return noteMD;
 }
@@ -430,11 +371,10 @@ function getFileName(item) {
   if (citekeyTitle) {
     return getCiteKey(item);
   } else {
-    // TODO add checks for Windows special characters
     if (getPref("link_style") === "wiki") {
-      return item.getField("title");
+      return sanitizeFilename(item.getField("title"));
     } else {
-      return lowerCaseDashTitle(item.getField("title"));
+      return sanitizeFilename(lowerCaseDashTitle(item.getField("title")));
     }
   }
 }
@@ -513,6 +453,10 @@ async function getMDNoteFileContents(item, standalone) {
     fileName = metadata.mdnotesFileName;
     template = await readTemplate("Mdnotes Default Template");
   }
+
+  // Add custom placeholders
+  get_placeholder_contents(template, metadata);
+
   let formattedPlaceholders = format_placeholders(metadata);
   let content = remove_invalid_placeholders(
     replace_placeholders(template, formattedPlaceholders)
@@ -577,6 +521,13 @@ function replace_wildcards(str, args) {
   return str.replace(/%\((\w+)\)/g, (match, name) => args[name]);
 }
 
+
+/**
+ * 
+ * @param {string} str The string to be replaced
+ * @param {Object} args An array with the placeholder name as key and the (formatted) contents as values
+ * @returns {string} A string with the placeholders replaced
+ */
 function replace_placeholders(str, args) {
   return str.replace(/{{(\w+)}}/g, (match, name) =>
     args[name] ? args[name] : "{{invalid}}"
@@ -603,21 +554,56 @@ function skipItem(value) {
   return skip && !getPref("templates.include_empty_placeholders");
 }
 
+
+function get_placeholder_contents(template, fields) {
+  const re = /{{(\w+)}}/g;
+  let placeholders = template.match(re);
+
+  // In case a template doesn't have any placeholders
+  if (!placeholders) return;
+
+  // Loop through all the placeholders
+  for (const result of placeholders) {
+    let placeholder = result.substring(2, result.length - 2)
+
+    // Check if it's a normal field, and skip it if so
+    if (fields.hasOwnProperty(placeholder)) {
+      continue;
+    }
+
+    // Get the settings for that particular placeholder
+    let settings = getFormattingSettings(placeholder);
+
+    if (settings.zotero_field){
+      if (fields.hasOwnProperty(settings.zotero_field)) {
+        let content = fields[settings.zotero_field];
+        fields[placeholder] = content;
+      }
+    } else if (settings.custom_content) {
+      fields[placeholder] = settings.custom_content;
+    }
+  }
+
+}
+
 /**
  * @param {Object} placeholders An object that contains the item's fields as keys, and its contents as values
  * @return {string} The formatted string
  */
 function format_placeholders(placeholders) {
   let formattedPlaceholders = {};
+
+  // Loop through the item metadata and replace any placeholder that matches its field
   for (const [key, value] of Object.entries(placeholders)) {
     if (skipItem(value)) {
       continue;
     }
 
+    let settings = getFormattingSettings(key);
+
     // Replace a potential undefined with an empty string instead of undefined
     let newValue = value ? value : "";
     let formatted_label = capitalize_field_label(key);
-    let settings = getFormattingSettings(key);
 
     // Exceptions that already come formatted as external links
     if (
@@ -639,7 +625,7 @@ function format_placeholders(placeholders) {
       : `{{bullet}} {{field_name}}: {{field_contents}}`;
     let args = {
       field_contents: formatted_content,
-      bullet: `${getPref("bullet")}`,
+      bullet: `${getPref("html2md.default.bullet")}`,
       field_name: formatted_label,
     };
     formattedPlaceholders[key] = replace_placeholders(placeholder, args);
@@ -730,13 +716,20 @@ function getFormattingSettings(field) {
 }
 
 async function getZoteroNoteFileContents(item) {
-  let note = noteToMarkdown(item);
-  let formattedPlaceholders = format_placeholders(note);
   let fileName = getZNoteFileName(item);
   let template = await readTemplate("Zotero Note Template");
+
+  let note = noteToMarkdown(item);
+
+  // Add custom placeholders
+  get_placeholder_contents(template, note);
+
+  let formattedPlaceholders = format_placeholders(note);
   let fileContents = remove_invalid_placeholders(
     replace_placeholders(template, formattedPlaceholders)
   );
+  
+  fileContents = replace_wildcards(fileContents, note);
   return { content: fileContents, name: fileName };
 }
 
@@ -746,7 +739,16 @@ function getFilePath(path, filename) {
 
 function getObsidianURI(fileName) {
   let uriStart = `obsidian://open?vault=${getPref("obsidian.vault")}&file=`;
-  let encodedFileName = Zotero.File.encodeFilePath(fileName);
+
+  let fileWithPath;
+  if(getPref("obsidian.dir").length > 0) {
+    fileWithPath = getPref("obsidian.dir") + "/" + fileName;
+  }
+  else{
+    fileWithPath = fileName;
+  }
+
+  let encodedFileName = Zotero.File.encodeFilePath(fileWithPath);
 
   return `${uriStart}${encodedFileName}`;
 }
@@ -804,6 +806,18 @@ async function addObsidianLink(outputFile, item) {
       parentItemID: parentItem.id,
     });
   }
+}
+
+/**
+ * Sanitizes the filename using the given replacement
+ *
+ * @param   {string}  filename     The filename to sanitize
+ * @param   {string}  replacement  The replacement character(s), default none
+ *
+ * @return  {string}               The sanitized filename.
+ */
+function sanitizeFilename(filename, replacement = '') {
+  return filename.replace(/[\/\?<>\\:\*\|"]/g, replacement).trim()
 }
 
 Zotero.Mdnotes =
@@ -939,6 +953,11 @@ Zotero.Mdnotes =
     async getRegularItemContents(item) {
       let metadata = getItemMetadata(item);
       let template = await readTemplate("Zotero Metadata Template");
+      
+      // Add custom placeholders
+      get_placeholder_contents(template, metadata);
+      
+      // Add formatting
       let formattedPlaceholders = format_placeholders(metadata);
       let newContents = remove_invalid_placeholders(
         replace_placeholders(template, formattedPlaceholders)
@@ -948,8 +967,8 @@ Zotero.Mdnotes =
     }
 
     /**
-     * Return an object with all the exportable files from a top-level item. 
-     * Only used for batch export. 
+     * Return an object with all the exportable files from a top-level item.
+     * Only used for batch export.
      * @param {Item} item A Zotero item
      */
     async getFiles(item) {
@@ -1028,10 +1047,16 @@ Zotero.Mdnotes =
           } else if (item && item.isNote()) {
             Zotero.debug("Exporting a Zotero note");
             file = await getZoteroNoteFileContents(item);
+            // Make sure to format the MDNote title correctly
+            file.name = formatNoteTitle(file.name)
           } else {
             continue;
           }
-          let outputFile = getFilePath(fp.file, `${file.name}`);
+
+          // Sanitize the filename
+          const sanitizedFileName = sanitizeFilename(file.name)
+          let outputFile = getFilePath(fp.file, `${sanitizedFileName}`);
+          Zotero.debug(`Exporting file ${outputFile} ...`)
           Zotero.File.putContentsAsync(outputFile, file.content);
 
           // Attach note
@@ -1072,11 +1097,12 @@ Zotero.Mdnotes =
             const files = await this.getFiles(item);
             var noteFileName = getMDNoteFileName(item);
             for (let exportFile of files) {
-              outputFile = getFilePath(fp.file, exportFile.name);
+              const sanitizedName = sanitizeFilename(exportFile.name)
+              outputFile = getFilePath(fp.file, sanitizedName);
               var fileExists = await OS.File.exists(outputFile);
 
               if (
-                exportFile.name === `${noteFileName}` &&
+                sanitizedName === `${noteFileName}` &&
                 (fileExists || !getPref("create_notes_file"))
               ) {
                 continue;
@@ -1089,7 +1115,8 @@ Zotero.Mdnotes =
             }
           } else {
             let exportFile = await this.getSingleFileExport(item);
-            outputFile = getFilePath(fp.file, exportFile.name);
+            const sanitizedName = sanitizeFilename(exportFile.name)
+            outputFile = getFilePath(fp.file, sanitizedName);
             Zotero.File.putContentsAsync(outputFile, exportFile.content);
 
             // Attach new notes

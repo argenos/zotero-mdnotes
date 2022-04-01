@@ -8,6 +8,7 @@ PREVRELEASE:=$(shell git tag --sort version:refname | tail -n 2 | head -n 1)
 
 mdnotes.xpi: FORCE
 	rm -rf $@
+	yarn build
 	zip -r $@ content chrome.manifest defaults locale skin install.rdf update.rdf -x \*.DS_Store
 
 mdnotes-%-fx.xpi: mdnotes.xpi
@@ -16,7 +17,7 @@ mdnotes-%-fx.xpi: mdnotes.xpi
 Makefile.in: install.rdf
 	echo "all: mdnotes-${RELEASE}-fx.xpi" > Makefile.in
 
-release: mdnotes.xpi 
+release: mdnotes.xpi
 	@mv $< mdnotes-$(RELEASE).xpi
 	# Replace old version with new version in install.rdf and update.rdf
 	sed -i 's/${PREVRELEASE}/${RELEASE}/g' install.rdf
@@ -25,7 +26,7 @@ release: mdnotes.xpi
 	# @echo "\nChangelog\n------------"
 	@git log --pretty=format:"%s" $(PREVRELEASE)..$(RELEASE) > changelog.md
 
-clean: 
+clean:
 	rm -rf *.xpi
 
 FORCE:

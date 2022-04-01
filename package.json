@@ -1,0 +1,15 @@
+{
+  "scripts": {
+    "build": "webpack"
+  },
+  "dependencies": {
+    "buffer": "^6.0.3",
+    "joplin-turndown": "^4.0.30",
+    "path-browserify": "^1.0.1",
+    "sha.js": "^2.4.11"
+  },
+  "devDependencies": {
+    "webpack": "^5.4.0",
+    "webpack-cli": "^4.2.0"
+  }
+}
