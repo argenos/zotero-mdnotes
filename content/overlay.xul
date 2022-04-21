@@ -13,12 +13,12 @@
     <menuseparator id="id-mdnotes-separator"/>
     <menu id="id-mdnotes-menu" label="Mdnotes">
       <menupopup id="id-mdnotes-menupopup" onpopupshowing="Zotero.Mdnotes.updateMenus()">
-        <menuitem id="id-mdnotes-export-item" label="Export to markdown" tooltiptext="Export the selected items into a markdown file" oncommand="Zotero.Mdnotes.run('exportToMarkdownMenu')"/>
+        <menuitem id="id-mdnotes-export-item" label="&mdnotes-overlay-export-item-label;" tooltiptext="&mdnotes-overlay-export-item-tooltiptext;" oncommand="Zotero.Mdnotes.run('exportToMarkdownMenu')"/>
         <menuseparator id="id-mdnotes-menu-separator"/>
-        <menuitem id="id-mdnotes-single-file-export" label="Create full export note" tooltiptext="Export an item's metadata and notes as a single file" oncommand="Zotero.Mdnotes.run('batchExportMenu')"/>
-        <menuitem id="id-mdnotes-batch-export-item" label="Batch export to markdown" tooltiptext="Create all markdown files for the selected items" oncommand="Zotero.Mdnotes.run('batchExportMenu')"/>
-        <menuitem id="id-mdnotes-create-notes-file" label="Create Mdnotes file" tooltiptext="Create a markdown file for your notes" oncommand="Zotero.Mdnotes.run('createNoteFileMenu', false)"/>
-        <menuitem id="id-mdnotes-create-standalone-note-file" label="Create a standalone note" tooltiptext="Create a standalone markdown note" oncommand="Zotero.Mdnotes.run('createNoteFileMenu', true)"/>
+        <menuitem id="id-mdnotes-single-file-export" label="&mdnotes-overlay-single-file-export-label;" tooltiptext="&mdnotes-overlay-export-item-tooltiptext;" oncommand="Zotero.Mdnotes.run('batchExportMenu')"/>
+        <menuitem id="id-mdnotes-batch-export-item" label="&mdnotes-overlay-batch-export-item-label;" tooltiptext="&mdnotes-overlay-batch-export-item-tooltiptext;" oncommand="Zotero.Mdnotes.run('batchExportMenu')"/>
+        <menuitem id="id-mdnotes-create-notes-file" label="&mdnotes-overlay-create-notes-file-label;" tooltiptext="&mdnotes-overlay-create-notes-file-tooltiptext;" oncommand="Zotero.Mdnotes.run('createNoteFileMenu', false)"/>
+        <menuitem id="id-mdnotes-create-standalone-note-file" label="&mdnotes-overlay-create-standalone-note-file-label;" tooltiptext="&mdnotes-overlay-create-standalone-note-file-tooltiptext;" oncommand="Zotero.Mdnotes.run('createNoteFileMenu', true)"/>
       </menupopup>
     </menu>
   </popup>
