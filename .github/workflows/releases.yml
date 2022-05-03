@@ -17,7 +17,7 @@ jobs:
       - name: Setup NodeJS 12.x
         uses: actions/setup-node@v1
         with:
-          node-version: '12.x'
+          node-version: '16.x'
       - name: Build project # This would actually build your project
         id: build
         run: |
