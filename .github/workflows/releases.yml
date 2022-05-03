@@ -21,6 +21,7 @@ jobs:
       - name: Build project # This would actually build your project
         id: build
         run: |
+          yarn install
           make
           make release
           echo "::set-output name=tag_name::$(git tag --sort version:refname | tail -n 1)"
