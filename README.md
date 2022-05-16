@@ -17,7 +17,7 @@ With the exception of `Create mdnotes file` (for your own notes), you will be as
 
 To access the menu right-click on an item or note:  
 
-<img src="docs/images/mdnotes-batch.gif" alt="mdnotes-batch" style="zoom:80%;" />
+<img src="docs/docs/images/mdnotes-batch.gif" alt="mdnotes-batch" style="zoom:80%;" />
 
 ## Requirements
 
