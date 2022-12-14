@@ -366,10 +366,12 @@ function noteToMarkdown(item) {
  * Get an item's base file name from setting's preferences
  */
 function getFileName(item) {
-  let citekeyTitle = getPref("citekey_title");
+  let basenameFormat = getPref("files.basename");
 
-  if (citekeyTitle) {
+  if (basenameFormat === "citekey") {
     return getCiteKey(item);
+  } else if (basenameFormat === "zotero") {
+    return Zotero.Attachments.getFileBaseNameFromItem(item);
   } else {
     if (getPref("link_style") === "wiki") {
       return sanitizeFilename(item.getField("title"));

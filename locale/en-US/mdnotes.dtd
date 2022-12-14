@@ -3,7 +3,6 @@
 
 <!-- First tab -->
 <!ENTITY mdnotes-export "Export preferences">
-<!ENTITY citekey-title "Use the item's citekey as title?">
 <!ENTITY pref-standalone-menu "Show Standalone Note menu">
 <!ENTITY mdnotes-file-number-label "File organization:">
 <!ENTITY mdnotes-file-number-description "Exporting notes as a single file or in multiple files">
@@ -20,6 +19,8 @@
 <!-- Second tab -->
 <!ENTITY file-names "File names">
 
+<!ENTITY basename-files "File name format">
+<!ENTITY basename-files-description "Choose format of the base file name. Prefixes and suffixes set below will be added to this base name.">
 <!ENTITY mdnotes-files "Mdnotes">
 <!ENTITY standalone-files "Standalone">
 <!ENTITY zotero-metadata-files "Zotero metadata">

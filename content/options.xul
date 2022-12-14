@@ -15,6 +15,7 @@
       <preference id="pref-mdnotes-templates-directory" name="extensions.mdnotes.templates.directory" type="string" />
       <preference id="pref-mdnotes-templates-empty-placeholders" name="extensions.mdnotes.templates.include_empty_placeholders" type="bool" />
 
+      <preference id="pref-mdnotes-files-basename" name="extensions.mdnotes.files.basename" type="string" />
       <preference id="pref-mdnotes-file-conf" name="extensions.mdnotes.file_conf" type="string" />
       <preference id="pref-mdnotes-standalone-menu" name="extensions.mdnotes.standalone_menu" type="bool" />
       <preference id="pref-mdnotes-files-zotero-metadata-prefix" name="extensions.mdnotes.files.zotero.metadata.prefix" type="string" />
@@ -40,7 +41,6 @@
         <tabpanel>
           <!-- General export settings -->
           <vbox>
-            <checkbox id="id-mdnotes-citekey-title" preference="pref-mdnotes-citekey-title" label="&citekey-title;" />
             <checkbox id="id-mdnotes-standalone-menu" preference="pref-mdnotes-standalone-menu" label="&pref-standalone-menu;" />
             <separator />
             <radiogroup id="id-mdnotes-file-group" preference="pref-mdnotes-file-conf">
@@ -97,6 +97,16 @@
         <tabpanel>
           <vbox>
             <!-- Mdnotes files -->
+            <radiogroup id="id-mdnotes-basename-group" preference="pref-mdnotes-files-basename">
+              <caption label="&basename-files;" />
+              <description style="font-size: 10px"> &basename-files-description; </description>
+              <hbox>
+                <radio id="basename-citekey" label="Item citekey" value="citekey" />
+                <radio id="basename-title" label="Item title" value="title" />
+                <radio id="basename-zotero" label="Use Zotero rename rule" value="zotero" />
+              </hbox>
+            </radiogroup>
+            <separator />
             <groupbox>
               <caption label="&mdnotes-files;"/>
               <hbox align="center">
