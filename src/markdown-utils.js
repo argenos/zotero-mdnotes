@@ -4,7 +4,7 @@ const Turndown = require('joplin-turndown').default
 
 function hasStyle(node, property, value) {
   // From https://github.com/laurent22/joplin-turndown/blob/master/src/commonmark-rules.js#L150
-  if (!node.nodeName =='SPAN') return false;
+  if (!node.nodeName === 'SPAN') return false;
 
   const style = node.getAttribute('style');
   if (!style) return false;
@@ -17,11 +17,19 @@ function hasStyle(node, property, value) {
 
   const underlined = textDecoration.value.split(',').map(e => e.trim().toLowerCase()).indexOf(value) >= 0;
   return underlined;
-
 }
 
 
-function getConverter(){
+function getZoteroAnnotationLink(annotation) {
+  const attachmentURI = annotation.attachmentURI.split("/");
+  const attachmentKey = attachmentURI[attachmentURI.length - 1];
+  const page = annotation.position.pageIndex + 1;
+  const annotationKey = annotation.annotationKey;
+  return `zotero://open-pdf/library/items/${attachmentKey}?page=${page}&annotation=${annotationKey}`;
+}
+
+
+function getConverter() {
   // Create a single Turndown provider which we'll use for all exporting. This
   // instance will be generated during Zotero load and will be kept in memory for
   // as long as the app is running.
@@ -37,8 +45,8 @@ function getConverter(){
     filter: 'p',
     replacement: function (content) {
       return '\n\n' + content + '\n\n'
-    }, 
-    escapeContent: function() {
+    },
+    escapeContent: function () {
       return false;
     },
   })
@@ -47,25 +55,64 @@ function getConverter(){
     filter: ['em', 'i'],
 
     replacement: function (content, node, options) {
-     if (!content.trim()) return ''
-     return options.emDelimiter + content + options.emDelimiter
+      if (!content.trim()) return ''
+      return options.emDelimiter + content + options.emDelimiter
     },
-    escapeContent: function() {
+    escapeContent: function () {
       return false;
     },
   })
 
   converter.addRule('strong', {
-  filter: ['strong', 'b'],
+    filter: ['strong', 'b'],
 
-  replacement: function (content, node, options) {
-    if (!content.trim()) return ''
-    return options.strongDelimiter + content + options.strongDelimiter
-  },
-  escapeContent: function() {
-    return false;
-  },
-})
+    replacement: function (content, node, options) {
+      if (!content.trim()) return ''
+      return options.strongDelimiter + content + options.strongDelimiter
+    },
+    escapeContent: function () {
+      return false;
+    },
+  })
+
+  converter.addRule('annotation-text', {
+    filter: function (node) {
+      return (
+        node.nodeName === 'SPAN' &&
+        (['highlight', 'citation-item'].includes(node.getAttribute('class')))
+      );
+    },
+    replacement: function (content) {
+      return content;
+    }
+  })
+
+  converter.addRule('annotation-citation', {
+    filter: function (node) {
+      // Only works with span.citation elements
+      return (
+        node.nodeName === 'SPAN' &&
+        node.getAttribute('class') === 'citation'
+      );
+    },
+    replacement: function (content, node) {
+      // Access to the span.highlight element (span.citation sibling).
+      // its data-annotation attribute contains the annotation data for reconstructing the link to the annotation.
+      const sibling = node.previousElementSibling;
+
+      if (!sibling || sibling.getAttribute('class') !== 'highlight') {
+        return content;
+      }
+
+      try {
+        const annotationData = JSON.parse(decodeURIComponent(sibling.getAttribute('data-annotation')));
+        const url = getZoteroAnnotationLink(annotationData);
+        return `[${content}](${url})`;
+      } catch (e) {
+        return content;
+      }
+    }
+  });
 
   converter.keep(['span', 'font'])
 
@@ -85,7 +132,7 @@ function getConverter(){
     filter: function (node) {
       return hasStyle(node, 'text-decoration', 'underline') || node.nodeName === 'U';
     },
-    replacement: function(content) {
+    replacement: function (content) {
       let open = Zotero.Prefs.get(`extensions.mdnotes.html2md.rules.underline.open`, true);
       let close = Zotero.Prefs.get(`extensions.mdnotes.html2md.rules.underline.close`, true);
       return open + content + close;
@@ -166,7 +213,7 @@ Zotero.MarkdownUtils = new function () {
     for (let line of lines) {
       let blockId = this.generateBlockId(line, citekey);
 
-      if (line.startsWith('#') || /^\s*$/gm.test(line)){
+      if (line.startsWith('#') || /^\s*$/gm.test(line)) {
         new_md += `${line}\n`;
       } else {
         new_md += `${line} ^${blockId}\n`;
