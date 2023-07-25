@@ -293,6 +293,10 @@ function getZoteroAttachments(item) {
         link = `[${attachment.getField("title")}](${getZoteroPDFLink(attachment)})`;
       } else if (linkStylePref === "wiki") {
         link = formatInternalLink(attachment.getField("title"), "wiki");
+      } else if (linkStylePref === "logseq") {
+        link = `[${attachment.getField("title")}](${getZoteroPDFLink(attachment)}) {{zotero-linked-file "${attachment.getField("title")}}}"`;
+      } else if (linkStylePref === "logseq-simple") {
+        link = `[zotero](${getZoteroPDFLink(attachment)}) {{zotero-linked-file "${attachment.getField("title")}"}}`;
       } else {
         link = `[${attachment.getField("title")}](${getPDFFileLink(attachment)})`;
       }
