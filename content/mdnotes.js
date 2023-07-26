@@ -171,15 +171,17 @@ function getRelatedItems(item) {
 
       // Get the link content based on settings and item type
       let linkContent;
-      if (!relatedItem.isNote()) {
-        linkContent = getMDNoteFileName(relatedItem);
-      } else if (relatedItem.isNote() && !relatedItem.isTopLevelItem()) {
-        linkContent = getZNoteFileName(relatedItem);
-      } else {
-        linkContent = relatedItem.getField("title");
+      if (relatedItem) {
+        if (!relatedItem.isNote()) {
+          linkContent = getMDNoteFileName(relatedItem);
+        } else if (relatedItem.isNote() && !relatedItem.isTopLevelItem()) {
+          linkContent = getZNoteFileName(relatedItem);
+        } else {
+          linkContent = relatedItem.getField("title");
+        }
+  
+        relatedItemsArray.push(linkContent);
       }
-
-      relatedItemsArray.push(linkContent);
     }
   }
 
@@ -293,6 +295,10 @@ function getZoteroAttachments(item) {
         link = `[${attachment.getField("title")}](${getZoteroPDFLink(attachment)})`;
       } else if (linkStylePref === "wiki") {
         link = formatInternalLink(attachment.getField("title"), "wiki");
+      } else if (linkStylePref === "logseq") {
+        link = `[${attachment.getField("title")}](${getZoteroPDFLink(attachment)}) {{zotero-linked-file "${attachment.getField("title")}}}"`;
+      } else if (linkStylePref === "logseq-simple") {
+        link = `[zotero](${getZoteroPDFLink(attachment)}) {{zotero-linked-file "${attachment.getField("title")}"}}`;
       } else {
         link = `[${attachment.getField("title")}](${getPDFFileLink(attachment)})`;
       }
