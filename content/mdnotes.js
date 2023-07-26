@@ -171,15 +171,17 @@ function getRelatedItems(item) {
 
       // Get the link content based on settings and item type
       let linkContent;
-      if (!relatedItem.isNote()) {
-        linkContent = getMDNoteFileName(relatedItem);
-      } else if (relatedItem.isNote() && !relatedItem.isTopLevelItem()) {
-        linkContent = getZNoteFileName(relatedItem);
-      } else {
-        linkContent = relatedItem.getField("title");
+      if (relatedItem) {
+        if (!relatedItem.isNote()) {
+          linkContent = getMDNoteFileName(relatedItem);
+        } else if (relatedItem.isNote() && !relatedItem.isTopLevelItem()) {
+          linkContent = getZNoteFileName(relatedItem);
+        } else {
+          linkContent = relatedItem.getField("title");
+        }
+  
+        relatedItemsArray.push(linkContent);
       }
-
-      relatedItemsArray.push(linkContent);
     }
   }
 
