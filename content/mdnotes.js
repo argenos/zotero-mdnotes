@@ -97,12 +97,11 @@ function getDateAdded(item) {
  return simpleISODate(date)
 }
 function getCiteKey(item) {
-  if (typeof Zotero.BetterBibTeX === "object" && Zotero.BetterBibTeX !== null) {
-    var bbtItem = Zotero.BetterBibTeX.KeyManager.get(item.getField("id"));
-    return bbtItem.citekey;
-  }
-
-  return "undefined";
+    try {
+        return item.getField('citationKey');
+    } catch (_) {
+        return undefined;
+    }
 }
 
 function getLocalZoteroLink(item) {
@@ -523,7 +522,7 @@ function replace_wildcards(str, args) {
 
 
 /**
- * 
+ *
  * @param {string} str The string to be replaced
  * @param {Object} args An array with the placeholder name as key and the (formatted) contents as values
  * @returns {string} A string with the placeholders replaced
@@ -728,7 +727,7 @@ async function getZoteroNoteFileContents(item) {
   let fileContents = remove_invalid_placeholders(
     replace_placeholders(template, formattedPlaceholders)
   );
-  
+
   fileContents = replace_wildcards(fileContents, note);
   return { content: fileContents, name: fileName };
 }
@@ -953,10 +952,10 @@ Zotero.Mdnotes =
     async getRegularItemContents(item) {
       let metadata = getItemMetadata(item);
       let template = await readTemplate("Zotero Metadata Template");
-      
+
       // Add custom placeholders
       get_placeholder_contents(template, metadata);
-      
+
       // Add formatting
       let formattedPlaceholders = format_placeholders(metadata);
       let newContents = remove_invalid_placeholders(
