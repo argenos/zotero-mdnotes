@@ -1,5 +1,9 @@
 # Mdnotes
 
+> [!IMPORTANT]
+> This plugin is not compatible with Zotero 7, and unfortunately I no longer have time to maintain or update it. There are many alternatives out there by now. If you are an Obsidian user, I recommend migrating to the [Zotero Integration plugin](https://github.com/mgmeyers/obsidian-zotero-integration).
+> Good luck out there!
+
 A Zotero plugin to export item metadata and notes as markdown files.
 
 ## Features
